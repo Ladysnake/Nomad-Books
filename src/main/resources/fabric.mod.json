@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "nomadbooks",
+  "version": "${version}",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ladysnake.nomadbooks.NomadBooks"
+    ]
+  },
+
+  "name": "Nomad Books",
+  "icon": "assets/nomadbooks/icon.png",
+  "description": "Nomad encampments deployment from books",
+  "authors": [
+    "doctor4t"
+  ],
+  "contact": {
+    "sources": "https://github.com/Ladysnake/Nomad-Books",
+    "issues": "https://github.com/Ladysnake/Nomad-Books/issues",
+    "discord": "ladysnake.glitch.me/discord"
+  },
+  "license": "ARR"
+}
