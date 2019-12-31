@@ -46,7 +46,7 @@ public class NomadBookItem extends Item {
             }
 
             // set dimension
-            tags.putInt("Dimension", context.getPlayer().getEntityWorld().getDimension().getType().getRawId());
+            tags.putInt("Dimension", context.getWorld().getDimension().getType().getRawId());
 
             BlockPos pos = context.getBlockPos().add(new BlockPos(-3, 1, -3));
 
@@ -93,10 +93,7 @@ public class NomadBookItem extends Item {
         int level = tags.getInt("Level");
 
         // if structure is in another dimension, error
-        System.out.println("CAMP DIM:" +tags.getInt("Dimension"));
-        System.out.println("PLAYER DIM:"+user.getEntityWorld().getDimension().getType().getRawId());
-        System.out.println("DEPLOYED:"+tags.getBoolean("Deployed"));
-        if (tags.getInt("Dimension") != user.getEntityWorld().getDimension().getType().getRawId()) {
+        if (tags.getInt("Dimension") != world.getDimension().getType().getRawId()) {
             // TODO: Display chat message indicating the camp is in another dimension
             return TypedActionResult.fail(itemStack);
         }
