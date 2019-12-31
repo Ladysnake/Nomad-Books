@@ -9,6 +9,6 @@ import net.minecraft.util.registry.Registry;
 public class NomadBooks implements ModInitializer {
     @Override
     public void onInitialize() {
-        Registry.register(Registry.ITEM, "nomadbooks:nomad_book", new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.TOOLS)));
+        Registry.register(Registry.ITEM, "nomadbooks:nomad_book", new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC)));
     }
 }
