@@ -1,5 +1,6 @@
 package ladysnake.nomadbooks.common.item;
 
+import ladysnake.nomadbooks.NomadBooks;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,17 +21,17 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 public class NomadBookItem extends Item {
-    public static final String defaultStructurePath = "nomadbooks:camp1";
+    public static final String defaultStructurePath = NomadBooks.MODID + ":camp1";
 
     public NomadBookItem(Settings settings) {
         super(settings);
-        this.addPropertyGetter(new Identifier("nomadbooks:deployed"), (itemStack, world, livingEntity) -> itemStack.getOrCreateTag().getFloat("nomadbooks:deployed"));
+        this.addPropertyGetter(new Identifier(NomadBooks.MODID + ":deployed"), (itemStack, world, livingEntity) -> itemStack.getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed"));
     }
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        CompoundTag tags = context.getStack().getOrCreateSubTag("nomadbooks");
-        boolean isDeployed = tags.getBoolean("Deployed");
+        CompoundTag tags = context.getStack().getOrCreateSubTag(NomadBooks.MODID);
+        boolean isDeployed = context.getStack().getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 1f;
         if (!isDeployed) {
             String structurePath = tags.getString("Structure");
             int level = tags.getInt("Level");
@@ -56,6 +57,7 @@ public class NomadBookItem extends Item {
                     for (int y = 0; y < (level*3 + level-1); y++) {
                         if (!context.getWorld().getBlockState(pos.add(new BlockPos(x, y, z))).isAir()) {
                             // TODO: Display chat message indicating there's not enough space to set up the camp
+
                             return ActionResult.FAIL;
                         }
                     }
@@ -71,8 +73,7 @@ public class NomadBookItem extends Item {
             }
 
             // set deployed, register nbt
-            tags.putBoolean("Deployed", true);
-            context.getStack().getOrCreateTag().putFloat("nomadbooks:deployed", 1F);
+            context.getStack().getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 1F);
             tags.put("CampCenter", NbtHelper.fromBlockPos(pos));
 
             context.getWorld().playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
@@ -86,8 +87,8 @@ public class NomadBookItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        CompoundTag tags = itemStack.getOrCreateSubTag("nomadbooks");
-        boolean isDeployed = tags.getBoolean("Deployed");
+        CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
+        boolean isDeployed = itemStack.getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 1f;
         BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampCenter"));
         String structurePath = tags.getString("Structure");
         int level = tags.getInt("Level");
@@ -100,7 +101,7 @@ public class NomadBookItem extends Item {
 
         // if default structure path, create a new one
         if (structurePath.equals(defaultStructurePath)) {
-            structurePath = "nomadbooks:"+user.getUuid()+"/"+System.currentTimeMillis();
+            structurePath = NomadBooks.MODID + ":"+user.getUuid()+"/"+System.currentTimeMillis();
             tags.putString("Structure", structurePath);
         }
 
@@ -132,8 +133,7 @@ public class NomadBookItem extends Item {
                 }
 
                 // set undeployed
-                tags.putBoolean("Deployed", false);
-                itemStack.getOrCreateTag().putFloat("nomadbooks:deployed", 0F);
+                itemStack.getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 0F);
                 world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
             }
 
