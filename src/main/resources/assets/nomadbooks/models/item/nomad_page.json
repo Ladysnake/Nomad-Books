@@ -1,0 +1,14 @@
+{
+	"parent": "item/generated",
+    "textures": {
+        "layer0": "nomadbooks:item/nomad_page"
+    },
+	"overrides": [
+		{
+			"predicate": {
+				"nomadbooks:deployed": 1
+			},
+			"model": "nomadbooks:item/nomad_page_deployed"
+		}
+	]
+}

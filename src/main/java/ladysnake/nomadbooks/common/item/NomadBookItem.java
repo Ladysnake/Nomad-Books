@@ -34,16 +34,21 @@ public class NomadBookItem extends Item {
         boolean isDeployed = context.getStack().getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 1f;
         if (!isDeployed) {
             String structurePath = tags.getString("Structure");
-            int level = tags.getInt("Level");
+            int pages = tags.getInt("Pages");
 
             // set default structure
             if (structurePath.equals("")) {
                 tags.putString("Structure", defaultStructurePath);
                 structurePath = defaultStructurePath;
             }
-            if (level == 0) {
-                tags.putInt("Level", 1);
-                level = 1;
+            if (pages == 0) {
+                if (context.getStack().getItem().equals(NomadBooks.NOMAD_BOOK)) {
+                    tags.putInt("Pages", 3);
+                    pages = 3;
+                } else if (context.getStack().getItem().equals(NomadBooks.NOMAD_PAGE)) {
+                    tags.putInt("Pages", 1);
+                    pages = 1;
+                }
             }
 
             // set dimension
@@ -54,7 +59,7 @@ public class NomadBookItem extends Item {
             // check if there's enough space
             for (int x = 0; x < 7; x++) {
                 for (int z = 0; z < 7; z++) {
-                    for (int y = 0; y < (level*3 + level-1); y++) {
+                    for (int y = 0; y < pages; y++) {
                         if (!context.getWorld().getBlockState(pos.add(new BlockPos(x, y, z))).isAir()) {
                             // TODO: Display chat message indicating there's not enough space to set up the camp
 
@@ -91,7 +96,7 @@ public class NomadBookItem extends Item {
         boolean isDeployed = itemStack.getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 1f;
         BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampCenter"));
         String structurePath = tags.getString("Structure");
-        int level = tags.getInt("Level");
+        int pages = tags.getInt("Pages");
 
         // if structure is in another dimension, error
         if (tags.getInt("Dimension") != world.getDimension().getType().getRawId()) {
@@ -118,14 +123,14 @@ public class NomadBookItem extends Item {
                     return TypedActionResult.fail(itemStack);
                 }
 
-                structure.method_15174(world, pos.add(new BlockPos(0, 0, 0)), new BlockPos(7, 3, 7), true, Blocks.STRUCTURE_VOID);
+                structure.method_15174(world, pos.add(new BlockPos(0, 0, 0)), new BlockPos(7, pages, 7), true, Blocks.STRUCTURE_VOID);
                 structure.setAuthor(user.getEntityName());
                 structureManager.saveStructure(new Identifier(structurePath));
 
                 // clear block entities
                 for (int x = 0; x < 7; x++) {
                     for (int z = 0; z < 7; z++) {
-                        for (int y = 0; y < (level*3 + level-1); y++) {
+                        for (int y = 0; y < pages; y++) {
                             BlockEntity blockEntity = serverWorld.getBlockEntity(pos.add(new BlockPos(x, y, z)));
                             Clearable.clear(blockEntity);
                         }
@@ -140,7 +145,7 @@ public class NomadBookItem extends Item {
             // remove blocks
             for (int x = 0; x < 7; x++) {
                 for (int z = 0; z < 7; z++) {
-                    for (int y = 0; y < (level*3 + level-1); y++) {
+                    for (int y = 0; y < pages; y++) {
                         world.setBlockState(pos.add(new BlockPos(x, y, z)), Blocks.AIR.getDefaultState(), 16);
                     }
                 }
@@ -151,5 +156,9 @@ public class NomadBookItem extends Item {
         } else {
             return TypedActionResult.fail(itemStack);
         }
+    }
+
+    public void setPageAmount(ItemStack itemStack, int pageAmount) {
+        itemStack.getOrCreateSubTag(NomadBooks.MODID).putInt("Pages", pageAmount);
     }
 }

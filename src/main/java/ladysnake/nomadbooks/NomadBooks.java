@@ -1,5 +1,6 @@
 package ladysnake.nomadbooks;
 
+import ladysnake.nomadbooks.common.item.GrassPageItem;
 import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
@@ -21,12 +22,14 @@ public class NomadBooks implements ModInitializer {
     private static final Identifier PYRAMID_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/desert_pyramid");
     private static final Identifier STRONGHOLD_LIBRARY_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/stronghold_library");
 
-    public static Item NOMAD_BOOK;
     public static Item GRASS_PAGE;
+    public static Item NOMAD_PAGE;
+    public static Item NOMAD_BOOK;
 
     @Override
     public void onInitialize() {
-        GRASS_PAGE = registerItem(new Item((new Item.Settings()).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "grass_page");
+        GRASS_PAGE = registerItem(new GrassPageItem((new Item.Settings()).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "grass_page");
+        NOMAD_PAGE = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "nomad_page");
         NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE)), "nomad_book");
 
         // add grass pages to dungeons, mineshafts, jungle temples, desert pyramids and stronghold libraries chests loot tables
