@@ -146,6 +146,7 @@ public class NomadBookItem extends Item {
                 }
             }
 
+            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 0.9f, true);
             return TypedActionResult.success(itemStack);
         } else {
             return TypedActionResult.fail(itemStack);
