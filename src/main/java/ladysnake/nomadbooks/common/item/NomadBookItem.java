@@ -68,12 +68,12 @@ public class NomadBookItem extends Item {
                 Structure structure = serverWorld.getStructureManager().getStructure(new Identifier(structurePath));
                 StructurePlacementData structurePlacementData = (new StructurePlacementData()).setIgnoreEntities(true).setChunkPosition((ChunkPos) null);
                 structure.place(serverWorld, pos, structurePlacementData);
-
-                // set deployed, register nbt
-                tags.putBoolean("Deployed", true);
-                context.getStack().getOrCreateTag().putFloat("nomadbooks:deployed", 1F);
-                tags.put("CampCenter", NbtHelper.fromBlockPos(pos));
             }
+
+            // set deployed, register nbt
+            tags.putBoolean("Deployed", true);
+            context.getStack().getOrCreateTag().putFloat("nomadbooks:deployed", 1F);
+            tags.put("CampCenter", NbtHelper.fromBlockPos(pos));
 
             context.getWorld().playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
             return ActionResult.SUCCESS;
