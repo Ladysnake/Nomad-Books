@@ -3,6 +3,7 @@ package ladysnake.nomadbooks.common.item;
 import ladysnake.nomadbooks.NomadBooks;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,10 +16,16 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class NomadBookItem extends Item {
     public static final String defaultStructurePath = NomadBooks.MODID + ":camp1";
@@ -160,5 +167,16 @@ public class NomadBookItem extends Item {
 
     public void setPageAmount(ItemStack itemStack, int pageAmount) {
         itemStack.getOrCreateSubTag(NomadBooks.MODID).putInt("Pages", pageAmount);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (stack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+            int pages = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Pages");
+            if (pages == 0) {
+                pages = 3;
+            }
+            tooltip.add(new LiteralText("Pages: " + pages));
+        }
     }
 }
