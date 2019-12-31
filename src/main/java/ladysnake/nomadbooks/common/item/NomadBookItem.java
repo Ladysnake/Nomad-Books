@@ -19,31 +19,35 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
-public class EncampmentBookItem extends Item {
-    public static final String defaultStructurePath = "nomadbooks:basic_camp";
+public class NomadBookItem extends Item {
+    public static final String defaultStructurePath = "nomadbooks:camp1";
 
-    public EncampmentBookItem(Settings settings) {
+    public NomadBookItem(Settings settings) {
         super(settings);
+        this.addPropertyGetter(new Identifier("nomadbooks:deployed"), (itemStack, world, livingEntity) -> itemStack.getOrCreateTag().getFloat("nomadbooks:deployed"));
     }
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         CompoundTag tags = context.getStack().getOrCreateSubTag("nomadbooks");
         boolean isDeployed = tags.getBoolean("Deployed");
-        String structurePath = tags.getString("Structure");
-        int level = tags.getInt("Level");
-
-        // set default structure
-        if (structurePath.equals("")) {
-            tags.putString("Structure", defaultStructurePath);
-            structurePath = defaultStructurePath;
-        }
-        if (level == 0) {
-            tags.putInt("Level", 1);
-            level = 1;
-        }
-
         if (!isDeployed) {
+            String structurePath = tags.getString("Structure");
+            int level = tags.getInt("Level");
+
+            // set default structure
+            if (structurePath.equals("")) {
+                tags.putString("Structure", defaultStructurePath);
+                structurePath = defaultStructurePath;
+            }
+            if (level == 0) {
+                tags.putInt("Level", 1);
+                level = 1;
+            }
+
+            // set dimension
+            tags.putInt("Dimension", context.getPlayer().getEntityWorld().getDimension().getType().getRawId());
+
             BlockPos pos = context.getBlockPos().add(new BlockPos(-3, 1, -3));
 
             // check if there's enough space
@@ -51,7 +55,7 @@ public class EncampmentBookItem extends Item {
                 for (int z = 0; z < 7; z++) {
                     for (int y = 0; y < (level*3 + level-1); y++) {
                         if (!context.getWorld().getBlockState(pos.add(new BlockPos(x, y, z))).isAir()) {
-                            // TODO: Add chat message indicating there's not enough space to set up the camp
+                            // TODO: Display chat message indicating there's not enough space to set up the camp
                             return ActionResult.FAIL;
                         }
                     }
@@ -67,6 +71,7 @@ public class EncampmentBookItem extends Item {
 
                 // set deployed, register nbt
                 tags.putBoolean("Deployed", true);
+                context.getStack().getOrCreateTag().putFloat("nomadbooks:deployed", 1F);
                 tags.put("CampCenter", NbtHelper.fromBlockPos(pos));
             }
 
@@ -83,8 +88,18 @@ public class EncampmentBookItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         CompoundTag tags = itemStack.getOrCreateSubTag("nomadbooks");
         boolean isDeployed = tags.getBoolean("Deployed");
+        BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampCenter"));
         String structurePath = tags.getString("Structure");
         int level = tags.getInt("Level");
+
+        // if structure is in another dimension, error
+        System.out.println("CAMP DIM:" +tags.getInt("Dimension"));
+        System.out.println("PLAYER DIM:"+user.getEntityWorld().getDimension().getType().getRawId());
+        System.out.println("DEPLOYED:"+tags.getBoolean("Deployed"));
+        if (tags.getInt("Dimension") != user.getEntityWorld().getDimension().getType().getRawId()) {
+            // TODO: Display chat message indicating the camp is in another dimension
+            return TypedActionResult.fail(itemStack);
+        }
 
         // if default structure path, create a new one
         if (structurePath.equals(defaultStructurePath)) {
@@ -94,7 +109,6 @@ public class EncampmentBookItem extends Item {
 
         if (isDeployed) {
             if (!world.isClient) {
-                BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampCenter"));
                 ServerWorld serverWorld = (ServerWorld)world;
                 StructureManager structureManager = serverWorld.getStructureManager();
 
@@ -110,20 +124,29 @@ public class EncampmentBookItem extends Item {
                 structure.setAuthor(user.getEntityName());
                 structureManager.saveStructure(new Identifier(structurePath));
 
-                // remove camp
+                // clear block entities
                 for (int x = 0; x < 7; x++) {
                     for (int z = 0; z < 7; z++) {
                         for (int y = 0; y < (level*3 + level-1); y++) {
                             BlockEntity blockEntity = serverWorld.getBlockEntity(pos.add(new BlockPos(x, y, z)));
                             Clearable.clear(blockEntity);
-                            world.setBlockState(pos.add(new BlockPos(x, y, z)), Blocks.AIR.getDefaultState());
                         }
                     }
                 }
 
                 // set undeployed
                 tags.putBoolean("Deployed", false);
+                itemStack.getOrCreateTag().putFloat("nomadbooks:deployed", 0F);
                 world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
+            }
+
+            // remove blocks
+            for (int x = 0; x < 7; x++) {
+                for (int z = 0; z < 7; z++) {
+                    for (int y = 0; y < (level*3 + level-1); y++) {
+                        world.setBlockState(pos.add(new BlockPos(x, y, z)), Blocks.AIR.getDefaultState(), 16);
+                    }
+                }
             }
 
             return TypedActionResult.success(itemStack);
