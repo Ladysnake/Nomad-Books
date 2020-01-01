@@ -183,7 +183,7 @@ public class NomadBookItem extends Item {
                 List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), new Predicate<ItemEntity>() {
                     @Override
                     public boolean test(ItemEntity itemEntity) {
-                        return true;
+                        return itemEntity.getAge() < 1;
                     }
                 });
                 itemEntities.forEach(ItemEntity::remove);
