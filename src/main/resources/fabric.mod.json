@@ -7,9 +7,6 @@
   "entrypoints": {
     "main": [
       "ladysnake.nomadbooks.NomadBooks"
-    ],
-    "client": [
-      "ladysnake.nomadbooks.client.NomadBooksClient"
     ]
   },
 

@@ -85,20 +85,20 @@ public class NomadBookItem extends Item {
             }
 
             // fill with membrane
-            for (int x = -1; x < 8; x++) {
-                for (int z = -1; z < 8; z++) {
-                    for (int y = 0; y < pages+1; y++) {
-                        BlockPos p = pos.add(new BlockPos(x, y, z));
-                        BlockState bs = context.getWorld().getBlockState(p);
-                        if ((bs.getBlock() instanceof FluidBlock || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT)) &&
-                                !((x == -1 && z == -1) || (x == -1 && z == 7) || (x == 7 && z == -1) || (x == 7 && z == 7)
-                                || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7))) {
-                            context.getWorld().breakBlock(p, true);
-                            context.getWorld().setBlockState(p, NomadBooks.MEMBRANE.getDefaultState(), 1);
-                        }
-                    }
-                }
-            }
+//            for (int x = -1; x < 8; x++) {
+//                for (int z = -1; z < 8; z++) {
+//                    for (int y = 0; y < pages+1; y++) {
+//                        BlockPos p = pos.add(new BlockPos(x, y, z));
+//                        BlockState bs = context.getWorld().getBlockState(p);
+//                        if ((bs.getBlock() instanceof FluidBlock || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT)) &&
+//                                !((x == -1 && z == -1) || (x == -1 && z == 7) || (x == 7 && z == -1) || (x == 7 && z == 7)
+//                                || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7))) {
+//                            context.getWorld().breakBlock(p, true);
+//                            context.getWorld().setBlockState(p, NomadBooks.MEMBRANE.getDefaultState(), 1);
+//                        }
+//                    }
+//                }
+//            }
 
             // place if there's enough
             if (!context.getWorld().isClient()) {

@@ -43,7 +43,7 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
             }
         }
 
-        return !itemStack.isEmpty() && !list.isEmpty();
+        return !itemStack.isEmpty() && !list.isEmpty() && itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Pages") + list.size() <= 12;
     }
 
     public ItemStack craft(CraftingInventory craftingInventory) {
