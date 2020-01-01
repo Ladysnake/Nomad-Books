@@ -111,7 +111,7 @@ public class NomadBookItem extends Item {
             context.getStack().getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 1F);
             tags.put("CampCenter", NbtHelper.fromBlockPos(pos));
 
-            context.getWorld().playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
+            context.getWorld().playSound(context.getPlayer().getX(), context.getPlayer().getY(), context.getPlayer().getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
             return ActionResult.SUCCESS;
         } else {
             this.use(context.getWorld(), context.getPlayer(), context.getHand());
@@ -190,10 +190,9 @@ public class NomadBookItem extends Item {
 
                 // set undeployed
                 itemStack.getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 0F);
-                world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
             }
 
-            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 0.9f, true);
+            world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 0.9f, true);
             return TypedActionResult.success(itemStack);
         } else {
             return TypedActionResult.fail(itemStack);
