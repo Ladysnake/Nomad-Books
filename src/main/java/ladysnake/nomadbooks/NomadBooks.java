@@ -2,6 +2,7 @@ package ladysnake.nomadbooks;
 
 import ladysnake.nomadbooks.common.item.GrassPageItem;
 import ladysnake.nomadbooks.common.item.NomadBookItem;
+import ladysnake.nomadbooks.common.recipe.NomadBookUpgradeRecipe;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
@@ -9,9 +10,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.recipe.RepairItemRecipe;
+import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
+
+import static net.minecraft.recipe.RecipeSerializer.register;
 
 public class NomadBooks implements ModInitializer {
     public static final String MODID = "nomadbooks";
@@ -25,6 +30,8 @@ public class NomadBooks implements ModInitializer {
     public static Item GRASS_PAGE;
     public static Item NOMAD_PAGE;
     public static Item NOMAD_BOOK;
+
+    public static SpecialRecipeSerializer<NomadBookUpgradeRecipe> UPGRADE_NOMAD_BOOK;
 
     @Override
     public void onInitialize() {
@@ -70,6 +77,8 @@ public class NomadBooks implements ModInitializer {
                 supplier.withPool(poolBuilder);
             }
         });
+
+        UPGRADE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookupgrade"), new SpecialRecipeSerializer<>(NomadBookUpgradeRecipe::new));
     }
 
     public static Item registerItem(Item item, String name) {
