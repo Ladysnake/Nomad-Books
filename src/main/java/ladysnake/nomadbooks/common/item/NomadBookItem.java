@@ -43,6 +43,13 @@ public class NomadBookItem extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
+        BlockPos pos = context.getBlockPos();
+        Material mat = context.getWorld().getBlockState(pos).getMaterial();
+        while (mat.equals(Material.REPLACEABLE_PLANT) || mat.equals(Material.SNOW)) {
+            pos = new BlockPos(pos.getX(), pos.getY()-1, pos.getZ());
+            mat = context.getWorld().getBlockState(pos).getMaterial();
+        }
+
         CompoundTag tags = context.getStack().getOrCreateSubTag(NomadBooks.MODID);
         boolean isDeployed = context.getStack().getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 1f;
         if (!isDeployed) {
@@ -67,7 +74,7 @@ public class NomadBookItem extends Item {
             // set dimension
             tags.putInt("Dimension", context.getWorld().getDimension().getType().getRawId());
 
-            BlockPos pos = context.getBlockPos().add(new BlockPos(-3, 1, -3));
+            pos = pos.add(new BlockPos(-3, 1, -3));
 
             // check if there's enough space
             for (int x = 0; x < 7; x++) {
@@ -75,7 +82,7 @@ public class NomadBookItem extends Item {
                     for (int y = 0; y < pages; y++) {
                         BlockPos p = pos.add(new BlockPos(x, y, z));
                         BlockState bs = context.getWorld().getBlockState(p);
-                        if (!(bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getBlock() instanceof FluidBlock || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT))) {
+                        if (!(bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getMaterial().equals(Material.SNOW))) {
                             // TODO: Display chat message indicating there's not enough space to set up the camp
 
                             return ActionResult.FAIL;
