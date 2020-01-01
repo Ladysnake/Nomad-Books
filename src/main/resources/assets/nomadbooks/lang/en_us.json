@@ -4,5 +4,8 @@
   "item.nomadbooks.nomad_page": "Nomad Page",
   "item.nomadbooks.nomad_book.tooltip.height": "Height: %s",
   "item.nomadbooks.nomad_book.tooltip.position": "Deployed at: %s",
-  "item.nomadbooks.nomad_book.tooltip.dimension": "Deployed in: %s"
+  "item.nomadbooks.nomad_book.tooltip.dimension": "Deployed in: %s",
+  "error.nomadbooks.no_space": "Not enough space to set up the camp",
+  "error.nomadbooks.invalid_surface": "The surface isn't wide enough to set up the camp",
+  "error.nomadbooks.different_dimension": "The camp is in another dimension and cannot be retrieved"
 }

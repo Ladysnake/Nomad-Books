@@ -88,8 +88,7 @@ public class NomadBookItem extends Item {
                         BlockPos p = pos.add(new BlockPos(x, y, z));
                         BlockState bs = context.getWorld().getBlockState(p);
                         if (!(bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getMaterial().equals(Material.SNOW))) {
-                            // TODO: Display chat message indicating there's not enough space to set up the camp
-
+                            context.getPlayer().addChatMessage(new TranslatableText("error.nomadbooks.no_space"), true);
                             return ActionResult.FAIL;
                         }
                     }
@@ -102,8 +101,7 @@ public class NomadBookItem extends Item {
                     BlockPos p = pos.add(new BlockPos(x, -1, z));
                     BlockState bs = context.getWorld().getBlockState(p);
                     if (!bs.hasSolidTopSurface(context.getWorld(), p, context.getPlayer())) {
-                        // TODO: Display chat message indicating the surface size is not sufficient
-
+                        context.getPlayer().addChatMessage(new TranslatableText("error.nomadbooks.invalid_surface"), true);
                         return ActionResult.FAIL;
                     }
                 }
@@ -165,7 +163,7 @@ public class NomadBookItem extends Item {
 
         // if structure is in another dimension, error
         if (tags.getInt("Dimension") != world.getDimension().getType().getRawId()) {
-            // TODO: Display chat message indicating the camp is in another dimension
+            user.addChatMessage(new TranslatableText("error.nomadbooks.different_dimension"), true);
             return TypedActionResult.fail(itemStack);
         }
 
