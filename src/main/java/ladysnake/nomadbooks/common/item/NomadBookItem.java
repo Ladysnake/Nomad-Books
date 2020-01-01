@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -171,61 +172,80 @@ public class NomadBookItem extends Item {
         }
 
         if (isDeployed) {
-            if (!world.isClient) {
-                ServerWorld serverWorld = (ServerWorld)world;
-                StructureManager structureManager = serverWorld.getStructureManager();
-
-                // save structure
-                Structure structure;
-                try {
-                    structure = structureManager.getStructureOrBlank(new Identifier(structurePath));
-                } catch (InvalidIdentifierException var8) {
-                    return TypedActionResult.fail(itemStack);
-                }
-
-                structure.method_15174(world, pos.add(new BlockPos(0, 0, 0)), new BlockPos(7, pages, 7), true, Blocks.STRUCTURE_VOID);
-                structure.setAuthor(user.getEntityName());
-                structureManager.saveStructure(new Identifier(structurePath));
-
-                // clear block entities
+            // if sneaking, show camp boundaries, else, pack up
+            if (user.isSneaking()) {
+                // display a particle on each block
                 for (int x = 0; x < 7; x++) {
                     for (int z = 0; z < 7; z++) {
                         for (int y = 0; y < pages; y++) {
-                            BlockPos p = pos.add(new BlockPos(x, y, z));
-                            BlockEntity blockEntity = serverWorld.getBlockEntity(p);
-                            Clearable.clear(blockEntity);
+                            if (x == 0 && z == 0 || x == 0 && z == 6 || x == 6 && z == 0 || x == 6 && z == 6
+                                    || y == pages - 1 && x == 0 || y == pages - 1 && x == 6 || y == pages - 1 && z == 0 || y == pages - 1 && z == 6
+                                    || y == 0 && x == 0 || y == 0 && x == 6 || y == 0 && z == 0 || y == 0 && z == 6) {
+                                BlockPos p = pos.add(new BlockPos(x, y, z));
+                                world.addParticle(ParticleTypes.HAPPY_VILLAGER, true, p.getX() + 0.5, p.getY() + 0.5, p.getZ() + 0.5, 0, 0, 0);
+                            }
                         }
                     }
                 }
 
-                // set undeployed
-                itemStack.getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 0F);
-            }
+                return TypedActionResult.pass(itemStack);
+            } else {
+                if (!world.isClient) {
+                    ServerWorld serverWorld = (ServerWorld) world;
+                    StructureManager structureManager = serverWorld.getStructureManager();
 
-            // remove blocks
-            for (int x = 0; x < 7; x++) {
-                for (int z = 0; z < 7; z++) {
-                    for (int y = 0; y < pages; y++) {
-                        BlockPos p = pos.add(new BlockPos(x, y, z));
-                        world.breakBlock(p, false);
+                    // save structure
+                    Structure structure;
+                    try {
+                        structure = structureManager.getStructureOrBlank(new Identifier(structurePath));
+                    } catch (InvalidIdentifierException var8) {
+                        return TypedActionResult.fail(itemStack);
+                    }
+
+                    structure.method_15174(world, pos.add(new BlockPos(0, 0, 0)), new BlockPos(7, pages, 7), true, Blocks.STRUCTURE_VOID);
+                    structure.setAuthor(user.getEntityName());
+                    structureManager.saveStructure(new Identifier(structurePath));
+
+                    // clear block entities
+                    for (int x = 0; x < 7; x++) {
+                        for (int z = 0; z < 7; z++) {
+                            for (int y = 0; y < pages; y++) {
+                                BlockPos p = pos.add(new BlockPos(x, y, z));
+                                BlockEntity blockEntity = serverWorld.getBlockEntity(p);
+                                Clearable.clear(blockEntity);
+                            }
+                        }
+                    }
+
+                    // set undeployed
+                    itemStack.getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 0F);
+                }
+
+                // remove blocks
+                for (int x = 0; x < 7; x++) {
+                    for (int z = 0; z < 7; z++) {
+                        for (int y = 0; y < pages; y++) {
+                            BlockPos p = pos.add(new BlockPos(x, y, z));
+                            world.breakBlock(p, false);
+                        }
                     }
                 }
-            }
 
-            if (!world.isClient()) {
-                // remove blocks dropped by accident
-                BlockPos p2 = pos.add(new BlockPos(7, pages, 7));
-                List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), new Predicate<ItemEntity>() {
-                    @Override
-                    public boolean test(ItemEntity itemEntity) {
-                        return itemEntity.getAge() < 1;
-                    }
-                });
-                itemEntities.forEach(ItemEntity::remove);
-            }
+                if (!world.isClient()) {
+                    // remove blocks dropped by accident
+                    BlockPos p2 = pos.add(new BlockPos(7, pages, 7));
+                    List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), new Predicate<ItemEntity>() {
+                        @Override
+                        public boolean test(ItemEntity itemEntity) {
+                            return itemEntity.getAge() < 1;
+                        }
+                    });
+                    itemEntities.forEach(ItemEntity::remove);
+                }
 
-            world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 0.9f, true);
-            return TypedActionResult.success(itemStack);
+                world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 0.9f, true);
+                return TypedActionResult.success(itemStack);
+            }
         } else {
             return TypedActionResult.fail(itemStack);
         }
