@@ -91,6 +91,19 @@ public class NomadBookItem extends Item {
                 }
             }
 
+            // check if the surface is valid
+            for (int x = 0; x < 7; x++) {
+                for (int z = 0; z < 7; z++) {
+                    BlockPos p = pos.add(new BlockPos(x, -1, z));
+                    BlockState bs = context.getWorld().getBlockState(p);
+                    if (!bs.hasSolidTopSurface(context.getWorld(), p, context.getPlayer())) {
+                        // TODO: Display chat message indicating the surface size is not sufficient
+
+                        return ActionResult.FAIL;
+                    }
+                }
+            }
+
             // destroy destroyable blocks in the way
             for (int x = 0; x < 7; x++) {
                 for (int z = 0; z < 7; z++) {
