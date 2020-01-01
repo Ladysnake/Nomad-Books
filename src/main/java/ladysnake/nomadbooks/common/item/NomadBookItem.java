@@ -168,16 +168,21 @@ public class NomadBookItem extends Item {
                     }
                 }
 
-                // remove blocks
-                for (int x = 0; x < 7; x++) {
-                    for (int z = 0; z < 7; z++) {
-                        for (int y = 0; y < pages; y++) {
-                            BlockPos p = pos.add(new BlockPos(x, y, z));
-                            world.breakBlock(p, false);
-                        }
+                // set undeployed
+                itemStack.getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 0F);
+            }
+
+            // remove blocks
+            for (int x = 0; x < 7; x++) {
+                for (int z = 0; z < 7; z++) {
+                    for (int y = 0; y < pages; y++) {
+                        BlockPos p = pos.add(new BlockPos(x, y, z));
+                        world.breakBlock(p, false);
                     }
                 }
+            }
 
+            if (!world.isClient()) {
                 // remove blocks dropped by accident
                 BlockPos p2 = pos.add(new BlockPos(7, pages, 7));
                 List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), new Predicate<ItemEntity>() {
@@ -187,9 +192,6 @@ public class NomadBookItem extends Item {
                     }
                 });
                 itemEntities.forEach(ItemEntity::remove);
-
-                // set undeployed
-                itemStack.getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 0F);
             }
 
             world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 0.9f, true);
