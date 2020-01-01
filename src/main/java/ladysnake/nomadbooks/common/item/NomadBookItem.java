@@ -1,10 +1,14 @@
 package ladysnake.nomadbooks.common.item;
 
 import ladysnake.nomadbooks.NomadBooks;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.BaseFluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -20,11 +24,13 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class NomadBookItem extends Item {
     public static final String defaultStructurePath = NomadBooks.MODID + ":camp1";
@@ -66,10 +72,28 @@ public class NomadBookItem extends Item {
             for (int x = 0; x < 7; x++) {
                 for (int z = 0; z < 7; z++) {
                     for (int y = 0; y < pages; y++) {
-                        if (!context.getWorld().getBlockState(pos.add(new BlockPos(x, y, z))).isAir()) {
+                        BlockPos p = pos.add(new BlockPos(x, y, z));
+                        BlockState bs = context.getWorld().getBlockState(p);
+                        if (!(bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getBlock() instanceof FluidBlock || bs.getMaterial().equals(Material.SEAGRASS))) {
                             // TODO: Display chat message indicating there's not enough space to set up the camp
 
                             return ActionResult.FAIL;
+                        }
+                    }
+                }
+            }
+
+            // fill with membrane
+            for (int x = -1; x < 8; x++) {
+                for (int z = -1; z < 8; z++) {
+                    for (int y = 0; y < pages+1; y++) {
+                        BlockPos p = pos.add(new BlockPos(x, y, z));
+                        BlockState bs = context.getWorld().getBlockState(p);
+                        if (bs.getBlock() instanceof FluidBlock || bs.getMaterial().equals(Material.SEAGRASS) &&
+                                !((x == -1 && z == -1) || (x == -1 && z == 7) || (x == 7 && z == -1) || (x == 7 && z == 7)
+                                || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7))) {
+                            context.getWorld().breakBlock(context.getBlockPos(), true);
+                            context.getWorld().setBlockState(p, NomadBooks.MEMBRANE.getDefaultState(), 1);
                         }
                     }
                 }
@@ -137,24 +161,36 @@ public class NomadBookItem extends Item {
                 for (int x = 0; x < 7; x++) {
                     for (int z = 0; z < 7; z++) {
                         for (int y = 0; y < pages; y++) {
-                            BlockEntity blockEntity = serverWorld.getBlockEntity(pos.add(new BlockPos(x, y, z)));
+                            BlockPos p = pos.add(new BlockPos(x, y, z));
+                            BlockEntity blockEntity = serverWorld.getBlockEntity(p);
                             Clearable.clear(blockEntity);
                         }
                     }
                 }
 
+                // remove blocks
+                for (int x = 0; x < 7; x++) {
+                    for (int z = 0; z < 7; z++) {
+                        for (int y = 0; y < pages; y++) {
+                            BlockPos p = pos.add(new BlockPos(x, y, z));
+                            world.breakBlock(p, false);
+                        }
+                    }
+                }
+
+                // remove blocks dropped by accident
+                BlockPos p2 = pos.add(new BlockPos(7, pages, 7));
+                List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), new Predicate<ItemEntity>() {
+                    @Override
+                    public boolean test(ItemEntity itemEntity) {
+                        return true;
+                    }
+                });
+                itemEntities.forEach(ItemEntity::remove);
+
                 // set undeployed
                 itemStack.getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 0F);
                 world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
-            }
-
-            // remove blocks
-            for (int x = 0; x < 7; x++) {
-                for (int z = 0; z < 7; z++) {
-                    for (int y = 0; y < pages; y++) {
-                        world.setBlockState(pos.add(new BlockPos(x, y, z)), Blocks.AIR.getDefaultState(), 16);
-                    }
-                }
             }
 
             world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 0.9f, true);
