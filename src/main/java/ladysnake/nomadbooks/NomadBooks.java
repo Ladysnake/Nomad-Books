@@ -10,13 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.recipe.RepairItemRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
-
-import static net.minecraft.recipe.RecipeSerializer.register;
 
 public class NomadBooks implements ModInitializer {
     public static final String MODID = "nomadbooks";
@@ -82,7 +79,7 @@ public class NomadBooks implements ModInitializer {
     }
 
     public static Item registerItem(Item item, String name) {
-        Registry.register(Registry.ITEM, "nomadbooks:" + name, item);
+        Registry.register(Registry.ITEM, MODID + ":" + name, item);
         return item;
     }
 }
