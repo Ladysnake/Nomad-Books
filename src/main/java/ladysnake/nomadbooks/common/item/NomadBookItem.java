@@ -24,13 +24,17 @@ import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.dimension.DimensionType;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -257,12 +261,20 @@ public class NomadBookItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        // page amount
         if (stack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
             int pages = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Pages");
             if (pages == 0) {
                 pages = 3;
             }
-            tooltip.add(new LiteralText("Pages: " + pages));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", pages));
+        }
+        // camp coordinates if deployed
+        if (stack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f) {
+            BlockPos pos = NbtHelper.toBlockPos(stack.getOrCreateSubTag(NomadBooks.MODID).getCompound("CampCenter"));
+            DimensionType dim = DimensionType.byRawId(stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Dimension"));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim));
         }
     }
 }

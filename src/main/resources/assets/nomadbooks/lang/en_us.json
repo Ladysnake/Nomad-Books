@@ -1,5 +1,8 @@
 {
   "item.nomadbooks.grass_page": "Grass Page",
   "item.nomadbooks.nomad_book": "Nomad Book",
-  "item.nomadbooks.nomad_page": "Nomad Page"
+  "item.nomadbooks.nomad_page": "Nomad Page",
+  "item.nomadbooks.nomad_book.tooltip.height": "Height: %s",
+  "item.nomadbooks.nomad_book.tooltip.position": "Deployed at: %s",
+  "item.nomadbooks.nomad_book.tooltip.dimension": "Deployed in: %s"
 }
