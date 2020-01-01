@@ -3,7 +3,6 @@ package ladysnake.nomadbooks.common.item;
 import ladysnake.nomadbooks.NomadBooks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.FluidBlock;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
@@ -11,6 +10,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
@@ -22,7 +22,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
@@ -30,11 +29,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -273,6 +270,23 @@ public class NomadBookItem extends Item {
             DimensionType dim = DimensionType.byRawId(stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Dimension"));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim));
+        }
+    }
+
+    @Override
+    public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+        stacks.forEach(itemStack -> {
+            CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
+            int pages = 1;
+            if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+                pages = 3;
+            }
+            tags.putInt("Pages", pages);
+            tags.putString("Structure", defaultStructurePath);
+        });
+
+        if (this.isIn(group)) {
+            stacks.add(new ItemStack(this));
         }
     }
 }

@@ -2,6 +2,7 @@ package ladysnake.nomadbooks;
 
 import ladysnake.nomadbooks.common.item.GrassPageItem;
 import ladysnake.nomadbooks.common.item.NomadBookItem;
+import ladysnake.nomadbooks.common.recipe.NomadBookCraftRecipe;
 import ladysnake.nomadbooks.common.recipe.NomadBookDismantleRecipe;
 import ladysnake.nomadbooks.common.recipe.NomadBookUpgradeRecipe;
 import net.fabricmc.api.ModInitializer;
@@ -33,6 +34,7 @@ public class NomadBooks implements ModInitializer {
 
     public static SpecialRecipeSerializer<NomadBookUpgradeRecipe> UPGRADE_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookDismantleRecipe> DISMANTLE_NOMAD_BOOK;
+    public static SpecialRecipeSerializer<NomadBookCraftRecipe> CRAFT_NOMAD_BOOK;
 
     @Override
     public void onInitialize() {
@@ -83,6 +85,7 @@ public class NomadBooks implements ModInitializer {
 
         UPGRADE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookupgrade"), new SpecialRecipeSerializer<>(NomadBookUpgradeRecipe::new));
         DISMANTLE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookdismantle"), new SpecialRecipeSerializer<>(NomadBookDismantleRecipe::new));
+        CRAFT_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookcraft"), new SpecialRecipeSerializer<>(NomadBookCraftRecipe::new));
     }
 
     public static Item registerItem(Item item, String name) {

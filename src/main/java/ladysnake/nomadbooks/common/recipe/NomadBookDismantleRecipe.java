@@ -1,20 +1,15 @@
 package ladysnake.nomadbooks.common.recipe;
 
-import com.google.common.collect.Lists;
 import ladysnake.nomadbooks.NomadBooks;
-import ladysnake.nomadbooks.common.item.GrassPageItem;
 import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class NomadBookDismantleRecipe extends SpecialCraftingRecipe {
     public NomadBookDismantleRecipe(Identifier identifier) {
