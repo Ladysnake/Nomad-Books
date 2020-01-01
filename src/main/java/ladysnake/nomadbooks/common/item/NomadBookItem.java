@@ -74,7 +74,7 @@ public class NomadBookItem extends Item {
                     for (int y = 0; y < pages; y++) {
                         BlockPos p = pos.add(new BlockPos(x, y, z));
                         BlockState bs = context.getWorld().getBlockState(p);
-                        if (!(bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getBlock() instanceof FluidBlock || bs.getMaterial().equals(Material.SEAGRASS))) {
+                        if (!(bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getBlock() instanceof FluidBlock || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT))) {
                             // TODO: Display chat message indicating there's not enough space to set up the camp
 
                             return ActionResult.FAIL;
@@ -89,10 +89,10 @@ public class NomadBookItem extends Item {
                     for (int y = 0; y < pages+1; y++) {
                         BlockPos p = pos.add(new BlockPos(x, y, z));
                         BlockState bs = context.getWorld().getBlockState(p);
-                        if (bs.getBlock() instanceof FluidBlock || bs.getMaterial().equals(Material.SEAGRASS) &&
+                        if ((bs.getBlock() instanceof FluidBlock || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT)) &&
                                 !((x == -1 && z == -1) || (x == -1 && z == 7) || (x == 7 && z == -1) || (x == 7 && z == 7)
                                 || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7))) {
-                            context.getWorld().breakBlock(context.getBlockPos(), true);
+                            context.getWorld().breakBlock(p, true);
                             context.getWorld().setBlockState(p, NomadBooks.MEMBRANE.getDefaultState(), 1);
                         }
                     }
