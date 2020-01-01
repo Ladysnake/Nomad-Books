@@ -16,7 +16,10 @@ public class GrassPageItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         user.getStackInHand(hand).decrement(1);
-        user.inventory.insertStack(new ItemStack(NomadBooks.NOMAD_PAGE));
+        boolean canInsert = user.inventory.insertStack(new ItemStack(NomadBooks.NOMAD_PAGE));
+        if (!canInsert) {
+            user.dropStack(new ItemStack(NomadBooks.NOMAD_PAGE));
+        }
         return TypedActionResult.consume(user.getStackInHand(hand));
     }
 }
