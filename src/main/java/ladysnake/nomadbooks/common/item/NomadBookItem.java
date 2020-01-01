@@ -84,6 +84,15 @@ public class NomadBookItem extends Item {
                 }
             }
 
+            // destroy destroyable blocks in the way
+            for (int x = 0; x < 7; x++) {
+                for (int z = 0; z < 7; z++) {
+                    for (int y = 0; y < pages; y++) {
+                        context.getWorld().breakBlock(pos.add(new BlockPos(x, y, z)), true);
+                    }
+                }
+            }
+
             // fill with membrane
 //            for (int x = -1; x < 8; x++) {
 //                for (int z = -1; z < 8; z++) {
