@@ -237,7 +237,7 @@ public class NomadBookItem extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         // page amount
         if (stack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
             int pages = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Pages");
