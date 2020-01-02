@@ -53,6 +53,7 @@ public class NomadBookItem extends Item {
         }
 
         CompoundTag tags = context.getStack().getOrCreateSubTag(NomadBooks.MODID);
+        System.out.println(context.getStack().getOrCreateTag());
         boolean isDeployed = context.getStack().getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 1f;
         if (!isDeployed) {
             String structurePath = tags.getString("Structure");

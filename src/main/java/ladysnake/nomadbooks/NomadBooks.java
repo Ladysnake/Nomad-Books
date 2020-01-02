@@ -13,10 +13,13 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.function.SetNbtLootFunction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 
 public class NomadBooks implements ModInitializer {
@@ -44,7 +47,7 @@ public class NomadBooks implements ModInitializer {
         NOMAD_PAGE = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "nomad_page");
         NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE)), "nomad_book");
 
-        // add grass pages to dungeons, mineshafts, jungle temples, and stronghold libraries chests loot tables
+        // add loot to dungeons, mineshafts, jungle temples, and stronghold libraries chests loot tables
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
             if (DUNGEON_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
@@ -70,7 +73,11 @@ public class NomadBooks implements ModInitializer {
             if (STRONGHOLD_LIBRARY_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
                         .withRolls(ConstantLootTableRange.create(1))
-                        .withEntry(ItemEntry.builder(GRASS_PAGE));
+                        .withEntry(ItemEntry.builder(NOMAD_BOOK))
+                        .withFunction(SetNbtLootFunction.builder(Util.make(new CompoundTag(), (compoundTag) -> compoundTag.put(MODID, Util.make(new CompoundTag(), child -> {
+                            child.putInt("Pages", 3);
+                            child.putString("Structure", NomadBookItem.defaultStructurePath);
+                        })))));
 
                 supplier.withPool(poolBuilder);
             }
