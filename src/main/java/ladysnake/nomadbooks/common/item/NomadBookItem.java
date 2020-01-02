@@ -143,18 +143,6 @@ public class NomadBookItem extends Item {
         String structurePath = tags.getString("Structure");
         int pages = tags.getInt("Pages");
 
-        // if structure is in another dimension, error
-        if (tags.getInt("Dimension") != world.getDimension().getType().getRawId()) {
-            user.addChatMessage(new TranslatableText("error.nomadbooks.different_dimension"), true);
-            return TypedActionResult.fail(itemStack);
-        }
-
-        // if default structure path, create a new one
-        if (structurePath.equals(defaultStructurePath)) {
-            structurePath = NomadBooks.MODID + ":"+user.getUuid()+"/"+System.currentTimeMillis();
-            tags.putString("Structure", structurePath);
-        }
-
         if (isDeployed) {
             // if sneaking, show camp boundaries, else, pack up
             if (user.isSneaking()) {
@@ -174,6 +162,18 @@ public class NomadBookItem extends Item {
 
                 return TypedActionResult.pass(itemStack);
             } else {
+                // if structure is in another dimension, error
+                if (tags.getInt("Dimension") != world.getDimension().getType().getRawId()) {
+                    user.addChatMessage(new TranslatableText("error.nomadbooks.different_dimension"), true);
+                    return TypedActionResult.fail(itemStack);
+                }
+
+                // if default structure path, create a new one
+                if (structurePath.equals(defaultStructurePath)) {
+                    structurePath = NomadBooks.MODID + ":"+user.getUuid()+"/"+System.currentTimeMillis();
+                    tags.putString("Structure", structurePath);
+                }
+
                 if (!world.isClient) {
                     ServerWorld serverWorld = (ServerWorld) world;
                     StructureManager structureManager = serverWorld.getStructureManager();
