@@ -16,8 +16,6 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-import static ladysnake.nomadbooks.common.recipe.NomadBookCraftRecipe.NOMAD_BOOK_RECIPE;
-
 public class NomadPageCraftRecipe extends SpecialCraftingRecipe {
     public static final List<Item> NOMAD_PAGE_RECIPE_1 = Lists.newArrayList(
             Items.LIME_DYE, Items.ORANGE_DYE, Items.LIME_DYE,
