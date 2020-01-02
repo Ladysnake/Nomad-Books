@@ -16,14 +16,21 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class NomadBookCraftRecipe extends SpecialCraftingRecipe {
-    public static final List<Item> NOMAD_BOOK_RECIPE = Lists.newArrayList(
+import static ladysnake.nomadbooks.common.recipe.NomadBookCraftRecipe.NOMAD_BOOK_RECIPE;
+
+public class NomadPageCraftRecipe extends SpecialCraftingRecipe {
+    public static final List<Item> NOMAD_PAGE_RECIPE_1 = Lists.newArrayList(
             Items.LIME_DYE, Items.ORANGE_DYE, Items.LIME_DYE,
-            NomadBooks.GRASS_PAGE, NomadBooks.GRASS_PAGE, NomadBooks.GRASS_PAGE,
-            Items.GRAY_DYE, Items.BROWN_DYE, Items.GRAY_DYE
+            Items.AIR, NomadBooks.GRASS_PAGE, Items.AIR,
+            Items.AIR, Items.AIR, Items.AIR
+    );
+    public static final List<Item> NOMAD_PAGE_RECIPE_2 = Lists.newArrayList(
+            Items.AIR, Items.AIR, Items.AIR,
+            Items.LIME_DYE, Items.ORANGE_DYE, Items.LIME_DYE,
+            Items.AIR, NomadBooks.GRASS_PAGE, Items.AIR
     );
 
-    public NomadBookCraftRecipe(Identifier identifier) {
+    public NomadPageCraftRecipe(Identifier identifier) {
         super(identifier);
     }
 
@@ -34,7 +41,7 @@ public class NomadBookCraftRecipe extends SpecialCraftingRecipe {
              list.add(craftingInventory.getInvStack(i).getItem());
         }
 
-        return list.equals(NOMAD_BOOK_RECIPE);
+        return list.equals(NOMAD_PAGE_RECIPE_1) || list.equals(NOMAD_PAGE_RECIPE_2);
     }
 
     public ItemStack craft(CraftingInventory craftingInventory) {
@@ -44,9 +51,9 @@ public class NomadBookCraftRecipe extends SpecialCraftingRecipe {
             list.add(craftingInventory.getInvStack(i).getItem());
         }
 
-        if (list.equals(NOMAD_BOOK_RECIPE)) {
-            ItemStack ret = new ItemStack(NomadBooks.NOMAD_BOOK);
-            ret.getOrCreateSubTag(NomadBooks.MODID).putInt("Pages", 3);
+        if (list.equals(NOMAD_PAGE_RECIPE_1) || list.equals(NOMAD_PAGE_RECIPE_2)) {
+            ItemStack ret = new ItemStack(NomadBooks.NOMAD_PAGE);
+            ret.getOrCreateSubTag(NomadBooks.MODID).putInt("Pages", 1);
             ret.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.defaultStructurePath);
             return ret;
         } else {
@@ -60,6 +67,6 @@ public class NomadBookCraftRecipe extends SpecialCraftingRecipe {
     }
 
     public RecipeSerializer<?> getSerializer() {
-        return NomadBooks.CRAFT_NOMAD_BOOK;
+        return NomadBooks.CRAFT_NOMAD_PAGE;
     }
 }

@@ -58,21 +58,6 @@ public class NomadBookItem extends Item {
             String structurePath = tags.getString("Structure");
             int pages = tags.getInt("Pages");
 
-            // set default structure
-            if (structurePath.equals("")) {
-                tags.putString("Structure", defaultStructurePath);
-                structurePath = defaultStructurePath;
-            }
-            if (pages == 0) {
-                if (context.getStack().getItem().equals(NomadBooks.NOMAD_BOOK)) {
-                    tags.putInt("Pages", 3);
-                    pages = 3;
-                } else if (context.getStack().getItem().equals(NomadBooks.NOMAD_PAGE)) {
-                    tags.putInt("Pages", 1);
-                    pages = 1;
-                }
-            }
-
             // set dimension
             tags.putInt("Dimension", context.getWorld().getDimension().getType().getRawId());
 

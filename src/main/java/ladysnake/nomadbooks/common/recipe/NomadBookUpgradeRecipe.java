@@ -2,7 +2,6 @@ package ladysnake.nomadbooks.common.recipe;
 
 import com.google.common.collect.Lists;
 import ladysnake.nomadbooks.NomadBooks;
-import ladysnake.nomadbooks.common.item.GrassPageItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
@@ -34,7 +33,7 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
 
                     itemStack = itemStack2;
                 } else {
-                    if (!(itemStack2.getItem() instanceof GrassPageItem)) {
+                    if (!(itemStack2.getItem().equals(NomadBooks.GRASS_PAGE))) {
                         return false;
                     }
 
@@ -47,7 +46,7 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
     }
 
     public ItemStack craft(CraftingInventory craftingInventory) {
-        List<GrassPageItem> list = Lists.newArrayList();
+        List<Item> list = Lists.newArrayList();
         ItemStack itemStack = ItemStack.EMPTY;
 
         for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
@@ -61,11 +60,11 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
 
                     itemStack = itemStack2.copy();
                 } else {
-                    if (!(item instanceof GrassPageItem)) {
+                    if (!(item.equals(NomadBooks.GRASS_PAGE))) {
                         return ItemStack.EMPTY;
                     }
 
-                    list.add((GrassPageItem)item);
+                    list.add(item);
                 }
             }
         }
