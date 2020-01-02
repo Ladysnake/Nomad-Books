@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.recipe.SpecialRecipeSerializer;
+import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
@@ -24,7 +25,6 @@ public class NomadBooks implements ModInitializer {
     private static final Identifier DUNGEON_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/simple_dungeon");
     private static final Identifier MINESHAFT_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/abandoned_mineshaft");
     private static final Identifier TEMPLE_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/jungle_temple");
-    private static final Identifier PYRAMID_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/desert_pyramid");
     private static final Identifier STRONGHOLD_LIBRARY_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/stronghold_library");
 
     public static Item GRASS_PAGE;
@@ -40,13 +40,11 @@ public class NomadBooks implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        System.out.println(ItemStack.EMPTY.getItem());
-
         GRASS_PAGE = registerItem(new Item((new Item.Settings()).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "grass_page");
         NOMAD_PAGE = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "nomad_page");
         NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE)), "nomad_book");
 
-        // add grass pages to dungeons, mineshafts, jungle temples, desert pyramids and stronghold libraries chests loot tables
+        // add grass pages to dungeons, mineshafts, jungle temples, and stronghold libraries chests loot tables
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
             if (DUNGEON_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
@@ -63,13 +61,6 @@ public class NomadBooks implements ModInitializer {
                 supplier.withPool(poolBuilder);
             }
             if (TEMPLE_CHEST_LOOT_TABLE_ID.equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-                        .withRolls(ConstantLootTableRange.create(1))
-                        .withEntry(ItemEntry.builder(GRASS_PAGE));
-
-                supplier.withPool(poolBuilder);
-            }
-            if (PYRAMID_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
                         .withRolls(ConstantLootTableRange.create(1))
                         .withEntry(ItemEntry.builder(GRASS_PAGE));

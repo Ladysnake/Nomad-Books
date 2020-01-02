@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class NomadBookItem extends Item {
-    public static final String defaultStructurePath = NomadBooks.MODID + ":camp1";
+    public static final String defaultStructurePath = NomadBooks.MODID + ":campfire7x1x7";
 
     public NomadBookItem(Settings settings) {
         super(settings);
@@ -235,18 +235,11 @@ public class NomadBookItem extends Item {
         }
     }
 
-    public void setPageAmount(ItemStack itemStack, int pageAmount) {
-        itemStack.getOrCreateSubTag(NomadBooks.MODID).putInt("Pages", pageAmount);
-    }
-
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         // page amount
         if (stack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
             int pages = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Pages");
-            if (pages == 0) {
-                pages = 3;
-            }
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", pages));
         }
         // camp coordinates if deployed
@@ -260,18 +253,19 @@ public class NomadBookItem extends Item {
 
     @Override
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+        super.appendStacks(group, stacks);
         stacks.forEach(itemStack -> {
-            CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
-            int pages = 1;
-            if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
-                pages = 3;
+            if (itemStack.getItem() instanceof NomadBookItem) {
+                CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
+                if (itemStack.getItem().equals(NomadBooks.NOMAD_PAGE)) {
+                    tags.putInt("Pages", 1);
+                    tags.putString("Structure", defaultStructurePath);
+                }
+                if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+                    tags.putInt("Pages", 3);
+                    tags.putString("Structure", defaultStructurePath);
+                }
             }
-            tags.putInt("Pages", pages);
-            tags.putString("Structure", defaultStructurePath);
         });
-
-        if (this.isIn(group)) {
-            stacks.add(new ItemStack(this));
-        }
     }
 }
