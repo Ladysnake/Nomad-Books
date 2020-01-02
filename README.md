@@ -22,7 +22,7 @@ A **nomad book** is an item that can store a 7xNx7 sized camp, with N being its 
 
 Nomad books can be obtained by combining lime dye, orange dye, gray dye, brown dye and grass pages. A newly crafted nomad book will contain 3 pages, therefore being able to store a 7x3x7 camp area.
 
-![image-20200102175340377](.\README.assets\image-20200102175340377.png)
+![image-20200102175340377](https://raw.githubusercontent.com/Ladysnake/Nomad-Books/master/README.assets/image-20200102175340377.png)
 
 Nomad books of 3 pages can also be found in all stronghold libraries chests in stacks of 1.
 
@@ -36,13 +36,13 @@ When a nomad book does not store a camp (meaning the camp is deployed), using it
 
 A nomad pages is the one page equivalent of a nomad book (therefore storing a camp area of 7x1x7). Nomad pages can be obtained by combining lime dye, orange dye, and grass pages.
 
-![image-20200102180717208](.\README.assets\image-20200102180717208.png)
+![image-20200102180717208](https://raw.githubusercontent.com/Ladysnake/Nomad-Books/master/README.assets/image-20200102180717208.png)
 
 #### Upgrading
 
 Nomad books can be upgraded to a maximum amount of 12 pages by combining them with grass pages in a crafting inventory.
 
-![image-20200102181553637](.\README.assets\image-20200102181553637.png)
+![image-20200102181553637](https://raw.githubusercontent.com/Ladysnake/Nomad-Books/master/README.assets/image-20200102181553637.png)
 
 #### Dismantling
 
