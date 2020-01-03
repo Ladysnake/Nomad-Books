@@ -1,0 +1,11 @@
+{
+  "item.nomadbooks.grass_page": "Grasseite",
+  "item.nomadbooks.nomad_book": "Nomadenbuch",
+  "item.nomadbooks.nomad_page": "Nomadenseite",
+  "item.nomadbooks.nomad_book.tooltip.height": "H\u00F6he: %s",
+  "item.nomadbooks.nomad_book.tooltip.position": "Aufgestellt bei: %s",
+  "item.nomadbooks.nomad_book.tooltip.dimension": "Aufgestellt in: %s",
+  "error.nomadbooks.no_space": "Nicht ausreichend Platz um das Camp aufzubauen",
+  "error.nomadbooks.invalid_surface": "Die Fl\u00E4che ist nicht breit genug um das Camp aufzubauen",
+  "error.nomadbooks.different_dimension": "Das Camp ist in einer anderen Dimension und kann deshalb nicht abgebaut werden"
+}
