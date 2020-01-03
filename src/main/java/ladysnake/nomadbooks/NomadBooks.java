@@ -1,13 +1,17 @@
 package ladysnake.nomadbooks;
 
+import ladysnake.nomadbooks.common.block.MembraneBlock;
 import ladysnake.nomadbooks.common.item.NomadBookItem;
 import ladysnake.nomadbooks.common.recipe.NomadBookCraftRecipe;
 import ladysnake.nomadbooks.common.recipe.NomadBookDismantleRecipe;
 import ladysnake.nomadbooks.common.recipe.NomadBookUpgradeRecipe;
 import ladysnake.nomadbooks.common.recipe.NomadPageCraftRecipe;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
+import net.minecraft.block.Block;
+import net.minecraft.block.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.loot.ConstantLootTableRange;
@@ -15,6 +19,8 @@ import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.SetNbtLootFunction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.SpecialRecipeSerializer;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.Util;
@@ -32,7 +38,7 @@ public class NomadBooks implements ModInitializer {
     public static Item NOMAD_PAGE;
     public static Item NOMAD_BOOK;
 
-//    public static Block MEMBRANE;
+    public static Block MEMBRANE;
 
     public static SpecialRecipeSerializer<NomadBookUpgradeRecipe> UPGRADE_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookDismantleRecipe> DISMANTLE_NOMAD_BOOK;
@@ -81,7 +87,7 @@ public class NomadBooks implements ModInitializer {
             }
         });
 
-//        MEMBRANE = Registry.register(Registry.BLOCK, MODID + ":membrane", new MembraneBlock(DyeColor.GRAY, FabricBlockSettings.of(Material.GLASS).strength(0.3f, 0.3f).nonOpaque().sounds(BlockSoundGroup.field_21214).noCollision().build()));
+        MEMBRANE = Registry.register(Registry.BLOCK, MODID + ":membrane", new MembraneBlock(DyeColor.GRAY, FabricBlockSettings.of(Material.GLASS).strength(0.3f, 0.3f).nonOpaque().sounds(BlockSoundGroup.field_21214).noCollision().build()));
 
         UPGRADE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookupgrade"), new SpecialRecipeSerializer<>(NomadBookUpgradeRecipe::new));
         DISMANTLE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookdismantle"), new SpecialRecipeSerializer<>(NomadBookDismantleRecipe::new));

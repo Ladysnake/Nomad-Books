@@ -1,8 +1,10 @@
 package ladysnake.nomadbooks.common.item;
 
 import ladysnake.nomadbooks.NomadBooks;
+import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
@@ -14,7 +16,9 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -52,7 +56,6 @@ public class NomadBookItem extends Item {
         }
 
         CompoundTag tags = context.getStack().getOrCreateSubTag(NomadBooks.MODID);
-        System.out.println(context.getStack().getOrCreateTag());
         boolean isDeployed = context.getStack().getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 1f;
         if (!isDeployed) {
             String structurePath = tags.getString("Structure");
@@ -69,7 +72,8 @@ public class NomadBookItem extends Item {
                     for (int y = 0; y < pages; y++) {
                         BlockPos p = pos.add(new BlockPos(x, y, z));
                         BlockState bs = context.getWorld().getBlockState(p);
-                        if (!(bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getMaterial().equals(Material.SNOW))) {
+                        if (!(bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getMaterial().equals(Material.SNOW)
+                        || ((bs.getBlock().equals(Blocks.WATER) || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT)) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))))) {
                             context.getPlayer().addChatMessage(new TranslatableText("error.nomadbooks.no_space"), true);
                             return ActionResult.FAIL;
                         }
@@ -89,6 +93,24 @@ public class NomadBookItem extends Item {
                 }
             }
 
+            // if membrane upgrade, replace water and underwater plants with membrane
+            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
+                for (int x = -1; x < 8; x++) {
+                    for (int z = -1; z < 8; z++) {
+                        for (int y = -1; y < pages + 1; y++) {
+                            BlockPos p = pos.add(new BlockPos(x, y, z));
+                            BlockState bs = context.getWorld().getBlockState(p);
+                            if ((bs.getBlock().equals(Blocks.WATER) || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT)) &&
+                                    !((x == -1 && z == -1) || (x == -1 && z == 7) || (x == 7 && z == -1) || (x == 7 && z == 7)
+                                            || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7))) {
+                                context.getWorld().breakBlock(p, true);
+                                context.getWorld().setBlockState(p, NomadBooks.MEMBRANE.getDefaultState());
+                            }
+                        }
+                    }
+                }
+            }
+
             // destroy destroyable blocks in the way
             for (int x = 0; x < 7; x++) {
                 for (int z = 0; z < 7; z++) {
@@ -97,22 +119,6 @@ public class NomadBookItem extends Item {
                     }
                 }
             }
-
-            // fill with membrane
-//            for (int x = -1; x < 8; x++) {
-//                for (int z = -1; z < 8; z++) {
-//                    for (int y = 0; y < pages+1; y++) {
-//                        BlockPos p = pos.add(new BlockPos(x, y, z));
-//                        BlockState bs = context.getWorld().getBlockState(p);
-//                        if ((bs.getBlock() instanceof FluidBlock || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT)) &&
-//                                !((x == -1 && z == -1) || (x == -1 && z == 7) || (x == 7 && z == -1) || (x == 7 && z == 7)
-//                                || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7))) {
-//                            context.getWorld().breakBlock(p, true);
-//                            context.getWorld().setBlockState(p, NomadBooks.MEMBRANE.getDefaultState(), 1);
-//                        }
-//                    }
-//                }
-//            }
 
             // place if there's enough
             if (!context.getWorld().isClient()) {
@@ -237,10 +243,12 @@ public class NomadBookItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        // page amount
+        // page amount and upgrade pages
         if (stack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
             int pages = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Pages");
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", pages));
+            ListTag upgrades = stack.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING);
+            upgrades.forEach(tag -> tooltip.add(new TranslatableText("upgrade.nomadbooks."+tag.asString()).formatted(Formatting.GREEN)));
         }
         // camp coordinates if deployed
         if (stack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f) {
@@ -264,6 +272,9 @@ public class NomadBookItem extends Item {
                 if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
                     tags.putInt("Pages", 3);
                     tags.putString("Structure", defaultStructurePath);
+                    ListTag list = new ListTag();
+                    list.add(StringTag.of("membrane"));
+                    tags.put("Upgrades", list);
                 }
             }
         });
