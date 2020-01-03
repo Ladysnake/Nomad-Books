@@ -31,7 +31,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
