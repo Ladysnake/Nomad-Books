@@ -102,7 +102,8 @@ public class NomadBookItem extends Item {
                             BlockState bs = context.getWorld().getBlockState(p);
                             if ((bs.getBlock().equals(Blocks.WATER) || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT)) &&
                                     !((x == -1 && z == -1) || (x == -1 && z == 7) || (x == 7 && z == -1) || (x == 7 && z == 7)
-                                            || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7))) {
+                                            || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7)) &&
+                                    (x == -1 || x == 7 || y == -1 || y == pages || z == -1 || z == 7)) {
                                 context.getWorld().breakBlock(p, true);
                                 context.getWorld().setBlockState(p, NomadBooks.MEMBRANE.getDefaultState());
                             }
@@ -111,11 +112,13 @@ public class NomadBookItem extends Item {
                 }
             }
 
+
             // destroy destroyable blocks in the way
             for (int x = 0; x < 7; x++) {
                 for (int z = 0; z < 7; z++) {
                     for (int y = 0; y < pages; y++) {
                         context.getWorld().breakBlock(pos.add(new BlockPos(x, y, z)), true);
+                        context.getWorld().setBlockState(pos.add(new BlockPos(x, y, z)), Blocks.AIR.getDefaultState());
                     }
                 }
             }
