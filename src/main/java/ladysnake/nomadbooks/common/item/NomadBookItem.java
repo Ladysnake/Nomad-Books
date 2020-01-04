@@ -275,9 +275,9 @@ public class NomadBookItem extends Item {
                 if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
                     tags.putInt("Pages", 3);
                     tags.putString("Structure", defaultStructurePath);
-                    ListTag list = new ListTag();
-                    list.add(StringTag.of("membrane"));
-                    tags.put("Upgrades", list);
+//                    ListTag list = new ListTag();
+//                    list.add(StringTag.of("membrane"));
+//                    tags.put("Upgrades", list);
                 }
             }
         });
