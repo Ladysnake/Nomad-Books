@@ -2,10 +2,7 @@ package ladysnake.nomadbooks.common.item;
 
 import ladysnake.nomadbooks.NomadBooks;
 import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
@@ -48,18 +45,19 @@ public class NomadBookItem extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        BlockPos pos = context.getBlockPos();
-        Material mat = context.getWorld().getBlockState(pos).getMaterial();
-        while (mat.equals(Material.REPLACEABLE_PLANT) || mat.equals(Material.SNOW)) {
-            pos = new BlockPos(pos.getX(), pos.getY()-1, pos.getZ());
-            mat = context.getWorld().getBlockState(pos).getMaterial();
-        }
-
         CompoundTag tags = context.getStack().getOrCreateSubTag(NomadBooks.MODID);
         boolean isDeployed = context.getStack().getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 1f;
+
         if (!isDeployed) {
             String structurePath = tags.getString("Structure");
             int pages = tags.getInt("Pages");
+
+            BlockPos pos = context.getBlockPos();
+            while (isBlockReplaceable(context.getWorld().getBlockState(pos))
+                    || isBlockUnderwaterReplaceable(context.getWorld().getBlockState(pos))
+                        && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
+                pos = new BlockPos(pos.getX(), pos.getY()-1, pos.getZ());
+            }
 
             // set dimension
             tags.putInt("Dimension", context.getWorld().getDimension().getType().getRawId());
@@ -72,8 +70,7 @@ public class NomadBookItem extends Item {
                     for (int y = 0; y < pages; y++) {
                         BlockPos p = pos.add(new BlockPos(x, y, z));
                         BlockState bs = context.getWorld().getBlockState(p);
-                        if (!(bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getMaterial().equals(Material.SNOW)
-                        || ((bs.getBlock().equals(Blocks.WATER) || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT)) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))))) {
+                        if (!(isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane")))) {
                             context.getPlayer().addChatMessage(new TranslatableText("error.nomadbooks.no_space"), true);
                             return ActionResult.FAIL;
                         }
@@ -86,7 +83,7 @@ public class NomadBookItem extends Item {
                     for (int z = 0; z < 7; z++) {
                         BlockPos p = pos.add(new BlockPos(x, -1, z));
                         BlockState bs = context.getWorld().getBlockState(p);
-                        if (bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getMaterial().equals(Material.SNOW)) {
+                        if (isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
                             context.getWorld().setBlockState(p, Blocks.OAK_WOOD.getDefaultState());
                         }
 
@@ -94,8 +91,7 @@ public class NomadBookItem extends Item {
                             int y = -2;
                             BlockPos p2 = pos.add(new BlockPos(x, y, z));
                             BlockState bs2 = context.getWorld().getBlockState(p2);
-                            System.out.println(bs2);
-                            while (bs2.isAir() || bs2.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs2.getMaterial().equals(Material.SNOW) || y < -50) {
+                            while (isBlockReplaceable(bs2) || isBlockUnderwaterReplaceable(bs2) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane")) || y < -50) {
                                 context.getWorld().setBlockState(p2, Blocks.OAK_WOOD.getDefaultState());
                                 y--;
                                 p2 = pos.add(new BlockPos(x, y, z));
@@ -125,7 +121,7 @@ public class NomadBookItem extends Item {
                         for (int y = -1; y < pages + 1; y++) {
                             BlockPos p = pos.add(new BlockPos(x, y, z));
                             BlockState bs = context.getWorld().getBlockState(p);
-                            if ((bs.getBlock().equals(Blocks.WATER) || bs.getMaterial().equals(Material.SEAGRASS) || bs.getMaterial().equals(Material.UNDERWATER_PLANT)) &&
+                            if (isBlockUnderwaterReplaceable(bs) &&
                                     !((x == -1 && z == -1) || (x == -1 && z == 7) || (x == 7 && z == -1) || (x == 7 && z == 7)
                                             || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7)) &&
                                     (x == -1 || x == 7 || y == -1 || y == pages || z == -1 || z == 7)) {
@@ -306,5 +302,16 @@ public class NomadBookItem extends Item {
                 }
             }
         });
+    }
+
+    public static boolean isBlockReplaceable(BlockState blockState) {
+        Material m = blockState.getMaterial();
+        return blockState.isAir() || m.equals(Material.REPLACEABLE_PLANT) || m.equals(Material.SNOW);
+    }
+
+    public static boolean isBlockUnderwaterReplaceable(BlockState blockState) {
+        Block b = blockState.getBlock();
+        Material m = blockState.getMaterial();
+        return b.equals(Blocks.WATER) || m.equals(Material.SEAGRASS) || m.equals(Material.UNDERWATER_PLANT);
     }
 }
