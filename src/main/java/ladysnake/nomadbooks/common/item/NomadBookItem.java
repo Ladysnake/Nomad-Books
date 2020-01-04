@@ -81,6 +81,31 @@ public class NomadBookItem extends Item {
                 }
             }
 
+            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("scaffold"))) {
+                for (int x = 0; x < 7; x++) {
+                    for (int z = 0; z < 7; z++) {
+                        BlockPos p = pos.add(new BlockPos(x, -1, z));
+                        BlockState bs = context.getWorld().getBlockState(p);
+                        if (bs.isAir() || bs.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs.getMaterial().equals(Material.SNOW)) {
+                            context.getWorld().setBlockState(p, Blocks.OAK_WOOD.getDefaultState());
+                        }
+
+                        if ((x == 0 && z == 0) || (x == 0 && z == 6) || (x == 6 && z == 0) || (x == 6 && z == 6)) {
+                            int y = -2;
+                            BlockPos p2 = pos.add(new BlockPos(x, y, z));
+                            BlockState bs2 = context.getWorld().getBlockState(p2);
+                            System.out.println(bs2);
+                            while (bs2.isAir() || bs2.getMaterial().equals(Material.REPLACEABLE_PLANT) || bs2.getMaterial().equals(Material.SNOW) || y < -50) {
+                                context.getWorld().setBlockState(p2, Blocks.OAK_WOOD.getDefaultState());
+                                y--;
+                                p2 = pos.add(new BlockPos(x, y, z));
+                                bs2 = context.getWorld().getBlockState(p2);
+                            }
+                        }
+                    }
+                }
+            }
+
             // check if the surface is valid
             for (int x = 0; x < 7; x++) {
                 for (int z = 0; z < 7; z++) {
