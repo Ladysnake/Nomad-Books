@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " h ",
+    "ppp"
+  ],
+  "key": {
+    "h": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "p": {
+      "item": "minecraft:phantom_membrane"
+    }
+  },
+  "result": {
+    "item": "nomadbooks:aquatic_membrane_page"
+  }
+}

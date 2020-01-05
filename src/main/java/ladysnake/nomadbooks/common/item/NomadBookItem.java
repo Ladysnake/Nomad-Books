@@ -80,7 +80,7 @@ public class NomadBookItem extends Item {
             }
 
             // mushroom platform upgrade
-            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("scaffold"))) {
+            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("mushroom"))) {
                 for (int x = 0; x < 7; x++) {
                     for (int z = 0; z < 7; z++) {
                         BlockPos p = pos.add(new BlockPos(x, -1, z));
@@ -93,7 +93,7 @@ public class NomadBookItem extends Item {
                             int y = -2;
                             BlockPos p2 = pos.add(new BlockPos(x, y, z));
                             BlockState bs2 = context.getWorld().getBlockState(p2);
-                            while (isBlockReplaceable(bs2) || isBlockUnderwaterReplaceable(bs2) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane")) || y < -10) {
+                            while ((isBlockReplaceable(bs2) || isBlockUnderwaterReplaceable(bs2) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) && y > -6) {
                                 context.getWorld().setBlockState(p2, Blocks.MUSHROOM_STEM.getDefaultState());
                                 y--;
                                 p2 = pos.add(new BlockPos(x, y, z));
@@ -266,7 +266,7 @@ public class NomadBookItem extends Item {
                 }
 
                 // if mushroom upgrade, remove mushroom
-                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("scaffold"))) {
+                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("mushroom"))) {
                     for (int x = 0; x < 7; x++) {
                         for (int z = 0; z < 7; z++) {
                             BlockPos p = pos.add(new BlockPos(x, -1, z));
@@ -279,7 +279,7 @@ public class NomadBookItem extends Item {
                                 int y = -2;
                                 BlockPos p2 = pos.add(new BlockPos(x, y, z));
                                 BlockState bs2 = world.getBlockState(p2);
-                                while (bs2.getBlock().equals(Blocks.MUSHROOM_STEM) || y < -10) {
+                                while (bs2.getBlock().equals(Blocks.MUSHROOM_STEM) && y > -6) {
                                     world.breakBlock(p2, false);
                                     y--;
                                     p2 = pos.add(new BlockPos(x, y, z));
