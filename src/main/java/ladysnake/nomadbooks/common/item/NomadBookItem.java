@@ -79,6 +79,7 @@ public class NomadBookItem extends Item {
                 }
             }
 
+            // mushroom platform upgrade
             if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("scaffold"))) {
                 for (int x = 0; x < 7; x++) {
                     for (int z = 0; z < 7; z++) {
@@ -258,6 +259,31 @@ public class NomadBookItem extends Item {
                                                 || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7)) &&
                                         (x == -1 || x == 7 || y == -1 || y == pages || z == -1 || z == 7)) {
                                     world.breakBlock(p, true);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // if mushroom upgrade, remove mushroom
+                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("scaffold"))) {
+                    for (int x = 0; x < 7; x++) {
+                        for (int z = 0; z < 7; z++) {
+                            BlockPos p = pos.add(new BlockPos(x, -1, z));
+                            BlockState bs = world.getBlockState(p);
+                            if (bs.getBlock().equals(Blocks.BROWN_MUSHROOM_BLOCK)) {
+                                world.breakBlock(p, false);
+                            }
+
+                            if (x >= 2 && x <= 4 && z >=2 && z <= 4) {
+                                int y = -2;
+                                BlockPos p2 = pos.add(new BlockPos(x, y, z));
+                                BlockState bs2 = world.getBlockState(p2);
+                                while (bs2.getBlock().equals(Blocks.MUSHROOM_STEM) || y < -10) {
+                                    world.breakBlock(p2, false);
+                                    y--;
+                                    p2 = pos.add(new BlockPos(x, y, z));
+                                    bs2 = world.getBlockState(p2);
                                 }
                             }
                         }
