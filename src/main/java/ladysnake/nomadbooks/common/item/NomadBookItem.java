@@ -84,15 +84,15 @@ public class NomadBookItem extends Item {
                         BlockPos p = pos.add(new BlockPos(x, -1, z));
                         BlockState bs = context.getWorld().getBlockState(p);
                         if (isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
-                            context.getWorld().setBlockState(p, Blocks.OAK_WOOD.getDefaultState());
+                            context.getWorld().setBlockState(p, Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState());
                         }
 
-                        if ((x == 0 && z == 0) || (x == 0 && z == 6) || (x == 6 && z == 0) || (x == 6 && z == 6)) {
+                        if (x >= 2 && x <= 4 && z >=2 && z <= 4) {
                             int y = -2;
                             BlockPos p2 = pos.add(new BlockPos(x, y, z));
                             BlockState bs2 = context.getWorld().getBlockState(p2);
-                            while (isBlockReplaceable(bs2) || isBlockUnderwaterReplaceable(bs2) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane")) || y < -50) {
-                                context.getWorld().setBlockState(p2, Blocks.OAK_WOOD.getDefaultState());
+                            while (isBlockReplaceable(bs2) || isBlockUnderwaterReplaceable(bs2) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane")) || y < -10) {
+                                context.getWorld().setBlockState(p2, Blocks.MUSHROOM_STEM.getDefaultState());
                                 y--;
                                 p2 = pos.add(new BlockPos(x, y, z));
                                 bs2 = context.getWorld().getBlockState(p2);
@@ -115,7 +115,7 @@ public class NomadBookItem extends Item {
             }
 
             // if membrane upgrade, replace water and underwater plants with membrane
-            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
+            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane")) && isBlockUnderwaterReplaceable(context.getWorld().getBlockState(pos))) {
                 for (int x = -1; x < 8; x++) {
                     for (int z = -1; z < 8; z++) {
                         for (int y = -1; y < pages + 1; y++) {
