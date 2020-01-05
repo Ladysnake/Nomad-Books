@@ -19,6 +19,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructureManager;
@@ -241,6 +242,24 @@ public class NomadBookItem extends Item {
                         for (int y = 0; y < pages; y++) {
                             BlockPos p = pos.add(new BlockPos(x, y, z));
                             world.breakBlock(p, false);
+                        }
+                    }
+                }
+
+                // if membrane upgrade, remove membrane
+                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
+                    for (int x = -1; x < 8; x++) {
+                        for (int z = -1; z < 8; z++) {
+                            for (int y = -1; y < pages + 1; y++) {
+                                BlockPos p = pos.add(new BlockPos(x, y, z));
+                                BlockState bs = world.getBlockState(p);
+                                if (bs.getBlock().equals(NomadBooks.MEMBRANE) &&
+                                        !((x == -1 && z == -1) || (x == -1 && z == 7) || (x == 7 && z == -1) || (x == 7 && z == 7)
+                                                || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7)) &&
+                                        (x == -1 || x == 7 || y == -1 || y == pages || z == -1 || z == 7)) {
+                                    world.breakBlock(p, true);
+                                }
+                            }
                         }
                     }
                 }
