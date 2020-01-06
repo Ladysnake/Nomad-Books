@@ -56,14 +56,43 @@ public class NomadBookItem extends Item {
             BlockPos pos = context.getBlockPos();
             while (isBlockReplaceable(context.getWorld().getBlockState(pos))
                     || isBlockUnderwaterReplaceable(context.getWorld().getBlockState(pos))
-                        && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
-                pos = new BlockPos(pos.getX(), pos.getY()-1, pos.getZ());
+                    && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
+                pos = new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ());
             }
 
             // set dimension
             tags.putInt("Dimension", context.getWorld().getDimension().getType().getRawId());
 
             pos = pos.add(new BlockPos(-3, 1, -3));
+
+            // end platform upgrade
+            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
+                boolean canPlacePlatform = false;
+                int endy = 20;
+                while (!canPlacePlatform) {
+                    canPlacePlatform = true;
+                    for (int x = 0; x < 7; x++) {
+                        for (int z = 0; z < 7; z++) {
+                            BlockPos p = pos.add(new BlockPos(x, endy, z));
+                            BlockState bs = context.getWorld().getBlockState(p);
+                            if (!isBlockReplaceable(bs)) {
+                                canPlacePlatform = false;
+                            }
+                        }
+                    }
+                    if (!canPlacePlatform) {
+                        endy++;
+                    }
+                }
+                for (int x = 0; x < 7; x++) {
+                    for (int z = 0; z < 7; z++) {
+                        BlockPos p = pos.add(new BlockPos(x, endy, z));
+                        BlockState bs = context.getWorld().getBlockState(p);
+                        context.getWorld().setBlockState(p, Blocks.PURPUR_BLOCK.getDefaultState());
+                    }
+                }
+                pos = pos.add(new BlockPos(0, endy+1, 0));
+            }
 
             // check if there's enough space
             for (int x = 0; x < 7; x++) {
@@ -89,7 +118,7 @@ public class NomadBookItem extends Item {
                             context.getWorld().setBlockState(p, Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState());
                         }
 
-                        if (x >= 2 && x <= 4 && z >=2 && z <= 4) {
+                        if (x >= 2 && x <= 4 && z >= 2 && z <= 4) {
                             int y = -2;
                             BlockPos p2 = pos.add(new BlockPos(x, y, z));
                             BlockState bs2 = context.getWorld().getBlockState(p2);
@@ -266,12 +295,12 @@ public class NomadBookItem extends Item {
                 }
 
                 // if mushroom upgrade, remove mushroom
-                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("mushroom"))) {
+                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("mushroom")) || tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
                     for (int x = 0; x < 7; x++) {
                         for (int z = 0; z < 7; z++) {
                             BlockPos p = pos.add(new BlockPos(x, -1, z));
                             BlockState bs = world.getBlockState(p);
-                            if (bs.getBlock().equals(Blocks.BROWN_MUSHROOM_BLOCK)) {
+                            if (bs.getBlock().equals(Blocks.BROWN_MUSHROOM_BLOCK) || bs.getBlock().equals(Blocks.PURPUR_BLOCK)) {
                                 world.breakBlock(p, false);
                             }
 
