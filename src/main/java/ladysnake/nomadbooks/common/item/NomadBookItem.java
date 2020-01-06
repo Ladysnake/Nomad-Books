@@ -165,10 +165,10 @@ public class NomadBookItem extends Item {
             }
 
             // if membrane upgrade, replace water and underwater plants with membrane
-            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane")) && isBlockUnderwaterReplaceable(context.getWorld().getBlockState(pos))) {
+            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
                 for (int x = -1; x < 8; x++) {
                     for (int z = -1; z < 8; z++) {
-                        for (int y = -1; y < pages + 1; y++) {
+                        for (int y = 0; y < pages + 1; y++) {
                             BlockPos p = pos.add(new BlockPos(x, y, z));
                             BlockState bs = context.getWorld().getBlockState(p);
                             if (isBlockUnderwaterReplaceable(bs) &&
@@ -437,6 +437,7 @@ public class NomadBookItem extends Item {
     public static boolean isBlockUnderwaterReplaceable(BlockState blockState) {
         Block b = blockState.getBlock();
         Material m = blockState.getMaterial();
+        System.out.println(blockState.getBlock());
         return b.equals(Blocks.WATER) || m.equals(Material.SEAGRASS) || m.equals(Material.UNDERWATER_PLANT);
     }
 }
