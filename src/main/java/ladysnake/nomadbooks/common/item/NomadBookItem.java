@@ -63,6 +63,7 @@ public class NomadBookItem extends Item {
             // set dimension
             tags.putInt("Dimension", context.getWorld().getDimension().getType().getRawId());
 
+            BlockPos ogpos = pos.add(new BlockPos(0, 1, 0));
             pos = pos.add(new BlockPos(-3, 1, -3));
 
             // end platform upgrade
@@ -73,22 +74,17 @@ public class NomadBookItem extends Item {
                     canPlacePlatform = true;
                     for (int x = 0; x < 7; x++) {
                         for (int z = 0; z < 7; z++) {
-                            BlockPos p = pos.add(new BlockPos(x, endy, z));
-                            BlockState bs = context.getWorld().getBlockState(p);
-                            if (!isBlockReplaceable(bs)) {
-                                canPlacePlatform = false;
+                            for (int y = 0; y < 4; y++) {
+                                BlockPos p = pos.add(new BlockPos(x, endy + y, z));
+                                BlockState bs = context.getWorld().getBlockState(p);
+                                if (!isBlockReplaceable(bs)) {
+                                    canPlacePlatform = false;
+                                }
                             }
                         }
                     }
                     if (!canPlacePlatform) {
                         endy++;
-                    }
-                }
-                for (int x = 0; x < 7; x++) {
-                    for (int z = 0; z < 7; z++) {
-                        BlockPos p = pos.add(new BlockPos(x, endy, z));
-                        BlockState bs = context.getWorld().getBlockState(p);
-                        context.getWorld().setBlockState(p, Blocks.PURPUR_BLOCK.getDefaultState());
                     }
                 }
                 pos = pos.add(new BlockPos(0, endy+1, 0));
@@ -106,6 +102,29 @@ public class NomadBookItem extends Item {
                         }
                     }
                 }
+            }
+
+            // if enough space and end upgrade, set up the platform
+            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
+                for (int x = 0; x < 7; x++) {
+                    for (int z = 0; z < 7; z++) {
+                        for (int y = 0; y > -4; y--) {
+                            Block b = Blocks.END_STONE_BRICKS;
+                            if (y == 0 || y == -3) {
+                                b = Blocks.PURPUR_BLOCK;
+                            }
+                            if (x == 0 && z == 0 || x == 0 && z == 6 || x == 6 && z == 0 || x == 6 && z ==6) {
+                                b = Blocks.PURPUR_PILLAR;
+                            }
+                            BlockPos p = pos.add(new BlockPos(x, y-1, z));
+                            context.getWorld().setBlockState(p, b.getDefaultState());
+                            context.getWorld().playSound(p.getX(), p.getY(), p.getZ(), SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1, true);
+                        }
+                    }
+                }
+                // place teleporter block
+                context.getWorld().setBlockState(ogpos, NomadBooks.TELEPORTER.getDefaultState());
+                context.getWorld().playSound(ogpos.getX(), ogpos.getY(), ogpos.getZ(), SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1, true);
             }
 
             // mushroom platform upgrade
@@ -138,7 +157,7 @@ public class NomadBookItem extends Item {
                 for (int z = 0; z < 7; z++) {
                     BlockPos p = pos.add(new BlockPos(x, -1, z));
                     BlockState bs = context.getWorld().getBlockState(p);
-                    if (!bs.hasSolidTopSurface(context.getWorld(), p, context.getPlayer())) {
+                    if (isBlockReplaceable(bs)) {
                         context.getPlayer().addChatMessage(new TranslatableText("error.nomadbooks.invalid_surface"), true);
                         return ActionResult.FAIL;
                     }
@@ -294,13 +313,13 @@ public class NomadBookItem extends Item {
                     }
                 }
 
-                // if mushroom upgrade, remove mushroom
-                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("mushroom")) || tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
+                // if mushroom upgrade, remove shroom blocks
+                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("mushroom"))) {
                     for (int x = 0; x < 7; x++) {
                         for (int z = 0; z < 7; z++) {
                             BlockPos p = pos.add(new BlockPos(x, -1, z));
                             BlockState bs = world.getBlockState(p);
-                            if (bs.getBlock().equals(Blocks.BROWN_MUSHROOM_BLOCK) || bs.getBlock().equals(Blocks.PURPUR_BLOCK)) {
+                            if (bs.getBlock().equals(Blocks.BROWN_MUSHROOM_BLOCK)) {
                                 world.breakBlock(p, false);
                             }
 
@@ -316,6 +335,38 @@ public class NomadBookItem extends Item {
                                 }
                             }
                         }
+                    }
+                }
+
+                // if end upgrade, tp platform and teleporter back to the end
+                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
+                    for (int x = 0; x < 7; x++) {
+                        for (int z = 0; z < 7; z++) {
+                            for (int y = 0; y > -4; y--) {
+                                BlockPos p = pos.add(new BlockPos(x, y - 1, z));
+                                BlockState bs = world.getBlockState(p);
+                                if (bs.getBlock().equals(Blocks.PURPUR_BLOCK) || bs.getBlock().equals(Blocks.END_STONE_BRICKS) || bs.getBlock().equals(Blocks.PURPUR_PILLAR)) {
+                                    world.setBlockState(p, Blocks.AIR.getDefaultState());
+                                    world.playSound(p.getX(), p.getY(), p.getZ(), SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1, true);
+                                    for (float ix = 0; ix <= 1; ix += 0.5) {
+                                        for (float iy = 0; iy <= 1; iy += 0.5) {
+                                            for (float iz = 0; iz <= 1; iz += 0.5) {
+                                                world.addParticle(ParticleTypes.PORTAL, p.getX() + ix, p.getY() + iy, p.getZ() + iz, 0, 0, 0);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    int y = -20;
+                    while (!world.getBlockState(pos.add(new BlockPos(3, y, 3))).getBlock().equals(NomadBooks.TELEPORTER) && y > -200) {
+                        y--;
+                    }
+                    BlockPos p = pos.add(new BlockPos(3, y, 3));
+                    if (world.getBlockState(p).getBlock().equals(NomadBooks.TELEPORTER)) {
+                        world.breakBlock(p, false);
                     }
                 }
 
