@@ -2,11 +2,15 @@ package ladysnake.nomadbooks.common.item;
 
 import ladysnake.nomadbooks.NomadBooks;
 import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -17,10 +21,12 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.StatType;
+import net.minecraft.stat.Stats;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
@@ -205,6 +211,13 @@ public class NomadBookItem extends Item {
             // set deployed, register nbt
             context.getStack().getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 1F);
             tags.put("CampCenter", NbtHelper.fromBlockPos(pos));
+
+            if (!context.getWorld().isClient()) {
+                // if inked, update number of footsteps
+                if (tags.getBoolean("Inked")) {
+                    tags.putInt("InkProgress", ((ServerPlayerEntity) context.getPlayer()).getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.WALK_ONE_CM)));
+                }
+            }
 
             context.getWorld().playSound(context.getPlayer().getX(), context.getPlayer().getY(), context.getPlayer().getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
             return ActionResult.SUCCESS;
@@ -406,6 +419,11 @@ public class NomadBookItem extends Item {
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim));
         }
+        // if inked, show progress
+        if (stack.getOrCreateSubTag(NomadBooks.MODID).getBoolean("Inked")) {
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.inked").formatted(Formatting.BLUE));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.ink_progress", stack.getOrCreateSubTag(NomadBooks.MODID).getInt("InkProgress"), stack.getOrCreateSubTag(NomadBooks.MODID).getInt("InkGoal")).formatted(Formatting.BLUE));
+        }
     }
 
     @Override
@@ -447,4 +465,5 @@ public class NomadBookItem extends Item {
         Material m = blockState.getMaterial();
         return b.equals(Blocks.WATER) || m.equals(Material.SEAGRASS) || m.equals(Material.UNDERWATER_PLANT);
     }
+
 }

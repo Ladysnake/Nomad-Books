@@ -41,6 +41,7 @@ public class NomadBooks implements ModInitializer {
     public static Item MASTER_NOMAD_BOOK;
     public static Item AQUATIC_MEMBRANE_PAGE;
     public static Item MYCELIUM_PAGE;
+    public static Item ITINERANT_INK;
 //    public static Item END_PAGE;
 
     public static Block MEMBRANE;
@@ -60,6 +61,7 @@ public class NomadBooks implements ModInitializer {
         MASTER_NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.EPIC)), "master_nomad_book");
         AQUATIC_MEMBRANE_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "membrane"), "aquatic_membrane_page");
         MYCELIUM_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "mushroom"), "mycelium_page");
+        ITINERANT_INK = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC), ""), "itinerant_ink");
 //        END_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "end"), "end_page");
 
         // add loot to dungeons, mineshafts, jungle temples, and stronghold libraries chests loot tables
