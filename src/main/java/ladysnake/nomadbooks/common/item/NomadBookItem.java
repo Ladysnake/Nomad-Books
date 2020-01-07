@@ -418,12 +418,20 @@ public class NomadBookItem extends Item {
                     tags.putInt("Pages", 1);
                     tags.putString("Structure", defaultStructurePath);
                 }
-                if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+                if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK) || itemStack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
                     tags.putInt("Pages", 3);
                     tags.putString("Structure", defaultStructurePath);
 //                    ListTag list = new ListTag();
 //                    list.add(StringTag.of("membrane"));
 //                    tags.put("Upgrades", list);
+                }
+                if (itemStack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
+                    tags.putInt("Pages", 12);
+                    tags.putString("Structure", defaultStructurePath);
+                    ListTag upgradeList = new ListTag();
+                    upgradeList.add(StringTag.of("membrane"));
+                    upgradeList.add(StringTag.of("mushroom"));
+                    itemStack.getOrCreateSubTag(NomadBooks.MODID).put("Upgrades", upgradeList);
                 }
             }
         });
@@ -437,7 +445,6 @@ public class NomadBookItem extends Item {
     public static boolean isBlockUnderwaterReplaceable(BlockState blockState) {
         Block b = blockState.getBlock();
         Material m = blockState.getMaterial();
-        System.out.println(blockState.getBlock());
         return b.equals(Blocks.WATER) || m.equals(Material.SEAGRASS) || m.equals(Material.UNDERWATER_PLANT);
     }
 }
