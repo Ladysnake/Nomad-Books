@@ -33,6 +33,7 @@ public class NomadBooks implements ModInitializer {
     private static final Identifier MINESHAFT_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/abandoned_mineshaft");
     private static final Identifier TEMPLE_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/jungle_temple");
     private static final Identifier STRONGHOLD_LIBRARY_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/stronghold_library");
+    private static final Identifier CARTOGRAPHER_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/village/village_cartographer");
 
     public static Item GRASS_PAGE;
     public static Item NOMAD_PAGE;
@@ -78,6 +79,13 @@ public class NomadBooks implements ModInitializer {
                 supplier.withPool(poolBuilder);
             }
             if (TEMPLE_CHEST_LOOT_TABLE_ID.equals(id)) {
+                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
+                        .withRolls(ConstantLootTableRange.create(1))
+                        .withEntry(ItemEntry.builder(GRASS_PAGE));
+
+                supplier.withPool(poolBuilder);
+            }
+            if (CARTOGRAPHER_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
                         .withRolls(ConstantLootTableRange.create(1))
                         .withEntry(ItemEntry.builder(GRASS_PAGE));
