@@ -1,11 +1,18 @@
 {
   "item.nomadbooks.grass_page": "Grass Page",
   "item.nomadbooks.nomad_book": "Nomad Book",
+  "item.nomadbooks.master_nomad_book": "Master Nomad Book",
   "item.nomadbooks.nomad_page": "Nomad Page",
+  "item.nomadbooks.aquatic_membrane_page": "Aquatic Membrane Page",
+  "item.nomadbooks.mycelium_page": "Mycelium Page",
   "item.nomadbooks.nomad_book.tooltip.height": "Height: %s",
   "item.nomadbooks.nomad_book.tooltip.position": "Deployed at: %s",
   "item.nomadbooks.nomad_book.tooltip.dimension": "Deployed in: %s",
+  "item.nomadbooks.nomad_book.tooltip.inked": "Itinerant Ink:",
+  "item.nomadbooks.nomad_book.tooltip.ink_progress": "%s / %s steps",
   "error.nomadbooks.no_space": "Not enough space to set up the camp",
   "error.nomadbooks.invalid_surface": "The surface isn't wide enough to set up the camp",
-  "error.nomadbooks.different_dimension": "The camp is in another dimension and cannot be retrieved"
+  "error.nomadbooks.different_dimension": "The camp is in another dimension and cannot be retrieved",
+  "upgrade.nomadbooks.membrane": "Aquatic Membrane",
+  "upgrade.nomadbooks.mushroom": "Fungi Support"
 }
