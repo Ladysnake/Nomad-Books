@@ -174,7 +174,7 @@ public class NomadBookItem extends Item {
                             if (isBlockUnderwaterReplaceable(bs) &&
                                     !((x == -1 && z == -1) || (x == -1 && z == 7) || (x == 7 && z == -1) || (x == 7 && z == 7)
                                             || (y == pages && x == -1) || (y == pages && x == 7) || (y == pages && z == -1) || (y == pages && z == 7)) &&
-                                    (x == -1 || x == 7 || y == -1 || y == pages || z == -1 || z == 7)) {
+                                    (x == -1 || x == 7 || y == pages || z == -1 || z == 7)) {
                                 context.getWorld().breakBlock(p, true);
                                 context.getWorld().setBlockState(p, NomadBooks.MEMBRANE.getDefaultState());
                             }
@@ -393,7 +393,7 @@ public class NomadBookItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         // page amount and upgrade pages
-        if (stack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+        if (stack.getItem().equals(NomadBooks.NOMAD_BOOK) || stack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
             int pages = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Pages");
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", pages));
             ListTag upgrades = stack.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING);
