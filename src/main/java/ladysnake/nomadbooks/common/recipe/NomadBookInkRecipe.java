@@ -2,16 +2,12 @@ package ladysnake.nomadbooks.common.recipe;
 
 import com.google.common.collect.Lists;
 import ladysnake.nomadbooks.NomadBooks;
-import ladysnake.nomadbooks.common.item.BookUpgradeItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
