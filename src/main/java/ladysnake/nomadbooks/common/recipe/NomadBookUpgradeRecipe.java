@@ -74,19 +74,9 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
             }
 
             ItemStack ret = book.copy();
-            if (upgrade.getItem().equals(NomadBooks.ITINERANT_INK)) {
-                if (!book.getOrCreateSubTag(NomadBooks.MODID).getBoolean("Inked")) {
-                    ret.getOrCreateSubTag(NomadBooks.MODID).putBoolean("Inked", true);
-                    ret.getOrCreateSubTag(NomadBooks.MODID).putInt("InkGoal", 10000);
-                    ret.getOrCreateSubTag(NomadBooks.MODID).putInt("InkProgress", 0);
-                } else {
-                    return ItemStack.EMPTY;
-                }
-            } else {
-                ListTag upgradeList = ret.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING);
-                upgradeList.add(StringTag.of(((BookUpgradeItem) upgrade.getItem()).getUpgrade()));
-                ret.getOrCreateSubTag(NomadBooks.MODID).put("Upgrades", upgradeList);
-            }
+            ListTag upgradeList = ret.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING);
+            upgradeList.add(StringTag.of(((BookUpgradeItem) upgrade.getItem()).getUpgrade()));
+            ret.getOrCreateSubTag(NomadBooks.MODID).put("Upgrades", upgradeList);
 
             return ret;
         }
