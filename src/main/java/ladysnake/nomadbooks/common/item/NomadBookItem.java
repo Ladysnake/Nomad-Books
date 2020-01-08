@@ -241,8 +241,10 @@ public class NomadBookItem extends Item {
             if (user.isSneaking()) {
                 // switch boundaries display on or off
                 if (tags.getBoolean("DisplayBoundaries")) {
+                    user.addChatMessage(new TranslatableText("info.nomadbooks.display_boundaries_off"), true);
                     tags.putBoolean("DisplayBoundaries", false);
                 } else {
+                    user.addChatMessage(new TranslatableText("info.nomadbooks.display_boundaries_on"), true);
                     tags.putBoolean("DisplayBoundaries", true);
                 }
 
@@ -401,32 +403,32 @@ public class NomadBookItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        // displaying boundaries
-        if (stack.getItem() instanceof NomadBookItem) {
-            if (stack.getOrCreateSubTag(NomadBooks.MODID).getBoolean("DisplayBoundaries")) {
-                tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.boundaries_display").formatted(Formatting.GREEN));
-            }
-        }
         // height, width and upgrades
         if (stack.getItem().equals(NomadBooks.NOMAD_BOOK) || stack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
             int height = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Height");
             int width = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Width");
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", height));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.width", width));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", height).formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.width", width).formatted(Formatting.GRAY));
             ListTag upgrades = stack.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING);
-            upgrades.forEach(tag -> tooltip.add(new TranslatableText("upgrade.nomadbooks."+tag.asString()).formatted(Formatting.GREEN)));
-        }
-        // camp coordinates if deployed
-        if (stack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f) {
-            BlockPos pos = NbtHelper.toBlockPos(stack.getOrCreateSubTag(NomadBooks.MODID).getCompound("CampCenter"));
-            DimensionType dim = DimensionType.byRawId(stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Dimension"));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim));
+            upgrades.forEach(tag -> tooltip.add(new TranslatableText("upgrade.nomadbooks."+tag.asString()).formatted(Formatting.DARK_AQUA)));
         }
         // if inked, show progress
         if (stack.getOrCreateSubTag(NomadBooks.MODID).getBoolean("Inked")) {
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.inked").formatted(Formatting.BLUE));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.ink_progress", stack.getOrCreateSubTag(NomadBooks.MODID).getInt("InkProgress"), stack.getOrCreateSubTag(NomadBooks.MODID).getInt("InkGoal")).formatted(Formatting.BLUE));
+        }
+        // camp coordinates if deployed
+        if (stack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f) {
+            BlockPos pos = NbtHelper.toBlockPos(stack.getOrCreateSubTag(NomadBooks.MODID).getCompound("CampCenter"));
+            DimensionType dim = DimensionType.byRawId(stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Dimension"));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()).formatted(Formatting.DARK_GRAY));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim).formatted(Formatting.DARK_GRAY));
+        }
+        // displaying boundaries
+        if (stack.getItem() instanceof NomadBookItem) {
+            if (stack.getOrCreateSubTag(NomadBooks.MODID).getBoolean("DisplayBoundaries")) {
+                tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.boundaries_display").formatted(Formatting.GREEN).formatted(Formatting.ITALIC));
+            }
         }
     }
 
