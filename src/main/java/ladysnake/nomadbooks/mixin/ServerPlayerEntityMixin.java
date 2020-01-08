@@ -7,8 +7,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,23 +26,26 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
     @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/advancement/criterion/Criterions;LOCATION:Lnet/minecraft/advancement/criterion/LocationArrivalCriterion;"), method = "playerTick")
     private void enterBiome(CallbackInfo info) {
-        for(int i = 0; i < this.inventory.getInvSize(); ++i) {
-            ItemStack itemStack = this.inventory.getInvStack(i);
-            if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
-                CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
-                if (tags.getBoolean("Inked")) {
-                    ListTag visitedBiomes = tags.getList("VisitedBiomes", NbtType.STRING);
-                    StringTag biome = StringTag.of(this.world.getBiome(this.getBlockPos()).getName().getString());
-                    if (!visitedBiomes.contains(biome)) {
-                        // if not the first biome (just crafted), increment progress
-                        if (!visitedBiomes.isEmpty()) {
-                            tags.putInt("InkProgress", tags.getInt("InkProgress") + 1);
+        // check every 5 seconds
+        if (this.world.getTime() % 100 == 0) {
+            for (int i = 0; i < this.inventory.getInvSize(); ++i) {
+                ItemStack itemStack = this.inventory.getInvStack(i);
+                if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+                    CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
+                    if (tags.getBoolean("Inked")) {
+                        ListTag visitedBiomes = tags.getList("VisitedBiomes", NbtType.STRING);
+                        StringTag biome = StringTag.of(this.world.getBiome(this.getBlockPos()).getName().getString());
+                        if (!visitedBiomes.contains(biome)) {
+                            // if not the first biome (just crafted), increment progress
+                            if (!visitedBiomes.isEmpty()) {
+                                tags.putInt("InkProgress", tags.getInt("InkProgress") + 1);
+                            }
+                            if (visitedBiomes.size() > 9) {
+                                visitedBiomes.remove(0);
+                            }
+                            visitedBiomes.add(biome);
+                            tags.put("VisitedBiomes", visitedBiomes);
                         }
-                        if (visitedBiomes.size() > 9) {
-                            visitedBiomes.remove(0);
-                        }
-                        visitedBiomes.add(biome);
-                        tags.put("VisitedBiomes", visitedBiomes);
                     }
                 }
             }

@@ -239,18 +239,11 @@ public class NomadBookItem extends Item {
         if (isDeployed) {
             // if sneaking, show camp boundaries, else, pack up
             if (user.isSneaking()) {
-                // display a particle on each block
-                for (int x = 0; x < width; x++) {
-                    for (int z = 0; z < width; z++) {
-                        for (int y = 0; y < height; y++) {
-                            if (x == 0 && z == 0 || x == 0 && z == width-1 || x == width-1 && z == 0 || x == width-1 && z == width-1
-                                    || y == height - 1 && x == 0 || y == height - 1 && x == width-1 || y == height - 1 && z == 0 || y == height - 1 && z == width-1
-                                    || y == 0 && x == 0 || y == 0 && x == width-1 || y == 0 && z == 0 || y == 0 && z == width-1) {
-                                BlockPos p = pos.add(new BlockPos(x, y, z));
-                                world.addParticle(ParticleTypes.HAPPY_VILLAGER, true, p.getX() + 0.5, p.getY() + 0.5, p.getZ() + 0.5, 0, 0, 0);
-                            }
-                        }
-                    }
+                // switch boundaries display on or off
+                if (tags.getBoolean("DisplayBoundaries")) {
+                    tags.putBoolean("DisplayBoundaries", false);
+                } else {
+                    tags.putBoolean("DisplayBoundaries", true);
                 }
 
                 return TypedActionResult.pass(itemStack);
@@ -395,6 +388,9 @@ public class NomadBookItem extends Item {
                     itemEntities.forEach(ItemEntity::remove);
                 }
 
+                // remove boundaries display
+                tags.putBoolean("DisplayBoundaries", false);
+
                 world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 0.9f, true);
                 return TypedActionResult.success(itemStack);
             }
@@ -405,6 +401,12 @@ public class NomadBookItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        // displaying boundaries
+        if (stack.getItem() instanceof NomadBookItem) {
+            if (stack.getOrCreateSubTag(NomadBooks.MODID).getBoolean("DisplayBoundaries")) {
+                tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.boundaries_display").formatted(Formatting.GREEN));
+            }
+        }
         // height, width and upgrades
         if (stack.getItem().equals(NomadBooks.NOMAD_BOOK) || stack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
             int height = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Height");
