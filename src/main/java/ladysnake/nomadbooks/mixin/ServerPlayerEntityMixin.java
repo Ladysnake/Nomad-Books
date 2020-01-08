@@ -34,6 +34,10 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                     ListTag visitedBiomes = tags.getList("VisitedBiomes", NbtType.STRING);
                     StringTag biome = StringTag.of(this.world.getBiome(this.getBlockPos()).getName().getString());
                     if (!visitedBiomes.contains(biome)) {
+                        // if not the first biome (just crafted), increment progress
+                        if (!visitedBiomes.isEmpty()) {
+                            tags.putInt("InkProgress", tags.getInt("InkProgress") + 1);
+                        }
                         if (visitedBiomes.size() > 9) {
                             visitedBiomes.remove(0);
                         }
