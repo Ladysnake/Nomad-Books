@@ -30,6 +30,7 @@ import net.minecraft.stat.Stats;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
