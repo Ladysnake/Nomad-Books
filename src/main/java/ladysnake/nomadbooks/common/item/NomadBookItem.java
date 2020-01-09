@@ -19,15 +19,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.StringTag;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
@@ -209,7 +206,7 @@ public class NomadBookItem extends Item {
 
             // set deployed, register nbt
             context.getStack().getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 1F);
-            tags.put("CampCenter", NbtHelper.fromBlockPos(pos));
+            tags.put("CampPos", NbtHelper.fromBlockPos(pos));
 
             context.getWorld().playSound(context.getPlayer().getX(), context.getPlayer().getY(), context.getPlayer().getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
             return ActionResult.SUCCESS;
@@ -224,7 +221,7 @@ public class NomadBookItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
         boolean isDeployed = itemStack.getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 1f;
-        BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampCenter"));
+        BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos"));
         String structurePath = tags.getString("Structure");
         int height = tags.getInt("Height");
         int width = tags.getInt("Width");
@@ -412,7 +409,7 @@ public class NomadBookItem extends Item {
         }
         // camp coordinates if deployed
         if (stack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f) {
-            BlockPos pos = NbtHelper.toBlockPos(stack.getOrCreateSubTag(NomadBooks.MODID).getCompound("CampCenter"));
+            BlockPos pos = NbtHelper.toBlockPos(stack.getOrCreateSubTag(NomadBooks.MODID).getCompound("CampPos"));
             DimensionType dim = DimensionType.byRawId(stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Dimension"));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()).formatted(Formatting.DARK_GRAY));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim).formatted(Formatting.DARK_GRAY));

@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -14,6 +15,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -55,9 +57,13 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                             tags.remove("InkGoal");
                             tags.remove("VisitedBiomes");
                             tags.putInt("Width", tags.getInt("Width") + 2);
+                            // if camp is deployed, move the camp pos
+                            BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos")).add(-1, 0, -1);
+                            tags.put("CampPos", NbtHelper.fromBlockPos(pos));
                             // show a chat message to the player
                             this.addChatMessage(new TranslatableText("info.nomadbooks.itinerant_ink_done", tags.getInt("Width")).formatted(Formatting.BLUE), false);
-                            this.world.playSound(this, this.getBlockPos(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1, 1);
+                            // sound effect not working because server side
+                            // this.world.playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1, 1, true);
                         } else {
                             visitedBiomes.add(biome);
                             tags.put("VisitedBiomes", visitedBiomes);

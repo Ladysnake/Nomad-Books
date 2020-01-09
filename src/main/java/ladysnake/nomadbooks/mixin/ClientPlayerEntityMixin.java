@@ -32,7 +32,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
                     if (tags.getBoolean("DisplayBoundaries")) {
                         int height = tags.getInt("Height");
                         int width = tags.getInt("Width");
-                        BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampCenter"));
+                        BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos"));
                         for (int x = 0; x <= width; x++) {
                             for (int z = 0; z <= width; z++) {
                                 for (int y = 0; y <= height; y++) {
