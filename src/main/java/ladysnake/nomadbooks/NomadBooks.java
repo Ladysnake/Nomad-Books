@@ -98,7 +98,8 @@ public class NomadBooks implements ModInitializer {
                         .withRolls(ConstantLootTableRange.create(1))
                         .withEntry(ItemEntry.builder(NOMAD_BOOK))
                         .withFunction(SetNbtLootFunction.builder(Util.make(new CompoundTag(), (compoundTag) -> compoundTag.put(MODID, Util.make(new CompoundTag(), child -> {
-                            child.putInt("Pages", 3);
+                            child.putInt("Height", 3);
+                            child.putInt("Width", 7);
                             child.putString("Structure", NomadBookItem.defaultStructurePath);
                         })))));
 

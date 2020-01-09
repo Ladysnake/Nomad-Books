@@ -51,7 +51,7 @@ public class NomadPageCraftRecipe extends SpecialCraftingRecipe {
 
         if (list.equals(NOMAD_PAGE_RECIPE_1) || list.equals(NOMAD_PAGE_RECIPE_2)) {
             ItemStack ret = new ItemStack(NomadBooks.NOMAD_PAGE);
-            ret.getOrCreateSubTag(NomadBooks.MODID).putInt("Pages", 1);
+            ret.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", 1);
             ret.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.defaultStructurePath);
             return ret;
         } else {
