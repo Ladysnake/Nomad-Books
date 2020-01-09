@@ -61,7 +61,7 @@ public class NomadBookItem extends Item {
             BlockPos pos = context.getBlockPos();
             while (isBlockReplaceable(context.getWorld().getBlockState(pos))
                     || isBlockUnderwaterReplaceable(context.getWorld().getBlockState(pos))
-                    && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
+                    && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) {
                 pos = new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ());
             }
 
@@ -101,7 +101,7 @@ public class NomadBookItem extends Item {
                     for (int y = 0; y < height; y++) {
                         BlockPos p = pos.add(new BlockPos(x, y, z));
                         BlockState bs = context.getWorld().getBlockState(p);
-                        if (!(isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane")))) {
+                        if (!(isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane")))) {
                             context.getPlayer().addChatMessage(new TranslatableText("error.nomadbooks.no_space"), true);
                             return ActionResult.FAIL;
                         }
@@ -133,12 +133,12 @@ public class NomadBookItem extends Item {
 //            }
 
             // mushroom platform upgrade
-            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("mushroom"))) {
+            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("fungi_support"))) {
                 for (int x = 0; x < width; x++) {
                     for (int z = 0; z < width; z++) {
                         BlockPos p = pos.add(new BlockPos(x, -1, z));
                         BlockState bs = context.getWorld().getBlockState(p);
-                        if (isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
+                        if (isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) {
                             context.getWorld().setBlockState(p, Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState());
                         }
 
@@ -146,7 +146,7 @@ public class NomadBookItem extends Item {
                             int y = -2;
                             BlockPos p2 = pos.add(new BlockPos(x, y, z));
                             BlockState bs2 = context.getWorld().getBlockState(p2);
-                            while ((isBlockReplaceable(bs2) || isBlockUnderwaterReplaceable(bs2) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) && y > -6) {
+                            while ((isBlockReplaceable(bs2) || isBlockUnderwaterReplaceable(bs2) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) && y > -6) {
                                 context.getWorld().setBlockState(p2, Blocks.MUSHROOM_STEM.getDefaultState());
                                 y--;
                                 p2 = pos.add(new BlockPos(x, y, z));
@@ -170,7 +170,7 @@ public class NomadBookItem extends Item {
             }
 
             // if membrane upgrade, replace water and underwater plants with membrane
-            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
+            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) {
                 for (int x = -1; x < width+1; x++) {
                     for (int z = -1; z < width+1; z++) {
                         for (int y = 0; y < height + 1; y++) {
@@ -304,7 +304,7 @@ public class NomadBookItem extends Item {
                 }
 
                 // if membrane upgrade, remove membrane
-                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("membrane"))) {
+                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) {
                     for (int x = -1; x < width+1; x++) {
                         for (int z = -1; z < width+1; z++) {
                             for (int y = -1; y < height + 1; y++) {
@@ -322,7 +322,7 @@ public class NomadBookItem extends Item {
                 }
 
                 // if mushroom upgrade, remove shroom blocks
-                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("mushroom"))) {
+                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("fungi_support"))) {
                     for (int x = 0; x < width; x++) {
                         for (int z = 0; z < width; z++) {
                             BlockPos p = pos.add(new BlockPos(x, -1, z));
@@ -448,7 +448,7 @@ public class NomadBookItem extends Item {
                     tags.putInt("Width", 7);
                     tags.putString("Structure", defaultStructurePath);
 //                    ListTag list = new ListTag();
-//                    list.add(StringTag.of("membrane"));
+//                    list.add(StringTag.of("aquatic_membrane"));
 //                    tags.put("Upgrades", list);
                 }
                 if (itemStack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
@@ -456,8 +456,8 @@ public class NomadBookItem extends Item {
                     tags.putInt("Width", 15);
                     tags.putString("Structure", defaultStructurePath);
                     ListTag upgradeList = new ListTag();
-                    upgradeList.add(StringTag.of("membrane"));
-                    upgradeList.add(StringTag.of("mushroom"));
+                    upgradeList.add(StringTag.of("aquatic_membrane"));
+                    upgradeList.add(StringTag.of("fungi_support"));
                     itemStack.getOrCreateSubTag(NomadBooks.MODID).put("Upgrades", upgradeList);
                 }
             }

@@ -17,6 +17,6 @@
   "error.nomadbooks.different_dimension": "The camp is in another dimension and cannot be retrieved",
   "info.nomadbooks.display_boundaries_on": "Display camp boundaries: ON",
   "info.nomadbooks.display_boundaries_off": "Display camp boundaries: OFF",
-  "upgrade.nomadbooks.membrane": "Aquatic Membrane",
-  "upgrade.nomadbooks.mushroom": "Fungi Support"
+  "upgrade.nomadbooks.aquatic_membrane": "Aquatic Membrane",
+  "upgrade.nomadbooks.fungi_support": "Fungi Support"
 }
