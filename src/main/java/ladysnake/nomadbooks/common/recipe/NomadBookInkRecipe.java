@@ -53,8 +53,9 @@ public class NomadBookInkRecipe extends SpecialCraftingRecipe {
 
         if (book != null && ingredients.size() == 3 && ingredients.contains(Items.GHAST_TEAR) && ingredients.contains(Items.CHARCOAL) && ingredients.contains(Items.BLUE_DYE)) {
             ItemStack ret = book.copy();
+            int width = ret.getOrCreateSubTag(NomadBooks.MODID).getInt("Width");
             ret.getOrCreateSubTag(NomadBooks.MODID).putBoolean("Inked", true);
-            ret.getOrCreateSubTag(NomadBooks.MODID).putInt("InkGoal", 20);
+            ret.getOrCreateSubTag(NomadBooks.MODID).putInt("InkGoal", ((width+1)^2 - width^2)/2);
             ret.getOrCreateSubTag(NomadBooks.MODID).putInt("InkProgress", 0);
 
             return ret;

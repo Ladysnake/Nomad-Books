@@ -26,7 +26,6 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 
-// TODO: Implement goal calculation for itinerant ink (number of new blocks / 2 seems nice)
 // TODO: Once progress for the itinerant ink reaches the goal, upgrade book width
 // TODO: Add a creative item for width upgrade?
 // TODO: Consider splitting itinerant ink into two types in order to also provide height upgrades?
