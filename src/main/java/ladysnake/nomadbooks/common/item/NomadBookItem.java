@@ -136,7 +136,7 @@ public class NomadBookItem extends Item {
                         BlockPos p = pos.add(new BlockPos(x, -1, z));
                         BlockState bs = context.getWorld().getBlockState(p);
                         if (isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) {
-                            context.getWorld().setBlockState(p, Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState());
+                            context.getWorld().setBlockState(p, NomadBooks.GREEN_MUSHROOM_BLOCK.getDefaultState());
                         }
 
                         if (x >= width/2-1 && x <= width/2+1 && z >= width/2-1 && z <= width/2+1) {
@@ -144,7 +144,7 @@ public class NomadBookItem extends Item {
                             BlockPos p2 = pos.add(new BlockPos(x, y, z));
                             BlockState bs2 = context.getWorld().getBlockState(p2);
                             while ((isBlockReplaceable(bs2) || isBlockUnderwaterReplaceable(bs2) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) && y > -6) {
-                                context.getWorld().setBlockState(p2, Blocks.MUSHROOM_STEM.getDefaultState());
+                                context.getWorld().setBlockState(p2, NomadBooks.GREEN_MUSHROOM_STEM.getDefaultState());
                                 y--;
                                 p2 = pos.add(new BlockPos(x, y, z));
                                 bs2 = context.getWorld().getBlockState(p2);
@@ -321,7 +321,7 @@ public class NomadBookItem extends Item {
                         for (int z = 0; z < width; z++) {
                             BlockPos p = pos.add(new BlockPos(x, -1, z));
                             BlockState bs = world.getBlockState(p);
-                            if (bs.getBlock().equals(Blocks.BROWN_MUSHROOM_BLOCK)) {
+                            if (bs.getBlock().equals(NomadBooks.GREEN_MUSHROOM_BLOCK)) {
                                 world.breakBlock(p, false);
                             }
 
@@ -329,7 +329,7 @@ public class NomadBookItem extends Item {
                                 int y = -2;
                                 BlockPos p2 = pos.add(new BlockPos(x, y, z));
                                 BlockState bs2 = world.getBlockState(p2);
-                                while (bs2.getBlock().equals(Blocks.MUSHROOM_STEM) && y > -6) {
+                                while (bs2.getBlock().equals(NomadBooks.GREEN_MUSHROOM_STEM) && y > -6) {
                                     world.breakBlock(p2, false);
                                     y--;
                                     p2 = pos.add(new BlockPos(x, y, z));

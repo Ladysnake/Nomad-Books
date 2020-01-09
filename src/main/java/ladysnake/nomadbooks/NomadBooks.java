@@ -1,5 +1,6 @@
 package ladysnake.nomadbooks;
 
+import ladysnake.nomadbooks.common.block.GreenMushroomBlock;
 import ladysnake.nomadbooks.common.block.MembraneBlock;
 import ladysnake.nomadbooks.common.block.TeleporterBlock;
 import ladysnake.nomadbooks.common.item.BookUpgradeItem;
@@ -12,6 +13,7 @@ import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
+import net.minecraft.block.MushroomBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.loot.ConstantLootTableRange;
@@ -44,7 +46,9 @@ public class NomadBooks implements ModInitializer {
 //    public static Item END_PAGE;
 
     public static Block MEMBRANE;
-    public static Block TELEPORTER;
+    public static Block GREEN_MUSHROOM_BLOCK;
+    public static Block GREEN_MUSHROOM_STEM;
+//    public static Block TELEPORTER;
 
     public static SpecialRecipeSerializer<NomadBookHeightUpgradeRecipe> UPGRADE_HEIGHT_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookDismantleRecipe> DISMANTLE_NOMAD_BOOK;
@@ -107,8 +111,10 @@ public class NomadBooks implements ModInitializer {
             }
         });
 
-        MEMBRANE = Registry.register(Registry.BLOCK, MODID + ":membrane", new MembraneBlock(DyeColor.GRAY, FabricBlockSettings.of(Material.GLASS).strength(0.3f, 0.3f).nonOpaque().sounds(BlockSoundGroup.field_21214).noCollision().build()));
-        TELEPORTER = Registry.register(Registry.BLOCK, MODID + ":teleporter", new TeleporterBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.GREEN).sounds(BlockSoundGroup.GLASS).lightLevel(1).build()));
+        MEMBRANE = Registry.register(Registry.BLOCK, MODID + ":membrane", new MembraneBlock(FabricBlockSettings.of(Material.CLAY).strength(0.3f, 0.3f).nonOpaque().sounds(BlockSoundGroup.field_21214).noCollision().build()));
+        GREEN_MUSHROOM_BLOCK = Registry.register(Registry.BLOCK, MODID + ":green_mushroom_block", new GreenMushroomBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.GREEN).strength(0.2F, 0).nonOpaque().sounds(BlockSoundGroup.SLIME).build()));
+        GREEN_MUSHROOM_STEM = Registry.register(Registry.BLOCK, MODID + ":green_mushroom_stem", new GreenMushroomBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.WEB).strength(0.2F, 0).nonOpaque().sounds(BlockSoundGroup.SLIME).build()));
+//        TELEPORTER = Registry.register(Registry.BLOCK, MODID + ":teleporter", new TeleporterBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.GREEN).sounds(BlockSoundGroup.GLASS).lightLevel(1).build()));
 
         UPGRADE_HEIGHT_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookupgradeheight"), new SpecialRecipeSerializer<>(NomadBookHeightUpgradeRecipe::new));
         DISMANTLE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookdismantle"), new SpecialRecipeSerializer<>(NomadBookDismantleRecipe::new));

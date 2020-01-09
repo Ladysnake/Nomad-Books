@@ -15,8 +15,8 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class MembraneBlock extends StainedGlassBlock {
-    public MembraneBlock(DyeColor color, Settings settings) {
-        super(color, settings);
+    public MembraneBlock(Settings settings) {
+        super(DyeColor.PURPLE, settings);
     }
 
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
