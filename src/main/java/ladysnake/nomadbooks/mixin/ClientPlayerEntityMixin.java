@@ -33,14 +33,14 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
                         int height = tags.getInt("Height");
                         int width = tags.getInt("Width");
                         BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampCenter"));
-                        for (int x = 0; x < width; x++) {
-                            for (int z = 0; z < width; z++) {
-                                for (int y = 0; y < height; y++) {
-                                    if (x == 0 && z == 0 || x == 0 && z == width - 1 || x == width - 1 && z == 0 || x == width - 1 && z == width - 1
-                                            || y == height - 1 && x == 0 || y == height - 1 && x == width - 1 || y == height - 1 && z == 0 || y == height - 1 && z == width - 1
-                                            || y == 0 && x == 0 || y == 0 && x == width - 1 || y == 0 && z == 0 || y == 0 && z == width - 1) {
+                        for (int x = 0; x <= width; x++) {
+                            for (int z = 0; z <= width; z++) {
+                                for (int y = 0; y <= height; y++) {
+                                    if (x == 0 && z == 0 || x == 0 && z == width || x == width && z == 0 || x == width && z == width
+                                            || y == height && x == 0 || y == height && x == width || y == height && z == 0 || y == height && z == width
+                                            || y == 0 && x == 0 || y == 0 && x == width || y == 0 && z == 0 || y == 0 && z == width) {
                                         BlockPos p = pos.add(new BlockPos(x, y, z));
-                                        world.addParticle(ParticleTypes.HAPPY_VILLAGER, true, p.getX() + 0.5, p.getY() + 0.5, p.getZ() + 0.5, 0, 0, 0);
+                                        world.addParticle(ParticleTypes.HAPPY_VILLAGER, true, p.getX(), p.getY()+0.02, p.getZ(), 0, 0, 0);
                                     }
                                 }
                             }
