@@ -36,6 +36,8 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
                         return false;
                     }
                 }
+            } else {
+                return false;
             }
         }
 
@@ -56,6 +58,8 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
                         return ItemStack.EMPTY;
                     }
                 }
+            } else {
+                return ItemStack.EMPTY;
             }
         }
 
