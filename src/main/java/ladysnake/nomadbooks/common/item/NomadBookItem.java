@@ -200,8 +200,12 @@ public class NomadBookItem extends Item {
             if (!context.getWorld().isClient()) {
                 ServerWorld serverWorld = (ServerWorld) context.getWorld();
                 Structure structure = serverWorld.getStructureManager().getStructure(new Identifier(structurePath));
+
+                // if structure is smaller than the camp size, center the structure
+                int offsetWidth = (width - structure.getSize().getX())/2;
+
                 StructurePlacementData structurePlacementData = (new StructurePlacementData()).setIgnoreEntities(true).setChunkPosition((ChunkPos) null);
-                structure.place(serverWorld, pos, structurePlacementData);
+                structure.place(serverWorld, pos.add(offsetWidth, 0, offsetWidth), structurePlacementData);
             }
 
             // set deployed, register nbt
