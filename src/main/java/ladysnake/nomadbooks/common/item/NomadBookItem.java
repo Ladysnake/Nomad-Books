@@ -27,6 +27,7 @@ import net.minecraft.stat.Stats;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
@@ -209,13 +210,6 @@ public class NomadBookItem extends Item {
             // set deployed, register nbt
             context.getStack().getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 1F);
             tags.put("CampCenter", NbtHelper.fromBlockPos(pos));
-
-            if (!context.getWorld().isClient()) {
-                // if inked, update number of footsteps
-                if (tags.getBoolean("Inked")) {
-                    tags.putInt("InkProgress", ((ServerPlayerEntity) context.getPlayer()).getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.WALK_ONE_CM)));
-                }
-            }
 
             context.getWorld().playSound(context.getPlayer().getX(), context.getPlayer().getY(), context.getPlayer().getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
             return ActionResult.SUCCESS;

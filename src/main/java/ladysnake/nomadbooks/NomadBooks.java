@@ -27,8 +27,6 @@ import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 
 // TODO: Once progress for the itinerant ink reaches the goal, upgrade book width
-// TODO: Add a creative item for width upgrade?
-// TODO: Consider splitting itinerant ink into two types in order to also provide height upgrades?
 
 public class NomadBooks implements ModInitializer {
     public static final String MODID = "nomadbooks";
