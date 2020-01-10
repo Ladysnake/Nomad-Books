@@ -23,62 +23,42 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
     }
 
     public boolean matches(CraftingInventory craftingInventory, World world) {
-        List<ItemStack> list = Lists.newArrayList();
+        ItemStack book = null;
+        String upgrade = null;
 
         for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
             ItemStack itemStack = craftingInventory.getInvStack(i);
-            if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK) || itemStack.getItem() instanceof BookUpgradeItem) {
-                list.add(itemStack);
-                if (list.size() > 1) {
-                    ItemStack itemStack2 = list.get(0);
-                    if (!(itemStack2.getItem().equals(NomadBooks.NOMAD_BOOK) && itemStack.getItem() instanceof BookUpgradeItem
-                    || itemStack2.getItem() instanceof BookUpgradeItem && itemStack.getItem().equals(NomadBooks.NOMAD_BOOK))) {
-                        return false;
-                    }
-                }
-            } else {
+            if (book == null && itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+                book = itemStack;
+            } else if (upgrade == null && itemStack.getItem() instanceof BookUpgradeItem) {
+                upgrade = ((BookUpgradeItem) itemStack.getItem()).getUpgrade();
+            } else if (!itemStack.equals(ItemStack.EMPTY)) {
                 return false;
             }
         }
 
-        return list.size() == 2;
+        return book != null && upgrade != null;
     }
 
     public ItemStack craft(CraftingInventory craftingInventory) {
-        List<ItemStack> list = Lists.newArrayList();
+        ItemStack book = null;
+        String upgrade = null;
 
         for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
             ItemStack itemStack = craftingInventory.getInvStack(i);
-            if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK) || itemStack.getItem() instanceof BookUpgradeItem) {
-                list.add(itemStack);
-                if (list.size() > 1) {
-                    ItemStack itemStack2 = list.get(0);
-                    if (!(itemStack2.getItem().equals(NomadBooks.NOMAD_BOOK) && itemStack.getItem() instanceof BookUpgradeItem
-                            || itemStack2.getItem() instanceof BookUpgradeItem && itemStack.getItem().equals(NomadBooks.NOMAD_BOOK))) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-            } else {
+            if (book == null && itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+                book = itemStack;
+            } else if (upgrade == null && itemStack.getItem() instanceof BookUpgradeItem) {
+                upgrade = ((BookUpgradeItem) itemStack.getItem()).getUpgrade();
+            } else if (!itemStack.equals(ItemStack.EMPTY)) {
                 return ItemStack.EMPTY;
             }
         }
 
-        if (list.size() == 2) {
-            ItemStack itemStack1 = list.get(0);
-            ItemStack itemStack2 = list.get(1);
-            ItemStack book;
-            ItemStack upgrade;
-            if (itemStack1.getItem().equals(NomadBooks.NOMAD_BOOK)) {
-                book = itemStack1;
-                upgrade = itemStack2;
-            } else {
-                book = itemStack2;
-                upgrade = itemStack1;
-            }
-
+        if (book != null && upgrade != null) {
             ItemStack ret = book.copy();
             ListTag upgradeList = ret.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING);
-            upgradeList.add(StringTag.of(((BookUpgradeItem) upgrade.getItem()).getUpgrade()));
+            upgradeList.add(StringTag.of(upgrade));
             ret.getOrCreateSubTag(NomadBooks.MODID).put("Upgrades", upgradeList);
 
             return ret;
