@@ -5,10 +5,10 @@ import net.minecraft.block.MushroomBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
-public class NomadMushroomBlock extends MushroomBlock {
-    public NomadMushroomBlock(Settings settings) {
+public class NomadMushroomStemBlock extends NomadMushroomBlock {
+    public NomadMushroomStemBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(NORTH, true).with(EAST, true).with(SOUTH, true).with(WEST, true).with(UP, true).with(DOWN, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(NORTH, true).with(EAST, true).with(SOUTH, true).with(WEST, true).with(UP, true).with(DOWN, true));
     }
 
     @Override

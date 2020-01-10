@@ -138,8 +138,6 @@ public class NomadBookItem extends Item {
                         BlockState bs = context.getWorld().getBlockState(p);
                         if (isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) {
                             context.getWorld().setBlockState(p, NomadBooks.NOMAD_MUSHROOM_BLOCK.getDefaultState());
-                            context.getWorld().setBlockState(p.add(new BlockPos(0, -1, 0)), NomadBooks.NOMAD_MUSHROOM_BLOCK.getDefaultState());
-                            context.getWorld().setBlockState(p.add(new BlockPos(0, -1, 0)), Blocks.AIR.getDefaultState());
                         }
 
                         if (x >= width/2-1 && x <= width/2+1 && z >= width/2-1 && z <= width/2+1) {
