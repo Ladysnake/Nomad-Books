@@ -394,30 +394,31 @@ public class NomadBookItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        CompoundTag tags = stack.getOrCreateSubTag(NomadBooks.MODID);
+
         // height, width and upgrades
         if (stack.getItem().equals(NomadBooks.NOMAD_BOOK) || stack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
-            int height = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Height");
-            int width = stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Width");
+            int height = tags.getInt("Height");
+            int width = tags.getInt("Width");
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", height).formatted(Formatting.GRAY));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.width", width).formatted(Formatting.GRAY));
-            ListTag upgrades = stack.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING);
+            ListTag upgrades = tags.getList("Upgrades", NbtType.STRING);
             upgrades.forEach(tag -> tooltip.add(new TranslatableText("upgrade.nomadbooks."+tag.asString()).formatted(Formatting.DARK_AQUA)));
         }
         // if inked, show progress
-        if (stack.getOrCreateSubTag(NomadBooks.MODID).getBoolean("Inked")) {
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.inked").formatted(Formatting.BLUE));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.ink_progress", stack.getOrCreateSubTag(NomadBooks.MODID).getInt("InkProgress"), stack.getOrCreateSubTag(NomadBooks.MODID).getInt("InkGoal")).formatted(Formatting.BLUE));
+        if (tags.getBoolean("Inked")) {
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.itinerant_ink", tags.getInt("InkProgress"), tags.getInt("InkGoal")).formatted(Formatting.BLUE));
         }
         // camp coordinates if deployed
         if (stack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f) {
-            BlockPos pos = NbtHelper.toBlockPos(stack.getOrCreateSubTag(NomadBooks.MODID).getCompound("CampPos"));
-            DimensionType dim = DimensionType.byRawId(stack.getOrCreateSubTag(NomadBooks.MODID).getInt("Dimension"));
+            BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos"));
+            DimensionType dim = DimensionType.byRawId(tags.getInt("Dimension"));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()).formatted(Formatting.DARK_GRAY));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim).formatted(Formatting.DARK_GRAY));
         }
         // displaying boundaries
         if (stack.getItem() instanceof NomadBookItem) {
-            if (stack.getOrCreateSubTag(NomadBooks.MODID).getBoolean("DisplayBoundaries")) {
+            if (tags.getBoolean("DisplayBoundaries")) {
                 tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.boundaries_display").formatted(Formatting.GREEN).formatted(Formatting.ITALIC));
             }
         }
@@ -438,9 +439,6 @@ public class NomadBookItem extends Item {
                     tags.putInt("Height", 3);
                     tags.putInt("Width", 7);
                     tags.putString("Structure", defaultStructurePath);
-//                    ListTag list = new ListTag();
-//                    list.add(StringTag.of("aquatic_membrane"));
-//                    tags.put("Upgrades", list);
                 }
                 if (itemStack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
                     tags.putInt("Height", 30);
