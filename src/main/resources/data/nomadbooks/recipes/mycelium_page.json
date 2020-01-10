@@ -1,17 +1,19 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " g ",
-    "mmm"
-  ],
-  "key": {
-    "g": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "item": "nomadbooks:grass_page"
     },
-    "m": {
-      "item": "minecraft:mushroom_stem"
+    {
+      "item": "minecraft:purple_dye"
+    },
+    {
+      "item": "minecraft:poisonous_potato"
+    },
+    {
+      "item": "minecraft:bone_meal"
     }
-  },
+  ],
   "result": {
     "item": "nomadbooks:mycelium_page"
   }
