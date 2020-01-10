@@ -1,6 +1,7 @@
 package ladysnake.nomadbooks.common.item;
 
 import ladysnake.nomadbooks.NomadBooks;
+import ladysnake.nomadbooks.common.block.NomadMushroomBlock;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -142,14 +143,11 @@ public class NomadBookItem extends Item {
                         }
 
                         if (x >= width/2-1 && x <= width/2+1 && z >= width/2-1 && z <= width/2+1) {
-                            int y = -2;
-                            BlockPos p2 = pos.add(new BlockPos(x, y, z));
-                            BlockState bs2 = context.getWorld().getBlockState(p2);
-                            while ((isBlockReplaceable(bs2) || isBlockUnderwaterReplaceable(bs2) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) && y > -6) {
-                                context.getWorld().setBlockState(p2, NomadBooks.NOMAD_MUSHROOM_STEM.getDefaultState());
-                                y--;
-                                p2 = pos.add(new BlockPos(x, y, z));
-                                bs2 = context.getWorld().getBlockState(p2);
+                            for (int y = -2; y > -7; y--) {
+                                BlockPos p2 = pos.add(new BlockPos(x, y, z));
+                                if (context.getWorld().getBlockState(p2).isAir()) {
+                                    context.getWorld().setBlockState(p2, NomadBooks.NOMAD_MUSHROOM_STEM.getDefaultState());
+                                }
                             }
                         }
                     }
@@ -328,14 +326,11 @@ public class NomadBookItem extends Item {
                             }
 
                             if (x >= width/2-1 && x <= width/2+1 && z >= width/2-1 && z <= width/2+1) {
-                                int y = -2;
-                                BlockPos p2 = pos.add(new BlockPos(x, y, z));
-                                BlockState bs2 = world.getBlockState(p2);
-                                while (bs2.getBlock().equals(NomadBooks.NOMAD_MUSHROOM_STEM) && y > -6) {
-                                    world.breakBlock(p2, false);
-                                    y--;
-                                    p2 = pos.add(new BlockPos(x, y, z));
-                                    bs2 = world.getBlockState(p2);
+                                for (int y = -2; y > -7; y--) {
+                                    BlockPos p2 = pos.add(new BlockPos(x, y, z));
+                                    if (world.getBlockState(p2).getBlock() instanceof NomadMushroomBlock) {
+                                        world.breakBlock(p2, false);
+                                    }
                                 }
                             }
                         }
