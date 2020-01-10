@@ -136,14 +136,14 @@ public class NomadBookItem extends Item {
                     for (int z = 0; z < width; z++) {
                         BlockPos p = pos.add(new BlockPos(x, -1, z));
                         BlockState bs = context.getWorld().getBlockState(p);
-                        if (isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) {
+                        if (isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs)) {
                             context.getWorld().setBlockState(p, NomadBooks.NOMAD_MUSHROOM_BLOCK.getDefaultState());
                         }
 
                         if (x >= width/2-1 && x <= width/2+1 && z >= width/2-1 && z <= width/2+1) {
                             for (int y = -2; y > -6; y--) {
                                 BlockPos p2 = pos.add(new BlockPos(x, y, z));
-                                if (context.getWorld().getBlockState(p2).isAir()) {
+                                if (isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs)) {
                                     context.getWorld().setBlockState(p2, NomadBooks.NOMAD_MUSHROOM_STEM.getDefaultState());
                                 }
                             }
