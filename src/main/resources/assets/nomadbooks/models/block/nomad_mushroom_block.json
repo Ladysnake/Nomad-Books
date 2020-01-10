@@ -1,8 +1,7 @@
 {
-    "ambientocclusion": false,
     "textures": {
-        "texture": "nomadbooks:block/green_mushroom_block_inside",
-        "particle": "nomadbooks:block/green_mushroom_block_inside"
+        "texture": "nomadbooks:block/nomad_mushroom_block",
+        "particle": "nomadbooks:block/nomad_mushroom_block"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

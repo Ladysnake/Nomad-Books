@@ -5,8 +5,8 @@ import net.minecraft.block.MushroomBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
-public class GreenMushroomBlock extends MushroomBlock {
-    public GreenMushroomBlock(Settings settings) {
+public class NomadMushroomBlock extends MushroomBlock {
+    public NomadMushroomBlock(Settings settings) {
         super(settings);
     }
 
