@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "ladysnake.nomadbooks.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ServerPlayerEntityMixin"
+  ],
+  "client": [
+    "ClientPlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

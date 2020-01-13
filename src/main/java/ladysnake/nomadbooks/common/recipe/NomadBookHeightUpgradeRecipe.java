@@ -42,7 +42,7 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
             }
         }
 
-        return !itemStack.isEmpty() && !list.isEmpty() && itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Pages") + list.size() <= 12;
+        return !itemStack.isEmpty() && !list.isEmpty() && itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Height") + list.size() <= itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Width");
     }
 
     public ItemStack craft(CraftingInventory craftingInventory) {
@@ -70,8 +70,8 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
         }
 
         if (!itemStack.isEmpty() && !list.isEmpty()) {
-            int pages = itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Pages");
-            itemStack.getOrCreateSubTag(NomadBooks.MODID).putInt("Pages", pages + list.size());
+            int height = itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Height");
+            itemStack.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", height + list.size());
             return itemStack;
         } else {
             return ItemStack.EMPTY;

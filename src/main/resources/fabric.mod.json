@@ -12,7 +12,9 @@
       "ladysnake.nomadbooks.client.NomadBooksClient"
     ]
   },
-
+  "mixins": [
+    "nomadbooks.mixins.json"
+  ],
   "name": "Nomad Books",
   "icon": "assets/nomadbooks/icon.png",
   "description": "Nomad encampments deployment from books",

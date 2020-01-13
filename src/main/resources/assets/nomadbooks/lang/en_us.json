@@ -1,11 +1,22 @@
 {
   "item.nomadbooks.grass_page": "Grass Page",
   "item.nomadbooks.nomad_book": "Nomad Book",
+  "item.nomadbooks.master_nomad_book": "Master Nomad Book",
   "item.nomadbooks.nomad_page": "Nomad Page",
+  "item.nomadbooks.aquatic_membrane_page": "Aquatic Membrane Page",
+  "item.nomadbooks.mycelium_page": "Mycelium Page",
   "item.nomadbooks.nomad_book.tooltip.height": "Height: %s",
+  "item.nomadbooks.nomad_book.tooltip.width": "Width: %s",
   "item.nomadbooks.nomad_book.tooltip.position": "Deployed at: %s",
   "item.nomadbooks.nomad_book.tooltip.dimension": "Deployed in: %s",
+  "item.nomadbooks.nomad_book.tooltip.boundaries_display": "Displaying camp boundaries",
+  "item.nomadbooks.nomad_book.tooltip.itinerant_ink": "Itinerant Ink: %s/%s",
   "error.nomadbooks.no_space": "Not enough space to set up the camp",
   "error.nomadbooks.invalid_surface": "The surface isn't wide enough to set up the camp",
-  "error.nomadbooks.different_dimension": "The camp is in another dimension and cannot be retrieved"
+  "error.nomadbooks.different_dimension": "The camp is in another dimension and cannot be retrieved",
+  "info.nomadbooks.display_boundaries_on": "Display camp boundaries: ON",
+  "info.nomadbooks.display_boundaries_off": "Display camp boundaries: OFF",
+  "info.nomadbooks.itinerant_ink_done": "You have travelled enough for the itinerant ink to write a new page! Your nomad book now has a width of %s.",
+  "upgrade.nomadbooks.aquatic_membrane": "Aquatic Membrane",
+  "upgrade.nomadbooks.fungi_support": "Fungi Support"
 }
