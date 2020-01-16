@@ -113,6 +113,7 @@ task checkGitStatus() {
 }
 
 githubRelease {
+	repo "Nomad-Books"
 	token "${getProjectProperty('github_releases_token')}"
 	// default owner: last component of maven group
 	// default repo: name of the project
