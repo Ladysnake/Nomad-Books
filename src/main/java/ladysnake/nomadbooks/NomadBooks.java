@@ -19,6 +19,7 @@ import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.SetNbtLootFunction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
@@ -38,7 +39,6 @@ public class NomadBooks implements ModInitializer {
     public static Item GRASS_PAGE;
     public static Item NOMAD_PAGE;
     public static Item NOMAD_BOOK;
-    public static Item MASTER_NOMAD_BOOK;
     public static Item AQUATIC_MEMBRANE_PAGE;
     public static Item MYCELIUM_PAGE;
 //    public static Item END_PAGE;
@@ -48,10 +48,10 @@ public class NomadBooks implements ModInitializer {
     public static Block NOMAD_MUSHROOM_STEM;
 //    public static Block TELEPORTER;
 
-    public static SpecialRecipeSerializer<NomadBookHeightUpgradeRecipe> UPGRADE_HEIGHT_NOMAD_BOOK;
-    public static SpecialRecipeSerializer<NomadBookDismantleRecipe> DISMANTLE_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookCraftRecipe> CRAFT_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadPageCraftRecipe> CRAFT_NOMAD_PAGE;
+    public static SpecialRecipeSerializer<NomadBookHeightUpgradeRecipe> UPGRADE_HEIGHT_NOMAD_BOOK;
+    public static SpecialRecipeSerializer<NomadBookDismantleRecipe> DISMANTLE_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookUpgradeRecipe> UPGRADE_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookInkRecipe> INK_NOMAD_BOOK;
 
@@ -60,7 +60,6 @@ public class NomadBooks implements ModInitializer {
         GRASS_PAGE = registerItem(new Item((new Item.Settings()).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "grass_page");
         NOMAD_PAGE = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "nomad_page");
         NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE)), "nomad_book");
-        MASTER_NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).rarity(Rarity.EPIC)), "master_nomad_book");
         AQUATIC_MEMBRANE_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "aquatic_membrane"), "aquatic_membrane_page");
         MYCELIUM_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "fungi_support"), "mycelium_page");
 //        END_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "end"), "end_page");
@@ -114,10 +113,12 @@ public class NomadBooks implements ModInitializer {
         NOMAD_MUSHROOM_STEM = Registry.register(Registry.BLOCK, MODID + ":nomad_mushroom_stem", new NomadMushroomStemBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.WEB).strength(0.6F, 0).sounds(BlockSoundGroup.WOOD).build()));
 //        TELEPORTER = Registry.register(Registry.BLOCK, MODID + ":teleporter", new TeleporterBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.GREEN).sounds(BlockSoundGroup.GLASS).lightLevel(1).build()));
 
-        UPGRADE_HEIGHT_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookupgradeheight"), new SpecialRecipeSerializer<>(NomadBookHeightUpgradeRecipe::new));
-        DISMANTLE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookdismantle"), new SpecialRecipeSerializer<>(NomadBookDismantleRecipe::new));
+        NomadPageCraftRecipe.initCraftResult();
+        NomadBookCraftRecipe.initCraftResult();
         CRAFT_NOMAD_PAGE = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadpagecraft"), new SpecialRecipeSerializer<>(NomadPageCraftRecipe::new));
         CRAFT_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookcraft"), new SpecialRecipeSerializer<>(NomadBookCraftRecipe::new));
+        UPGRADE_HEIGHT_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookupgradeheight"), new SpecialRecipeSerializer<>(NomadBookHeightUpgradeRecipe::new));
+        DISMANTLE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookdismantle"), new SpecialRecipeSerializer<>(NomadBookDismantleRecipe::new));
         UPGRADE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookupgrade"), new SpecialRecipeSerializer<>(NomadBookUpgradeRecipe::new));
         INK_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookink"), new SpecialRecipeSerializer<>(NomadBookInkRecipe::new));
     }

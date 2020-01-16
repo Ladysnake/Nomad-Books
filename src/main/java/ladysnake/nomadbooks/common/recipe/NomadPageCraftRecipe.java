@@ -9,14 +9,17 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.List;
 
-public class NomadPageCraftRecipe extends SpecialCraftingRecipe {
+public class NomadPageCraftRecipe extends ShapedRecipe {
     public static final List<Item> NOMAD_PAGE_RECIPE_1 = Lists.newArrayList(
             Items.LIME_DYE, Items.ORANGE_DYE, Items.LIME_DYE,
             Items.AIR, NomadBooks.GRASS_PAGE, Items.AIR,
@@ -27,9 +30,20 @@ public class NomadPageCraftRecipe extends SpecialCraftingRecipe {
             Items.LIME_DYE, Items.ORANGE_DYE, Items.LIME_DYE,
             Items.AIR, NomadBooks.GRASS_PAGE, Items.AIR
     );
+    public static final ItemStack CRAFT_RESULT = new ItemStack(NomadBooks.NOMAD_PAGE);
+
+    public static void initCraftResult() {
+        CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", 1);
+        CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putInt("Width", 7);
+        CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.defaultStructurePath);
+    }
 
     public NomadPageCraftRecipe(Identifier identifier) {
-        super(identifier);
+        super(identifier, "", 3, 2,
+                DefaultedList.copyOf(Ingredient.EMPTY,
+                        Ingredient.ofItems(Items.LIME_DYE), Ingredient.ofItems(Items.ORANGE_DYE), Ingredient.ofItems(Items.LIME_DYE),
+                        Ingredient.ofItems(Items.AIR), Ingredient.ofItems(NomadBooks.GRASS_PAGE), Ingredient.ofItems(Items.AIR)
+                ), CRAFT_RESULT);
     }
 
     public boolean matches(CraftingInventory craftingInventory, World world) {
@@ -50,10 +64,7 @@ public class NomadPageCraftRecipe extends SpecialCraftingRecipe {
         }
 
         if (list.equals(NOMAD_PAGE_RECIPE_1) || list.equals(NOMAD_PAGE_RECIPE_2)) {
-            ItemStack ret = new ItemStack(NomadBooks.NOMAD_PAGE);
-            ret.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", 1);
-            ret.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.defaultStructurePath);
-            return ret;
+            return CRAFT_RESULT;
         } else {
             return ItemStack.EMPTY;
         }
