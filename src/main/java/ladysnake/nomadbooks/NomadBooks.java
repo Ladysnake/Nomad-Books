@@ -39,7 +39,6 @@ public class NomadBooks implements ModInitializer {
     public static Item GRASS_PAGE;
     public static Item NOMAD_PAGE;
     public static Item NOMAD_BOOK;
-    public static Item MASTER_NOMAD_BOOK;
     public static Item AQUATIC_MEMBRANE_PAGE;
     public static Item MYCELIUM_PAGE;
 //    public static Item END_PAGE;
@@ -61,7 +60,6 @@ public class NomadBooks implements ModInitializer {
         GRASS_PAGE = registerItem(new Item((new Item.Settings()).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "grass_page");
         NOMAD_PAGE = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "nomad_page");
         NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE)), "nomad_book");
-        MASTER_NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).rarity(Rarity.EPIC)), "master_nomad_book");
         AQUATIC_MEMBRANE_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "aquatic_membrane"), "aquatic_membrane_page");
         MYCELIUM_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "fungi_support"), "mycelium_page");
 //        END_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "end"), "end_page");
