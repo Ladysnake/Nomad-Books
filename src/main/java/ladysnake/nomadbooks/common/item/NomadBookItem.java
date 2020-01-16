@@ -395,7 +395,7 @@ public class NomadBookItem extends Item {
         CompoundTag tags = stack.getOrCreateSubTag(NomadBooks.MODID);
 
         // height, width and upgrades
-        if (stack.getItem().equals(NomadBooks.NOMAD_BOOK) || stack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
+        if (stack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
             int height = tags.getInt("Height");
             int width = tags.getInt("Width");
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", height).formatted(Formatting.GRAY));
@@ -433,19 +433,10 @@ public class NomadBookItem extends Item {
                     tags.putInt("Width", 7);
                     tags.putString("Structure", defaultStructurePath);
                 }
-                if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK) || itemStack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
+                if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
                     tags.putInt("Height", 3);
                     tags.putInt("Width", 7);
                     tags.putString("Structure", defaultStructurePath);
-                }
-                if (itemStack.getItem().equals(NomadBooks.MASTER_NOMAD_BOOK)) {
-                    tags.putInt("Height", 30);
-                    tags.putInt("Width", 15);
-                    tags.putString("Structure", defaultStructurePath);
-                    ListTag upgradeList = new ListTag();
-                    upgradeList.add(StringTag.of("aquatic_membrane"));
-                    upgradeList.add(StringTag.of("fungi_support"));
-                    itemStack.getOrCreateSubTag(NomadBooks.MODID).put("Upgrades", upgradeList);
                 }
             }
         });
