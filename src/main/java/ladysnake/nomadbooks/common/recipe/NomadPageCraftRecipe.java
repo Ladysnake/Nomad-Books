@@ -34,6 +34,7 @@ public class NomadPageCraftRecipe extends ShapedRecipe {
 
     public static void initCraftResult() {
         CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", 1);
+        CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putInt("Width", 7);
         CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.defaultStructurePath);
     }
 
