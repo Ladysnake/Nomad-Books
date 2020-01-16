@@ -4,7 +4,6 @@
 
 - All plants (flowers, lily-pads, vines...) will now be destroyed when deploying a camp
 - Make nomad book and nomad page recipes appear in REI
-
 - Fixed a bug where the fungi support mushroom stem would destroy terrain
 - Fixed a bug that made newly crafted nomad books and pages have a width of 0 instead of 7
 
