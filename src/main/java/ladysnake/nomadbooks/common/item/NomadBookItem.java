@@ -453,7 +453,7 @@ public class NomadBookItem extends Item {
 
     public static boolean isBlockReplaceable(BlockState blockState) {
         Material m = blockState.getMaterial();
-        return blockState.isAir() || m.equals(Material.REPLACEABLE_PLANT) || m.equals(Material.SNOW);
+        return blockState.isAir() || m.equals(Material.REPLACEABLE_PLANT) || m.equals(Material.PLANT) || m.equals(Material.SNOW);
     }
 
     public static boolean isBlockUnderwaterReplaceable(BlockState blockState) {
