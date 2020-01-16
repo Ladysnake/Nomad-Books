@@ -143,7 +143,7 @@ public class NomadBookItem extends Item {
                         if (x >= width/2-1 && x <= width/2+1 && z >= width/2-1 && z <= width/2+1) {
                             for (int y = -2; y > -6; y--) {
                                 BlockPos p2 = pos.add(new BlockPos(x, y, z));
-                                if (isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs)) {
+                                if (isBlockReplaceable(context.getWorld().getBlockState(p2)) || isBlockUnderwaterReplaceable(context.getWorld().getBlockState(p2))) {
                                     context.getWorld().setBlockState(p2, NomadBooks.NOMAD_MUSHROOM_STEM.getDefaultState());
                                 }
                             }
