@@ -10,21 +10,21 @@ Blades of grass magically and carefully weaved into a delicate page. Crafting an
 
 #### Obtaining
 
-Grass pages can be found in all dungeon, mineshaft, and jungle temple chests in stacks of 1.
+Grass pages can be found in all dungeon, mineshaft, jungle temple chests and cartographer chests in stacks of 1.
 
 Grass pages can also be obtained from nomad books and pages. When putting a deployed nomad book or page in a crafting inventory, said book or page can be dismantled into its corresponding number of pages.
 
 ## Nomad Books (and Nomad Pages)
 
-A **nomad book** is an item that can store a 7xNx7 sized camp, with N being its corresponding number of pages. When the camp is stored in the book, the cover of the book displays a campfire. When the camp is deployed, the cover does not display said campfire.
+A **nomad book** is an item that can store a WxHxW sized camp, with W the width and H the height. When the camp is stored in the book, the cover of the book displays a campfire. When the camp is deployed, the cover does not display said campfire.
 
 #### Obtaining
 
-Nomad books can be obtained by combining lime dye, orange dye, gray dye, brown dye and grass pages. A newly crafted nomad book will contain 3 pages, therefore being able to store a 7x3x7 camp area.
+Nomad books can be obtained by combining lime dye, orange dye, gray dye, brown dye and grass pages. A newly crafted nomad book will have a height of 3 and a width of 7.
 
 ![image-20200102175340377](https://raw.githubusercontent.com/Ladysnake/Nomad-Books/master/README.assets/image-20200102175340377.png)
 
-Nomad books of 3 pages can also be found in all stronghold libraries chests in stacks of 1.
+Nomad books of 3 in height and 7 in width can also be found in all stronghold libraries chests in stacks of 1.
 
 #### Usage
 
@@ -34,18 +34,52 @@ When a nomad book does not store a camp (meaning the camp is deployed), using it
 
 #### Nomad Page
 
-A nomad pages is the one page equivalent of a nomad book (therefore storing a camp area of 7x1x7). Nomad pages can be obtained by combining lime dye, orange dye, and grass pages.
+A nomad page is the one block tall equivalent of a basic nomad book (therefore storing a camp area of 7x1x7). Nomad pages can be obtained by combining lime dye, orange dye, and grass pages.
 
 ![image-20200102180717208](https://raw.githubusercontent.com/Ladysnake/Nomad-Books/master/README.assets/image-20200102180717208.png)
 
 #### Upgrading
 
-Nomad books can be upgraded to a maximum amount of 12 pages by combining them with grass pages in a crafting inventory.
+##### Height
 
-![image-20200102181553637](https://raw.githubusercontent.com/Ladysnake/Nomad-Books/master/README.assets/image-20200102181553637.png)
+A book's height can be upgraded by shapelessly combining it with grass pages in a crafting inventory. The maximum height is equal to the current width of the book.
+
+![image-20200113230337419](README.assets/image-20200113230337419.png)
+
+##### Width
+
+A book's width can be upgraded by using itinerant ink. Itinerant ink can be applied to a book by shapelessly combining it with a ghast tear, blue dye and charcoal.
+
+![image-20200113230319255](README.assets/image-20200113230319255.png)
+
+Upon application, a goal will be decided depending on the current width size. Progress towards this goal needs to be made by exploring and going through different biomes. Upon reaching the goal, the book will gain 2 in width.
 
 #### Dismantling
 
-Nomad books and pages can be dismantled into grass pages. To do so, they need their camp to be deployed and be placed into a crafting inventory.
+Nomad books and pages can be dismantled into grass pages. To do so, they need their camp to be deployed and be placed into a crafting inventory. Dismantling will give one page per height, one page per 2 width above 7, and one page for each special page applied.
 
-![https://media.discordapp.net/attachments/477596494837448704/662057201728356377/unknown.png?width=440&height=190](https://media.discordapp.net/attachments/477596494837448704/662057201728356377/unknown.png?width=440&height=190)
+![image-20200113230552606](README.assets/image-20200113230552606.png)
+
+## Special pages and upgrades
+
+**Special pages** are unique pages that trigger very specific effects upon camp deployment when combined with a nomad book.
+
+### Aquatic Membrane Page
+
+The **aquatic membrane page** is a special page granting the **Aquatic Membrane** upgrade. **Aquatic membrane** allows the camp to be deployed underwater protected by a membrane. Any entity can freely go through membrane blocks but fluids will be blocked.
+
+#### Obtaining
+
+Aquatic membrane pages can be crafted by combining 3 phantom membranes and a heart of the sea.
+
+![image-20200113231238569](README.assets/image-20200113231238569.png)
+
+### Mycelium Page
+
+The **mycelium page** is a special page granting the **Fungi Support** upgrade. **Fungi support** allows the camp to be deployed on unstable surfaces, as long as nothing is in the way, by growing a special mushroom.
+
+#### Obtaining
+
+Mycelium pages can be crafted by shapelessly combining purple dye, a poisonous potato, bone meal and a grass page.
+
+![image-20200113231129702](README.assets/image-20200113231129702.png)
