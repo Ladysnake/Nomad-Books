@@ -1,6 +1,5 @@
 package ladysnake.nomadbooks.common.recipe;
 
-import com.google.common.collect.Lists;
 import ladysnake.nomadbooks.NomadBooks;
 import ladysnake.nomadbooks.common.item.BookUpgradeItem;
 import net.fabricmc.api.EnvType;
@@ -14,8 +13,6 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
     public NomadBookUpgradeRecipe(Identifier identifier) {
@@ -58,7 +55,7 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
         if (book != null && upgrade != null) {
             ItemStack ret = book.copy();
             ListTag upgradeList = ret.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING);
-            upgradeList.add(StringTag.of(upgrade));
+            upgradeList.add(new StringTag(upgrade));
             ret.getOrCreateSubTag(NomadBooks.MODID).put("Upgrades", upgradeList);
 
             return ret;

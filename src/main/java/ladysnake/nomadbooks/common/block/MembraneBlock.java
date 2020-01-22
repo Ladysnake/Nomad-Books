@@ -1,5 +1,6 @@
 package ladysnake.nomadbooks.common.block;
 
+import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.StainedGlassBlock;
@@ -24,7 +25,7 @@ public class MembraneBlock extends StainedGlassBlock {
             entity.setVelocity(entity.getVelocity().getX()/2, entity.getVelocity().getY()/2, entity.getVelocity().getZ()/2);
         }
         if (world.getTime() % 15 == 0 && entity.getType() != EntityType.ITEM) {
-            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_HONEY_BLOCK_SLIDE, SoundCategory.BLOCKS, 1, 1, true);
+            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_STEP, SoundCategory.BLOCKS, 1, 1, true);
         }
     }
 
@@ -37,5 +38,10 @@ public class MembraneBlock extends StainedGlassBlock {
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         super.onBreak(world, pos, state, player);
         world.setBlockState(pos, Blocks.WATER.getDefaultState());
+    }
+
+    @Override
+    public BlockRenderLayer getRenderLayer() {
+        return BlockRenderLayer.TRANSLUCENT;
     }
 }

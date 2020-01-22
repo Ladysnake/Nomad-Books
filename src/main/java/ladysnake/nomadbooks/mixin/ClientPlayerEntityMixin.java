@@ -8,8 +8,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtHelper;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.TagHelper;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +32,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
                     if (tags.getBoolean("DisplayBoundaries")) {
                         int height = tags.getInt("Height");
                         int width = tags.getInt("Width");
-                        BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos"));
+                        BlockPos pos = TagHelper.deserializeBlockPos(tags.getCompound("CampPos"));
                         for (int x = 0; x <= width; x++) {
                             for (int z = 0; z <= width; z++) {
                                 for (int y = 0; y <= height; y++) {

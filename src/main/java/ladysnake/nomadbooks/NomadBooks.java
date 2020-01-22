@@ -1,7 +1,7 @@
 package ladysnake.nomadbooks;
 
-import ladysnake.nomadbooks.common.block.NomadMushroomBlock;
 import ladysnake.nomadbooks.common.block.MembraneBlock;
+import ladysnake.nomadbooks.common.block.NomadMushroomBlock;
 import ladysnake.nomadbooks.common.block.NomadMushroomStemBlock;
 import ladysnake.nomadbooks.common.item.BookUpgradeItem;
 import ladysnake.nomadbooks.common.item.NomadBookItem;
@@ -15,17 +15,16 @@ import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.loot.ConstantLootTableRange;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.function.SetNbtLootFunction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.Util;
+import net.minecraft.util.SystemUtil;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.loot.ConstantLootTableRange;
+import net.minecraft.world.loot.entry.ItemEntry;
+import net.minecraft.world.loot.function.SetNbtLootFunction;
 
 public class NomadBooks implements ModInitializer {
     public static final String MODID = "nomadbooks";
@@ -98,7 +97,7 @@ public class NomadBooks implements ModInitializer {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
                         .withRolls(ConstantLootTableRange.create(1))
                         .withEntry(ItemEntry.builder(NOMAD_BOOK))
-                        .withFunction(SetNbtLootFunction.builder(Util.make(new CompoundTag(), (compoundTag) -> compoundTag.put(MODID, Util.make(new CompoundTag(), child -> {
+                        .withFunction(SetNbtLootFunction.builder(SystemUtil.consume(new CompoundTag(), (compoundTag) -> compoundTag.put(MODID, SystemUtil.consume(new CompoundTag(), child -> {
                             child.putInt("Height", 3);
                             child.putInt("Width", 7);
                             child.putString("Structure", NomadBookItem.defaultStructurePath);
@@ -108,7 +107,7 @@ public class NomadBooks implements ModInitializer {
             }
         });
 
-        MEMBRANE = Registry.register(Registry.BLOCK, MODID + ":membrane", new MembraneBlock(FabricBlockSettings.of(Material.CLAY).strength(0.6f, 0f).nonOpaque().sounds(BlockSoundGroup.field_21214).noCollision().build()));
+        MEMBRANE = Registry.register(Registry.BLOCK, MODID + ":membrane", new MembraneBlock(FabricBlockSettings.of(Material.CLAY).strength(0.6f, 0f).sounds(BlockSoundGroup.SLIME).noCollision().build()));
         NOMAD_MUSHROOM_BLOCK = Registry.register(Registry.BLOCK, MODID + ":nomad_mushroom_block", new NomadMushroomBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.PURPLE).strength(0.6F, 0).sounds(BlockSoundGroup.WOOD).build()));
         NOMAD_MUSHROOM_STEM = Registry.register(Registry.BLOCK, MODID + ":nomad_mushroom_stem", new NomadMushroomStemBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.WEB).strength(0.6F, 0).sounds(BlockSoundGroup.WOOD).build()));
 //        TELEPORTER = Registry.register(Registry.BLOCK, MODID + ":teleporter", new TeleporterBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.GREEN).sounds(BlockSoundGroup.GLASS).lightLevel(1).build()));

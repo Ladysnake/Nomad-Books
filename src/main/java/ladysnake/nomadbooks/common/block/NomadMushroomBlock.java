@@ -8,7 +8,7 @@ import net.minecraft.world.BlockView;
 public class NomadMushroomBlock extends MushroomBlock {
     public NomadMushroomBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(NORTH, true).with(EAST, true).with(SOUTH, true).with(WEST, true).with(UP, true).with(DOWN, false));
+        this.setDefaultState(this.stateFactory.getDefaultState().with(NORTH, true).with(EAST, true).with(SOUTH, true).with(WEST, true).with(UP, true).with(DOWN, false));
     }
 
     @Override

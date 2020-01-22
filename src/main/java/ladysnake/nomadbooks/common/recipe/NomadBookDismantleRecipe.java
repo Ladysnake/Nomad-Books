@@ -1,7 +1,6 @@
 package ladysnake.nomadbooks.common.recipe;
 
 import ladysnake.nomadbooks.NomadBooks;
-import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.util.NbtType;

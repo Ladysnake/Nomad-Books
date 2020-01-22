@@ -9,7 +9,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -18,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -59,7 +57,7 @@ public class NomadBookItem extends Item {
             BlockPos pos = context.getBlockPos();
             while (isBlockReplaceable(context.getWorld().getBlockState(pos))
                     || isBlockUnderwaterReplaceable(context.getWorld().getBlockState(pos))
-                    && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) {
+                    && tags.getList("Upgrades", NbtType.STRING).contains(new StringTag("aquatic_membrane"))) {
                 pos = new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ());
             }
 
@@ -70,7 +68,7 @@ public class NomadBookItem extends Item {
             pos = pos.add(new BlockPos(-width/2, 1, -width/2));
 
             // end platform upgrade
-//            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
+//            if (tags.getList("Upgrades", NbtType.STRING).contains(new StringTag("end"))) {
 //                boolean canPlacePlatform = false;
 //                int endy = 20;
 //                while (!canPlacePlatform) {
@@ -99,7 +97,7 @@ public class NomadBookItem extends Item {
                     for (int y = 0; y < height; y++) {
                         BlockPos p = pos.add(new BlockPos(x, y, z));
                         BlockState bs = context.getWorld().getBlockState(p);
-                        if (!(isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane")))) {
+                        if (!(isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(new StringTag("aquatic_membrane")))) {
                             context.getPlayer().addChatMessage(new TranslatableText("error.nomadbooks.no_space"), true);
                             return ActionResult.FAIL;
                         }
@@ -108,7 +106,7 @@ public class NomadBookItem extends Item {
             }
 
 //            // if enough space and end upgrade, set up the platform
-//            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
+//            if (tags.getList("Upgrades", NbtType.STRING).contains(new StringTag("end"))) {
 //                for (int x = 0; x < width; x++) {
 //                    for (int z = 0; z < width; z++) {
 //                        for (int y = 0; y > -4; y--) {
@@ -131,7 +129,7 @@ public class NomadBookItem extends Item {
 //            }
 
             // mushroom platform upgrade
-            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("fungi_support"))) {
+            if (tags.getList("Upgrades", NbtType.STRING).contains(new StringTag("fungi_support"))) {
                 for (int x = 0; x < width; x++) {
                     for (int z = 0; z < width; z++) {
                         BlockPos p = pos.add(new BlockPos(x, -1, z));
@@ -165,7 +163,7 @@ public class NomadBookItem extends Item {
             }
 
             // if membrane upgrade, replace water and underwater plants with membrane
-            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) {
+            if (tags.getList("Upgrades", NbtType.STRING).contains(new StringTag("aquatic_membrane"))) {
                 for (int x = -1; x < width+1; x++) {
                     for (int z = -1; z < width+1; z++) {
                         for (int y = 0; y < height + 1; y++) {
@@ -208,9 +206,9 @@ public class NomadBookItem extends Item {
 
             // set deployed, register nbt
             context.getStack().getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 1F);
-            tags.put("CampPos", NbtHelper.fromBlockPos(pos));
+            tags.put("CampPos", TagHelper.serializeBlockPos(pos));
 
-            context.getWorld().playSound(context.getPlayer().getX(), context.getPlayer().getY(), context.getPlayer().getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
+            context.getWorld().playSound(context.getPlayer().x, context.getPlayer().y, context.getPlayer().z, SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 1, true);
             return ActionResult.SUCCESS;
         } else {
             this.use(context.getWorld(), context.getPlayer(), context.getHand());
@@ -223,7 +221,7 @@ public class NomadBookItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
         boolean isDeployed = itemStack.getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 1f;
-        BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos"));
+        BlockPos pos = TagHelper.deserializeBlockPos(tags.getCompound("CampPos"));
         String structurePath = tags.getString("Structure");
         int height = tags.getInt("Height");
         int width = tags.getInt("Width");
@@ -240,12 +238,12 @@ public class NomadBookItem extends Item {
                     tags.putBoolean("DisplayBoundaries", true);
                 }
 
-                return TypedActionResult.pass(itemStack);
+                return new TypedActionResult(ActionResult.PASS, user.getStackInHand(hand));
             } else {
                 // if structure is in another dimension, error
                 if (tags.getInt("Dimension") != world.getDimension().getType().getRawId()) {
                     user.addChatMessage(new TranslatableText("error.nomadbooks.different_dimension"), true);
-                    return TypedActionResult.fail(itemStack);
+                    return new TypedActionResult(ActionResult.FAIL, user.getStackInHand(hand));
                 }
 
                 // if default structure path, create a new one
@@ -263,7 +261,7 @@ public class NomadBookItem extends Item {
                     try {
                         structure = structureManager.getStructureOrBlank(new Identifier(structurePath));
                     } catch (InvalidIdentifierException var8) {
-                        return TypedActionResult.fail(itemStack);
+                        return new TypedActionResult(ActionResult.FAIL, user.getStackInHand(hand));
                     }
 
                     structure.method_15174(world, pos.add(new BlockPos(0, 0, 0)), new BlockPos(width, height, width), true, Blocks.STRUCTURE_VOID);
@@ -296,7 +294,7 @@ public class NomadBookItem extends Item {
                 }
 
                 // if membrane upgrade, remove membrane
-                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane"))) {
+                if (tags.getList("Upgrades", NbtType.STRING).contains(new StringTag("aquatic_membrane"))) {
                     for (int x = -1; x < width+1; x++) {
                         for (int z = -1; z < width+1; z++) {
                             for (int y = -1; y < height + 1; y++) {
@@ -314,7 +312,7 @@ public class NomadBookItem extends Item {
                 }
 
                 // if mushroom upgrade, remove shroom blocks
-                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("fungi_support"))) {
+                if (tags.getList("Upgrades", NbtType.STRING).contains(new StringTag("fungi_support"))) {
                     for (int x = 0; x < width; x++) {
                         for (int z = 0; z < width; z++) {
                             BlockPos p = pos.add(new BlockPos(x, -1, z));
@@ -336,7 +334,7 @@ public class NomadBookItem extends Item {
                 }
 
 //                // if end upgrade, tp platform and teleporter back to the end
-//                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
+//                if (tags.getList("Upgrades", NbtType.STRING).contains(new StringTag("end"))) {
 //                    for (int x = 0; x < width; x++) {
 //                        for (int z = 0; z < width; z++) {
 //                            for (int y = 0; y > -4; y--) {
@@ -370,7 +368,7 @@ public class NomadBookItem extends Item {
                 if (!world.isClient()) {
                     // remove blocks dropped by accident
                     BlockPos p2 = pos.add(new BlockPos(width, height, width));
-                    List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), new Predicate<ItemEntity>() {
+                    List<ItemEntity> itemEntities = world.getEntities(ItemEntity.class, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), new Predicate<ItemEntity>() {
                         @Override
                         public boolean test(ItemEntity itemEntity) {
                             return itemEntity.getAge() < 1;
@@ -382,11 +380,11 @@ public class NomadBookItem extends Item {
                 // remove boundaries display
                 tags.putBoolean("DisplayBoundaries", false);
 
-                world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 0.9f, true);
-                return TypedActionResult.success(itemStack);
+                world.playSound(user.x, user.y, user.z, SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.BLOCKS, 1, 0.9f, true);
+                return new TypedActionResult(ActionResult.SUCCESS, user.getStackInHand(hand));
             }
         } else {
-            return TypedActionResult.fail(itemStack);
+            return new TypedActionResult(ActionResult.FAIL, user.getStackInHand(hand));
         }
     }
 
@@ -409,7 +407,7 @@ public class NomadBookItem extends Item {
         }
         // camp coordinates if deployed
         if (stack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f) {
-            BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos"));
+            BlockPos pos = TagHelper.deserializeBlockPos(tags.getCompound("CampPos"));
             DimensionType dim = DimensionType.byRawId(tags.getInt("Dimension"));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()).formatted(Formatting.DARK_GRAY));
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim).formatted(Formatting.DARK_GRAY));
