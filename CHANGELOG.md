@@ -1,5 +1,9 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.2.1-1.14.4 - 1.14.4
+
+- Backported to Minecraft 1.14.4
+
 ### Nomad Books 0.2.1 - 1.15.1
 
 - All plants (flowers, lily-pads, vines...) will now be destroyed when deploying a camp
