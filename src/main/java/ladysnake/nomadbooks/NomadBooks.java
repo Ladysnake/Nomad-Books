@@ -108,7 +108,7 @@ public class NomadBooks implements ModInitializer {
             }
         });
 
-        MEMBRANE = Registry.register(Registry.BLOCK, MODID + ":membrane", new MembraneBlock(FabricBlockSettings.of(Material.CLAY).strength(0.6f, 0f).nonOpaque().sounds(BlockSoundGroup.field_21214).noCollision().build()));
+        MEMBRANE = Registry.register(Registry.BLOCK, MODID + ":membrane", new MembraneBlock(FabricBlockSettings.of(Material.CLAY).strength(0.6f, 0f).nonOpaque().sounds(BlockSoundGroup.HONEY).noCollision().build()));
         NOMAD_MUSHROOM_BLOCK = Registry.register(Registry.BLOCK, MODID + ":nomad_mushroom_block", new NomadMushroomBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.PURPLE).strength(0.6F, 0).sounds(BlockSoundGroup.WOOD).build()));
         NOMAD_MUSHROOM_STEM = Registry.register(Registry.BLOCK, MODID + ":nomad_mushroom_stem", new NomadMushroomStemBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.WEB).strength(0.6F, 0).sounds(BlockSoundGroup.WOOD).build()));
 //        TELEPORTER = Registry.register(Registry.BLOCK, MODID + ":teleporter", new TeleporterBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.GREEN).sounds(BlockSoundGroup.GLASS).lightLevel(1).build()));
