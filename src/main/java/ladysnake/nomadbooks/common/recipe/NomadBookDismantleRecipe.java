@@ -22,7 +22,6 @@ public class NomadBookDismantleRecipe extends SpecialCraftingRecipe {
 
         for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
             ItemStack itemStack = craftingInventory.getInvStack(i);
-            System.out.println(itemStack);
             if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
                 book = itemStack;
             } else if (!itemStack.isEmpty()) {
