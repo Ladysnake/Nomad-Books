@@ -1,5 +1,10 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.3 - 20w06a
+
+- Removed console spam when crafting or upgrading nomad books
+- Updated to Minecraft snapshot 20w06a
+
 ### Nomad Books 0.2.1 - 1.15.1
 
 - All plants (flowers, lily-pads, vines...) will now be destroyed when deploying a camp
