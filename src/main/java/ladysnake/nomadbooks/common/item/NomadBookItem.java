@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class NomadBookItem extends Item {
+    public static final int CAMP_RETRIEVAL_RADIUS = 10;
+
     public static final String defaultStructurePath = NomadBooks.MODID + ":campfire7x1x7";
 
     public NomadBookItem(Settings settings) {
@@ -69,30 +71,6 @@ public class NomadBookItem extends Item {
             BlockPos ogpos = pos.add(new BlockPos(0, 1, 0));
             pos = pos.add(new BlockPos(-width/2, 1, -width/2));
 
-            // end platform upgrade
-//            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
-//                boolean canPlacePlatform = false;
-//                int endy = 20;
-//                while (!canPlacePlatform) {
-//                    canPlacePlatform = true;
-//                    for (int x = 0; x < width; x++) {
-//                        for (int z = 0; z < width; z++) {
-//                            for (int y = 0; y < 4; y++) {
-//                                BlockPos p = pos.add(new BlockPos(x, endy + y, z));
-//                                BlockState bs = context.getWorld().getBlockState(p);
-//                                if (!isBlockReplaceable(bs)) {
-//                                    canPlacePlatform = false;
-//                                }
-//                            }
-//                        }
-//                    }
-//                    if (!canPlacePlatform) {
-//                        endy++;
-//                    }
-//                }
-//                pos = pos.add(new BlockPos(0, endy+1, 0));
-//            }
-
             // check if there's enough space
             for (int x = 0; x < width; x++) {
                 for (int z = 0; z < width; z++) {
@@ -106,29 +84,6 @@ public class NomadBookItem extends Item {
                     }
                 }
             }
-
-//            // if enough space and end upgrade, set up the platform
-//            if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
-//                for (int x = 0; x < width; x++) {
-//                    for (int z = 0; z < width; z++) {
-//                        for (int y = 0; y > -4; y--) {
-//                            Block b = Blocks.END_STONE_BRICKS;
-//                            if (y == 0 || y == -3) {
-//                                b = Blocks.PURPUR_BLOCK;
-//                            }
-//                            if (x == 0 && z == 0 || x == 0 && z == 6 || x == 6 && z == 0 || x == 6 && z ==6) {
-//                                b = Blocks.PURPUR_PILLAR;
-//                            }
-//                            BlockPos p = pos.add(new BlockPos(x, y-1, z));
-//                            context.getWorld().setBlockState(p, b.getDefaultState());
-//                            context.getWorld().playSound(p.getX(), p.getY(), p.getZ(), SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1, true);
-//                        }
-//                    }
-//                }
-//                // place teleporter block
-//                context.getWorld().setBlockState(ogpos, NomadBooks.TELEPORTER.getDefaultState());
-//                context.getWorld().playSound(ogpos.getX(), ogpos.getY(), ogpos.getZ(), SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1, true);
-//            }
 
             // mushroom platform upgrade
             if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("fungi_support"))) {
@@ -242,9 +197,14 @@ public class NomadBookItem extends Item {
 
                 return TypedActionResult.pass(itemStack);
             } else {
-                // if structure is in another dimension, error
-                if (tags.getInt("Dimension") != world.getDimension().getType().getRawId()) {
-                    user.addMessage(new TranslatableText("error.nomadbooks.different_dimension"), true);
+                // if player is in the camp boundaries
+                if ((user.getX() >= pos.getX()-CAMP_RETRIEVAL_RADIUS && user.getX() <= pos.getX()+width+CAMP_RETRIEVAL_RADIUS)
+                    && (user.getZ() >= pos.getZ()-CAMP_RETRIEVAL_RADIUS && user.getZ() <= pos.getZ()+width+CAMP_RETRIEVAL_RADIUS)
+                    && (user.getY() >= pos.getY()-CAMP_RETRIEVAL_RADIUS && user.getY() <= pos.getY()+height+CAMP_RETRIEVAL_RADIUS)
+                    && tags.getInt("Dimension") == world.getDimension().getType().getRawId()) {
+
+                } else {
+                    user.addMessage(new TranslatableText("error.nomadbooks.camp_too_far"), true);
                     return TypedActionResult.fail(itemStack);
                 }
 
@@ -334,38 +294,6 @@ public class NomadBookItem extends Item {
                         }
                     }
                 }
-
-//                // if end upgrade, tp platform and teleporter back to the end
-//                if (tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("end"))) {
-//                    for (int x = 0; x < width; x++) {
-//                        for (int z = 0; z < width; z++) {
-//                            for (int y = 0; y > -4; y--) {
-//                                BlockPos p = pos.add(new BlockPos(x, y - 1, z));
-//                                BlockState bs = world.getBlockState(p);
-//                                if (bs.getBlock().equals(Blocks.PURPUR_BLOCK) || bs.getBlock().equals(Blocks.END_STONE_BRICKS) || bs.getBlock().equals(Blocks.PURPUR_PILLAR)) {
-//                                    world.setBlockState(p, Blocks.AIR.getDefaultState());
-//                                    world.playSound(p.getX(), p.getY(), p.getZ(), SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1, true);
-//                                    for (float ix = 0; ix <= 1; ix += 0.5) {
-//                                        for (float iy = 0; iy <= 1; iy += 0.5) {
-//                                            for (float iz = 0; iz <= 1; iz += 0.5) {
-//                                                world.addParticle(ParticleTypes.PORTAL, p.getX() + ix, p.getY() + iy, p.getZ() + iz, 0, 0, 0);
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    int y = -20;
-//                    while (!world.getBlockState(pos.add(new BlockPos(3, y, 3))).getBlock().equals(NomadBooks.TELEPORTER) && y > -200) {
-//                        y--;
-//                    }
-//                    BlockPos p = pos.add(new BlockPos(3, y, 3));
-//                    if (world.getBlockState(p).getBlock().equals(NomadBooks.TELEPORTER)) {
-//                        world.breakBlock(p, false);
-//                    }
-//                }
 
                 if (!world.isClient()) {
                     // remove blocks dropped by accident
