@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
-    @Shadow public abstract void addChatMessage(Text message, boolean bl);
+    @Shadow public abstract void addMessage(Text message, boolean bl);
 
     public ServerPlayerEntityMixin(World world, GameProfile profile) {
         super(world, profile);
@@ -61,7 +61,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                             BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos")).add(-1, 0, -1);
                             tags.put("CampPos", NbtHelper.fromBlockPos(pos));
                             // show a chat message to the player
-                            this.addChatMessage(new TranslatableText("info.nomadbooks.itinerant_ink_done", tags.getInt("Width")).formatted(Formatting.BLUE), false);
+                            this.addMessage(new TranslatableText("info.nomadbooks.itinerant_ink_done", tags.getInt("Width")).formatted(Formatting.BLUE), false);
                             // sound effect not working because server side
                             // this.world.playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1, 1, true);
                         } else {

@@ -100,7 +100,7 @@ public class NomadBookItem extends Item {
                         BlockPos p = pos.add(new BlockPos(x, y, z));
                         BlockState bs = context.getWorld().getBlockState(p);
                         if (!(isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane")))) {
-                            context.getPlayer().addChatMessage(new TranslatableText("error.nomadbooks.no_space"), true);
+                            context.getPlayer().addMessage(new TranslatableText("error.nomadbooks.no_space"), true);
                             return ActionResult.FAIL;
                         }
                     }
@@ -158,7 +158,7 @@ public class NomadBookItem extends Item {
                     BlockPos p = pos.add(new BlockPos(x, -1, z));
                     BlockState bs = context.getWorld().getBlockState(p);
                     if (isBlockReplaceable(bs)) {
-                        context.getPlayer().addChatMessage(new TranslatableText("error.nomadbooks.invalid_surface"), true);
+                        context.getPlayer().addMessage(new TranslatableText("error.nomadbooks.invalid_surface"), true);
                         return ActionResult.FAIL;
                     }
                 }
@@ -233,10 +233,10 @@ public class NomadBookItem extends Item {
             if (user.isSneaking()) {
                 // switch boundaries display on or off
                 if (tags.getBoolean("DisplayBoundaries")) {
-                    user.addChatMessage(new TranslatableText("info.nomadbooks.display_boundaries_off"), true);
+                    user.addMessage(new TranslatableText("info.nomadbooks.display_boundaries_off"), true);
                     tags.putBoolean("DisplayBoundaries", false);
                 } else {
-                    user.addChatMessage(new TranslatableText("info.nomadbooks.display_boundaries_on"), true);
+                    user.addMessage(new TranslatableText("info.nomadbooks.display_boundaries_on"), true);
                     tags.putBoolean("DisplayBoundaries", true);
                 }
 
@@ -244,7 +244,7 @@ public class NomadBookItem extends Item {
             } else {
                 // if structure is in another dimension, error
                 if (tags.getInt("Dimension") != world.getDimension().getType().getRawId()) {
-                    user.addChatMessage(new TranslatableText("error.nomadbooks.different_dimension"), true);
+                    user.addMessage(new TranslatableText("error.nomadbooks.different_dimension"), true);
                     return TypedActionResult.fail(itemStack);
                 }
 

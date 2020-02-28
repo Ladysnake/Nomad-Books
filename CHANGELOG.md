@@ -1,5 +1,9 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.4 - 20w09a
+
+- Updated to Minecraft snapshot 20w09a
+
 ### Nomad Books 0.3 - 20w06a
 
 - Removed console spam when crafting or upgrading nomad books
