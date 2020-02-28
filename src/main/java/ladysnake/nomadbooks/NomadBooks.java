@@ -37,6 +37,7 @@ public class NomadBooks implements ModInitializer {
     private static final Identifier OUTPOST_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/pillager_outpost");
     private static final Identifier STRONGHOLD_LIBRARY_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/stronghold_library");
     private static final Identifier CARTOGRAPHER_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/village/village_cartographer");
+    private static final Identifier BONUS_CHEST_LOOT_TABLE_ID = new Identifier("minecraft", "chests/spawn_bonus_chest");
 
     public static Item GRASS_PAGE;
     public static Item NOMAD_PAGE;
@@ -111,6 +112,18 @@ public class NomadBooks implements ModInitializer {
                 supplier.withPool(poolBuilder);
             }
             if (STRONGHOLD_LIBRARY_CHEST_LOOT_TABLE_ID.equals(id)) {
+                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
+                        .withRolls(ConstantLootTableRange.create(1))
+                        .withEntry(ItemEntry.builder(NOMAD_BOOK))
+                        .withFunction(SetNbtLootFunction.builder(Util.make(new CompoundTag(), (compoundTag) -> compoundTag.put(MODID, Util.make(new CompoundTag(), child -> {
+                            child.putInt("Height", 3);
+                            child.putInt("Width", 7);
+                            child.putString("Structure", NomadBookItem.defaultStructurePath);
+                        })))));
+
+                supplier.withPool(poolBuilder);
+            }
+            if (BONUS_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
                         .withRolls(ConstantLootTableRange.create(1))
                         .withEntry(ItemEntry.builder(NOMAD_BOOK))
