@@ -52,7 +52,7 @@ public class NomadBooks implements ModInitializer {
 //    public static Block TELEPORTER;
 
     public static SpecialRecipeSerializer<NomadBookCraftRecipe> CRAFT_NOMAD_BOOK;
-    public static SpecialRecipeSerializer<NomadPageCraftRecipe> CRAFT_NOMAD_PAGE;
+//    public static SpecialRecipeSerializer<NomadPageCraftRecipe> CRAFT_NOMAD_PAGE;
     public static SpecialRecipeSerializer<NomadBookHeightUpgradeRecipe> UPGRADE_HEIGHT_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookDismantleRecipe> DISMANTLE_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookUpgradeRecipe> UPGRADE_NOMAD_BOOK;
@@ -144,7 +144,7 @@ public class NomadBooks implements ModInitializer {
 
         NomadPageCraftRecipe.initCraftResult();
         NomadBookCraftRecipe.initCraftResult();
-        CRAFT_NOMAD_PAGE = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadpagecraft"), new SpecialRecipeSerializer<>(NomadPageCraftRecipe::new));
+//        CRAFT_NOMAD_PAGE = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadpagecraft"), new SpecialRecipeSerializer<>(NomadPageCraftRecipe::new));
         CRAFT_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookcraft"), new SpecialRecipeSerializer<>(NomadBookCraftRecipe::new));
         UPGRADE_HEIGHT_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookupgradeheight"), new SpecialRecipeSerializer<>(NomadBookHeightUpgradeRecipe::new));
         DISMANTLE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookdismantle"), new SpecialRecipeSerializer<>(NomadBookDismantleRecipe::new));
