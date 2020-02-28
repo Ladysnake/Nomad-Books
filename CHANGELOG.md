@@ -2,6 +2,8 @@
 
 ### Nomad Books 0.4 - 20w09a
 
+- Player now needs to be in a 10 block radius from the camp to be able to retrieve it
+- Players can now use a nomad book with an ender pearl in their off hand to teleport to their deployed camp (when far enough from the camp)
 - Updated to Minecraft snapshot 20w09a
 
 ### Nomad Books 0.3 - 20w06a

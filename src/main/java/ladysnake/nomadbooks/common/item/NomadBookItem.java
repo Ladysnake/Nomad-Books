@@ -12,10 +12,7 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
@@ -197,15 +194,23 @@ public class NomadBookItem extends Item {
 
                 return TypedActionResult.pass(itemStack);
             } else {
-                // if player is in the camp boundaries
-                if ((user.getX() >= pos.getX()-CAMP_RETRIEVAL_RADIUS && user.getX() <= pos.getX()+width+CAMP_RETRIEVAL_RADIUS)
+                // if player is too far from the camp
+                if (!((user.getX() >= pos.getX()-CAMP_RETRIEVAL_RADIUS && user.getX() <= pos.getX()+width+CAMP_RETRIEVAL_RADIUS)
                     && (user.getZ() >= pos.getZ()-CAMP_RETRIEVAL_RADIUS && user.getZ() <= pos.getZ()+width+CAMP_RETRIEVAL_RADIUS)
                     && (user.getY() >= pos.getY()-CAMP_RETRIEVAL_RADIUS && user.getY() <= pos.getY()+height+CAMP_RETRIEVAL_RADIUS)
-                    && tags.getInt("Dimension") == world.getDimension().getType().getRawId()) {
+                    && tags.getInt("Dimension") == world.getDimension().getType().getRawId())) {
 
-                } else {
-                    user.addMessage(new TranslatableText("error.nomadbooks.camp_too_far"), true);
-                    return TypedActionResult.fail(itemStack);
+                    // if the player is holding an ender pearl in his off hand, tp to camp
+                    if (user.getOffHandStack().getItem() == Items.ENDER_PEARL) {
+                        world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
+                        user.refreshPositionAndAngles(pos.getX()+width/2+0.5, pos.getY(), pos.getZ()+width/2+0.5, user.yaw, user.pitch);
+                        user.getOffHandStack().decrement(1);
+                        world.playSound(pos.getX()+width/2+0.5, pos.getY(), pos.getZ()+width/2+0.5, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
+                        return TypedActionResult.success(itemStack);
+                    } else {
+                        user.addMessage(new TranslatableText("error.nomadbooks.camp_too_far"), true);
+                        return TypedActionResult.fail(itemStack);
+                    }
                 }
 
                 // if default structure path, create a new one
