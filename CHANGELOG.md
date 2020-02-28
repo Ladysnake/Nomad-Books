@@ -6,6 +6,8 @@
 - Players can now use a nomad book with an ender pearl in their off hand to teleport to their deployed camp (when far enough from the camp)
 - Grass pages now appear in burried treasure chests and pillager outposts
 - A guaranteed nomad book now appears in bonus chests
+- Simplified the crafting recipe for the nomad book: it is now 3 grass pages and a campfire
+- Removed the crafting recipe for the nomad page so it is no longer obtainable in survival
 - Updated to Minecraft snapshot 20w09a
 
 ### Nomad Books 0.3 - 20w06a

@@ -20,10 +20,15 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class NomadBookCraftRecipe extends ShapedRecipe {
-    public static final List<Item> NOMAD_BOOK_RECIPE = Lists.newArrayList(
-            Items.LIME_DYE, Items.ORANGE_DYE, Items.LIME_DYE,
+    public static final List<Item> NOMAD_BOOK_RECIPE_1 = Lists.newArrayList(
+            Items.AIR, Items.CAMPFIRE, Items.AIR,
             NomadBooks.GRASS_PAGE, NomadBooks.GRASS_PAGE, NomadBooks.GRASS_PAGE,
-            Items.GRAY_DYE, Items.BROWN_DYE, Items.GRAY_DYE
+            Items.AIR, Items.AIR, Items.AIR
+    );
+    public static final List<Item> NOMAD_BOOK_RECIPE_2 = Lists.newArrayList(
+            Items.AIR, Items.AIR, Items.AIR,
+            Items.AIR, Items.CAMPFIRE, Items.AIR,
+            NomadBooks.GRASS_PAGE, NomadBooks.GRASS_PAGE, NomadBooks.GRASS_PAGE
     );
     public static final ItemStack CRAFT_RESULT = new ItemStack(NomadBooks.NOMAD_BOOK);
 
@@ -33,13 +38,11 @@ public class NomadBookCraftRecipe extends ShapedRecipe {
         CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.defaultStructurePath);
     }
 
-
     public NomadBookCraftRecipe(Identifier identifier) {
-        super(identifier, "", 3, 3,
+        super(identifier, "", 3, 2,
                 DefaultedList.copyOf(Ingredient.EMPTY,
-                        Ingredient.ofItems(Items.LIME_DYE), Ingredient.ofItems(Items.ORANGE_DYE), Ingredient.ofItems(Items.LIME_DYE),
-                        Ingredient.ofItems(NomadBooks.GRASS_PAGE), Ingredient.ofItems(NomadBooks.GRASS_PAGE), Ingredient.ofItems(NomadBooks.GRASS_PAGE),
-                        Ingredient.ofItems(Items.GRAY_DYE), Ingredient.ofItems(Items.BROWN_DYE), Ingredient.ofItems(Items.GRAY_DYE)
+                        Ingredient.ofItems(Items.AIR), Ingredient.ofItems(Items.CAMPFIRE), Ingredient.ofItems(Items.AIR),
+                        Ingredient.ofItems(NomadBooks.GRASS_PAGE), Ingredient.ofItems(NomadBooks.GRASS_PAGE), Ingredient.ofItems(NomadBooks.GRASS_PAGE)
                 ), CRAFT_RESULT);
     }
 
@@ -47,10 +50,10 @@ public class NomadBookCraftRecipe extends ShapedRecipe {
         List<Item> list = Lists.newArrayList();
 
         for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-             list.add(craftingInventory.getInvStack(i).getItem());
+            list.add(craftingInventory.getInvStack(i).getItem());
         }
 
-        return list.equals(NOMAD_BOOK_RECIPE);
+        return list.equals(NOMAD_BOOK_RECIPE_1) || list.equals(NOMAD_BOOK_RECIPE_2);
     }
 
     public ItemStack craft(CraftingInventory craftingInventory) {
@@ -60,7 +63,7 @@ public class NomadBookCraftRecipe extends ShapedRecipe {
             list.add(craftingInventory.getInvStack(i).getItem());
         }
 
-        if (list.equals(NOMAD_BOOK_RECIPE)) {
+        if (list.equals(NOMAD_BOOK_RECIPE_1) || list.equals(NOMAD_BOOK_RECIPE_2)) {
             return CRAFT_RESULT;
         } else {
             return ItemStack.EMPTY;

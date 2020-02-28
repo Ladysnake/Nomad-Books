@@ -52,7 +52,7 @@ public class NomadBooks implements ModInitializer {
 //    public static Block TELEPORTER;
 
     public static SpecialRecipeSerializer<NomadBookCraftRecipe> CRAFT_NOMAD_BOOK;
-//    public static SpecialRecipeSerializer<NomadPageCraftRecipe> CRAFT_NOMAD_PAGE;
+    public static SpecialRecipeSerializer<NomadPageCraftRecipe> CRAFT_NOMAD_PAGE;
     public static SpecialRecipeSerializer<NomadBookHeightUpgradeRecipe> UPGRADE_HEIGHT_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookDismantleRecipe> DISMANTLE_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookUpgradeRecipe> UPGRADE_NOMAD_BOOK;
