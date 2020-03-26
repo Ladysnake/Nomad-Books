@@ -26,6 +26,7 @@ import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
@@ -231,7 +232,7 @@ public class NomadBookItem extends Item {
                         return TypedActionResult.fail(itemStack);
                     }
 
-                    structure.method_15174(world, pos.add(new BlockPos(0, 0, 0)), new BlockPos(width, height, width), true, Blocks.STRUCTURE_VOID);
+                    structure.saveFromWorld(world, pos.add(new BlockPos(0, 0, 0)), new BlockPos(width, height, width), true, Blocks.STRUCTURE_VOID);
                     structure.setAuthor(user.getEntityName());
                     structureManager.saveStructure(new Identifier(structurePath));
 

@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.2.7-SNAPSHOT'
+	id 'fabric-loom' version '0.2.6-SNAPSHOT'
 	id 'maven-publish'
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
 	id 'org.ajoberstar.grgit' version '3.1.1'
@@ -28,6 +28,9 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
+	// You may need to force-disable transitiveness on them.
 }
 
 processResources {
@@ -93,9 +96,6 @@ task checkGitStatus() {
 			throw new RuntimeException("Git repository not ready for release (${grgit.status()})")
 		}
 		def currentBranch = grgit.branch.current().getName()
-		if (currentBranch != 'master') {
-			throw new RuntimeException("Need to be on the master branch to release (currently on ${currentBranch})")
-		}
 		grgit.fetch()
 		if (grgit.tag.list().any { it.name == project.version }) {
 			throw new RuntimeException("A tag already exists for ${project.version}")

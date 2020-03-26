@@ -1,5 +1,9 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.4.1 - 20w13b
+
+- Updated to Minecraft snapshot 20w13b
+
 ### Nomad Books 0.4 - 20w09a
 
 - Player now needs to be in a 10 block radius from the camp to be able to retrieve it
