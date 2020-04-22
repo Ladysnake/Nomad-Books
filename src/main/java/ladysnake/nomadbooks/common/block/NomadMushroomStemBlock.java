@@ -1,7 +1,6 @@
 package ladysnake.nomadbooks.common.block;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.MushroomBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 

@@ -1,7 +1,6 @@
 package ladysnake.nomadbooks.common.recipe;
 
 import ladysnake.nomadbooks.NomadBooks;
-import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.util.NbtType;
@@ -20,8 +19,8 @@ public class NomadBookDismantleRecipe extends SpecialCraftingRecipe {
     public boolean matches(CraftingInventory craftingInventory, World world) {
         ItemStack book = null;
 
-        for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-            ItemStack itemStack = craftingInventory.getInvStack(i);
+        for(int i = 0; i < craftingInventory.size(); ++i) {
+            ItemStack itemStack = craftingInventory.getStack(i);
             if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
                 book = itemStack;
             } else if (!itemStack.isEmpty()) {
@@ -35,8 +34,8 @@ public class NomadBookDismantleRecipe extends SpecialCraftingRecipe {
     public ItemStack craft(CraftingInventory craftingInventory) {
         ItemStack book = null;
 
-        for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-            ItemStack itemStack = craftingInventory.getInvStack(i);
+        for(int i = 0; i < craftingInventory.size(); ++i) {
+            ItemStack itemStack = craftingInventory.getStack(i);
             if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
                 book = itemStack;
             } else if (!itemStack.isEmpty()) {

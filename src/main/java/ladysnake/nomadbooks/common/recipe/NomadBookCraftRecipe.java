@@ -48,8 +48,8 @@ public class NomadBookCraftRecipe extends ShapedRecipe {
     public boolean matches(CraftingInventory craftingInventory, World world) {
         List<Item> list = Lists.newArrayList();
 
-        for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-            list.add(craftingInventory.getInvStack(i).getItem());
+        for(int i = 0; i < craftingInventory.size(); ++i) {
+            list.add(craftingInventory.getStack(i).getItem());
         }
 
         return list.equals(NOMAD_BOOK_RECIPE_1) || list.equals(NOMAD_BOOK_RECIPE_2);
@@ -58,8 +58,8 @@ public class NomadBookCraftRecipe extends ShapedRecipe {
     public ItemStack craft(CraftingInventory craftingInventory) {
         List<Item> list = Lists.newArrayList();
 
-        for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-            list.add(craftingInventory.getInvStack(i).getItem());
+        for(int i = 0; i < craftingInventory.size(); ++i) {
+            list.add(craftingInventory.getStack(i).getItem());
         }
 
         if (list.equals(NOMAD_BOOK_RECIPE_1) || list.equals(NOMAD_BOOK_RECIPE_2)) {

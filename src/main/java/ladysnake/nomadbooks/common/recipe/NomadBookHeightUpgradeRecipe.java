@@ -23,8 +23,8 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
         ItemStack itemStack = ItemStack.EMPTY;
         List<ItemStack> list = Lists.newArrayList();
 
-        for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-            ItemStack itemStack2 = craftingInventory.getInvStack(i);
+        for(int i = 0; i < craftingInventory.size(); ++i) {
+            ItemStack itemStack2 = craftingInventory.getStack(i);
             if (!itemStack2.isEmpty()) {
                 if (itemStack2.getItem().equals(NomadBooks.NOMAD_BOOK)) {
                     if (!itemStack.isEmpty()) {
@@ -49,8 +49,8 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
         List<Item> list = Lists.newArrayList();
         ItemStack itemStack = ItemStack.EMPTY;
 
-        for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-            ItemStack itemStack2 = craftingInventory.getInvStack(i);
+        for(int i = 0; i < craftingInventory.size(); ++i) {
+            ItemStack itemStack2 = craftingInventory.getStack(i);
             if (!itemStack2.isEmpty()) {
                 Item item = itemStack2.getItem();
                 if (item.equals(NomadBooks.NOMAD_BOOK)) {

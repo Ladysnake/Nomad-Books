@@ -1,5 +1,9 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.4.2 - 20w17a
+
+- Updated to Minecraft snapshot 20w17a
+
 ### Nomad Books 0.4.1 - 20w13b
 
 - Updated to Minecraft snapshot 20w13b

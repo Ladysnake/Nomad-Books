@@ -10,8 +10,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -23,18 +21,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static net.minecraft.text.Style.field_24360;
+
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
-    @Shadow public abstract void addMessage(Text message, boolean bl);
+    @Shadow public abstract void sendMessage(Text message, boolean bl);
 
     public ServerPlayerEntityMixin(World world, GameProfile profile) {
         super(world, profile);
     }
 
-    @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/advancement/criterion/Criterions;LOCATION:Lnet/minecraft/advancement/criterion/LocationArrivalCriterion;"), method = "playerTick")
+    @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/advancement/criterion/Criteria;LOCATION:Lnet/minecraft/advancement/criterion/LocationArrivalCriterion;"), method = "playerTick")
     private void enterBiome(CallbackInfo info) {
-        for (int i = 0; i < this.inventory.getInvSize(); ++i) {
-            ItemStack itemStack = this.inventory.getInvStack(i);
+        for (int i = 0; i < this.inventory.size(); ++i) {
+            ItemStack itemStack = this.inventory.getStack(i);
             if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
                 CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
                 // if inventory has an inked nomad book
@@ -61,7 +61,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                             BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos")).add(-1, 0, -1);
                             tags.put("CampPos", NbtHelper.fromBlockPos(pos));
                             // show a chat message to the player
-                            this.addMessage(new TranslatableText("info.nomadbooks.itinerant_ink_done", tags.getInt("Width")).formatted(Formatting.BLUE), false);
+                            this.sendMessage(new TranslatableText("info.nomadbooks.itinerant_ink_done", tags.getInt("Width")).setStyle(field_24360.setColor(Formatting.BLUE)), false);
                             // sound effect not working because server side
                             // this.world.playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1, 1, true);
                         } else {

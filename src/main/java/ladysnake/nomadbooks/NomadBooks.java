@@ -1,7 +1,7 @@
 package ladysnake.nomadbooks;
 
-import ladysnake.nomadbooks.common.block.NomadMushroomBlock;
 import ladysnake.nomadbooks.common.block.MembraneBlock;
+import ladysnake.nomadbooks.common.block.NomadMushroomBlock;
 import ladysnake.nomadbooks.common.block.NomadMushroomStemBlock;
 import ladysnake.nomadbooks.common.item.BookUpgradeItem;
 import ladysnake.nomadbooks.common.item.NomadBookItem;
@@ -19,7 +19,6 @@ import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.SetNbtLootFunction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;

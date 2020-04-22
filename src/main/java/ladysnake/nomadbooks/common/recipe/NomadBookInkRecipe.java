@@ -24,8 +24,8 @@ public class NomadBookInkRecipe extends SpecialCraftingRecipe {
         List<Item> ingredients = Lists.newArrayList();
         ItemStack book = null;
 
-        for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-            ItemStack itemStack = craftingInventory.getInvStack(i);
+        for(int i = 0; i < craftingInventory.size(); ++i) {
+            ItemStack itemStack = craftingInventory.getStack(i);
             Item item = itemStack.getItem();
             if (item.equals(NomadBooks.NOMAD_BOOK)) {
                 book = itemStack;
@@ -41,8 +41,8 @@ public class NomadBookInkRecipe extends SpecialCraftingRecipe {
         List<Item> ingredients = Lists.newArrayList();
         ItemStack book = null;
 
-        for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-            ItemStack itemStack = craftingInventory.getInvStack(i);
+        for(int i = 0; i < craftingInventory.size(); ++i) {
+            ItemStack itemStack = craftingInventory.getStack(i);
             Item item = itemStack.getItem();
             if (item.equals(NomadBooks.NOMAD_BOOK)) {
                 book = itemStack;

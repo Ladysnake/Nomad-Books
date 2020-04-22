@@ -34,7 +34,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
 import java.util.List;
-import java.util.function.Predicate;
+
+import static net.minecraft.text.Style.field_24360;
 
 public class NomadBookItem extends Item {
     public static final int CAMP_RETRIEVAL_RADIUS = 10;
@@ -76,7 +77,7 @@ public class NomadBookItem extends Item {
                         BlockPos p = pos.add(new BlockPos(x, y, z));
                         BlockState bs = context.getWorld().getBlockState(p);
                         if (!(isBlockReplaceable(bs) || isBlockUnderwaterReplaceable(bs) && tags.getList("Upgrades", NbtType.STRING).contains(StringTag.of("aquatic_membrane")))) {
-                            context.getPlayer().addMessage(new TranslatableText("error.nomadbooks.no_space"), true);
+                            context.getPlayer().sendMessage(new TranslatableText("error.nomadbooks.no_space"), true);
                             return ActionResult.FAIL;
                         }
                     }
@@ -111,7 +112,7 @@ public class NomadBookItem extends Item {
                     BlockPos p = pos.add(new BlockPos(x, -1, z));
                     BlockState bs = context.getWorld().getBlockState(p);
                     if (isBlockReplaceable(bs)) {
-                        context.getPlayer().addMessage(new TranslatableText("error.nomadbooks.invalid_surface"), true);
+                        context.getPlayer().sendMessage(new TranslatableText("error.nomadbooks.invalid_surface"), true);
                         return ActionResult.FAIL;
                     }
                 }
@@ -186,10 +187,10 @@ public class NomadBookItem extends Item {
             if (user.isSneaking()) {
                 // switch boundaries display on or off
                 if (tags.getBoolean("DisplayBoundaries")) {
-                    user.addMessage(new TranslatableText("info.nomadbooks.display_boundaries_off"), true);
+                    user.sendMessage(new TranslatableText("info.nomadbooks.display_boundaries_off"), true);
                     tags.putBoolean("DisplayBoundaries", false);
                 } else {
-                    user.addMessage(new TranslatableText("info.nomadbooks.display_boundaries_on"), true);
+                    user.sendMessage(new TranslatableText("info.nomadbooks.display_boundaries_on"), true);
                     tags.putBoolean("DisplayBoundaries", true);
                 }
 
@@ -209,7 +210,7 @@ public class NomadBookItem extends Item {
                         world.playSound(pos.getX()+width/2+0.5, pos.getY(), pos.getZ()+width/2+0.5, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
                         return TypedActionResult.success(itemStack);
                     } else {
-                        user.addMessage(new TranslatableText("error.nomadbooks.camp_too_far"), true);
+                        user.sendMessage(new TranslatableText("error.nomadbooks.camp_too_far"), true);
                         return TypedActionResult.fail(itemStack);
                     }
                 }
@@ -304,13 +305,8 @@ public class NomadBookItem extends Item {
                 if (!world.isClient()) {
                     // remove blocks dropped by accident
                     BlockPos p2 = pos.add(new BlockPos(width, height, width));
-                    List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), new Predicate<ItemEntity>() {
-                        @Override
-                        public boolean test(ItemEntity itemEntity) {
-                            return itemEntity.getAge() < 1;
-                        }
-                    });
-                    itemEntities.forEach(ItemEntity::remove);
+                    List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), itemEntity -> true);
+                    itemEntities.forEach(itemEntity -> System.out.println(itemEntity.getOwner()));
                 }
 
                 // remove boundaries display
@@ -332,26 +328,26 @@ public class NomadBookItem extends Item {
         if (stack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
             int height = tags.getInt("Height");
             int width = tags.getInt("Width");
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", height).formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.width", width).formatted(Formatting.GRAY));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", height).setStyle(field_24360.setColor(Formatting.GRAY)));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.width", width).setStyle(field_24360.setColor(Formatting.GRAY)));
             ListTag upgrades = tags.getList("Upgrades", NbtType.STRING);
-            upgrades.forEach(tag -> tooltip.add(new TranslatableText("upgrade.nomadbooks."+tag.asString()).formatted(Formatting.DARK_AQUA)));
+            upgrades.forEach(tag -> tooltip.add(new TranslatableText("upgrade.nomadbooks."+tag.asString()).setStyle(field_24360.setColor(Formatting.DARK_AQUA))));
         }
         // if inked, show progress
         if (tags.getBoolean("Inked")) {
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.itinerant_ink", tags.getInt("InkProgress"), tags.getInt("InkGoal")).formatted(Formatting.BLUE));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.itinerant_ink", tags.getInt("InkProgress"), tags.getInt("InkGoal")).setStyle(field_24360.setColor(Formatting.BLUE)));
         }
         // camp coordinates if deployed
         if (stack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f) {
             BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos"));
             DimensionType dim = DimensionType.byRawId(tags.getInt("Dimension"));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()).formatted(Formatting.DARK_GRAY));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim).formatted(Formatting.DARK_GRAY));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()).setStyle(field_24360.setColor(Formatting.DARK_GRAY)));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim).setStyle(field_24360.setColor(Formatting.DARK_GRAY)));
         }
         // displaying boundaries
         if (stack.getItem() instanceof NomadBookItem) {
             if (tags.getBoolean("DisplayBoundaries")) {
-                tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.boundaries_display").formatted(Formatting.GREEN).formatted(Formatting.ITALIC));
+                tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.boundaries_display").setStyle(field_24360.setColor(Formatting.GREEN).setItalic(true)));
             }
         }
     }

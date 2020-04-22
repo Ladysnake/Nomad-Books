@@ -25,8 +25,8 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
     @Inject(at = @At(value = "HEAD"), method = "tick")
     private void displayBoundaries(CallbackInfo info) {
         if (world.getTime() % 10 == 0) {
-            for (int i = 0; i < this.inventory.getInvSize(); ++i) {
-                ItemStack itemStack = this.inventory.getInvStack(i);
+            for (int i = 0; i < this.inventory.size(); ++i) {
+                ItemStack itemStack = this.inventory.getStack(i);
                 if (itemStack.getItem() instanceof NomadBookItem) {
                     CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
                     if (tags.getBoolean("DisplayBoundaries")) {

@@ -1,6 +1,5 @@
 package ladysnake.nomadbooks.common.recipe;
 
-import com.google.common.collect.Lists;
 import ladysnake.nomadbooks.NomadBooks;
 import ladysnake.nomadbooks.common.item.BookUpgradeItem;
 import net.fabricmc.api.EnvType;
@@ -15,8 +14,6 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
     public NomadBookUpgradeRecipe(Identifier identifier) {
         super(identifier);
@@ -26,8 +23,8 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
         ItemStack book = null;
         String upgrade = null;
 
-        for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-            ItemStack itemStack = craftingInventory.getInvStack(i);
+        for(int i = 0; i < craftingInventory.size(); ++i) {
+            ItemStack itemStack = craftingInventory.getStack(i);
             if (book == null && itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
                 book = itemStack;
             } else if (upgrade == null && itemStack.getItem() instanceof BookUpgradeItem) {
@@ -44,8 +41,8 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
         ItemStack book = null;
         String upgrade = null;
 
-        for(int i = 0; i < craftingInventory.getInvSize(); ++i) {
-            ItemStack itemStack = craftingInventory.getInvStack(i);
+        for(int i = 0; i < craftingInventory.size(); ++i) {
+            ItemStack itemStack = craftingInventory.getStack(i);
             if (book == null && itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
                 book = itemStack;
             } else if (upgrade == null && itemStack.getItem() instanceof BookUpgradeItem) {
