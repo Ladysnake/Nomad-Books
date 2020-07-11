@@ -20,7 +20,7 @@ A **nomad book** is an item that can store a WxHxW sized camp, with W the width 
 
 #### Obtaining
 
-Nomad books can be obtained by combining lime dye, orange dye, gray dye, brown dye and grass pages. A newly crafted nomad book will have a height of 3 and a width of 7.
+Nomad books can be obtained by combining a campfire and grass pages. A newly crafted nomad book will have a height of 3 and a width of 7.
 
 ![image-20200102175340377](https://raw.githubusercontent.com/Ladysnake/Nomad-Books/master/README.assets/image-20200102175340377.png)
 
@@ -31,12 +31,6 @@ Nomad books of 3 in height and 7 in width can also be found in all stronghold li
 When a nomad book has a camp stored inside it, using it on a block with the book will deploy the camp. To deploy the camp, the surface needs to be wide enough and the area needs to be free of non-replaceable blocks (the camp will automatically destroy grass and snow when deployed).
 
 When a nomad book does not store a camp (meaning the camp is deployed), using it will retrieve the camp. However, camps cannot be retrieved across dimensions. Alternatively, using it while sneaking will reveal the camp's boundaries (blocks highlighted being included).
-
-#### Nomad Page
-
-A nomad page is the one block tall equivalent of a basic nomad book (therefore storing a camp area of 7x1x7). Nomad pages can be obtained by combining lime dye, orange dye, and grass pages.
-
-![image-20200102180717208](https://raw.githubusercontent.com/Ladysnake/Nomad-Books/master/README.assets/image-20200102180717208.png)
 
 #### Upgrading
 
