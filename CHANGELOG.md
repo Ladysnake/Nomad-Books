@@ -1,5 +1,12 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.5 - 1.16.1
+
+- Updated to Minecraft 1.16.1
+- Dimension will no longer be shown in the tooltip of a deployed camp
+- Coordinates are now obfuscated when the camp is in a different dimension than the player
+- Removed the nomad page from the creative inventory
+
 ### Nomad Books 0.4.2 - 20w17a
 
 - Updated to Minecraft snapshot 20w17a

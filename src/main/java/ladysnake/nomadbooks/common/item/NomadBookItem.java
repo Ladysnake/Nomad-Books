@@ -9,6 +9,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.datafixer.NbtOps;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,11 +32,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 
 import java.util.List;
+import java.util.Optional;
 
-import static net.minecraft.text.Style.field_24360;
+import static net.minecraft.text.Style.EMPTY;
 
 public class NomadBookItem extends Item {
     public static final int CAMP_RETRIEVAL_RADIUS = 10;
@@ -44,7 +45,6 @@ public class NomadBookItem extends Item {
 
     public NomadBookItem(Settings settings) {
         super(settings);
-        this.addPropertyGetter(new Identifier(NomadBooks.MODID + ":deployed"), (itemStack, world, livingEntity) -> itemStack.getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed"));
     }
 
     @Override
@@ -65,7 +65,9 @@ public class NomadBookItem extends Item {
             }
 
             // set dimension
-            tags.putInt("Dimension", context.getWorld().getDimension().getType().getRawId());
+            World.CODEC.encodeStart(NbtOps.INSTANCE, context.getWorld().getRegistryKey()).result().ifPresent(tag -> tags.put("Dimension", tag));
+
+            World.CODEC.encodeStart(NbtOps.INSTANCE, context.getWorld().getRegistryKey());
 
             BlockPos ogpos = pos.add(new BlockPos(0, 1, 0));
             pos = pos.add(new BlockPos(-width/2, 1, -width/2));
@@ -157,7 +159,7 @@ public class NomadBookItem extends Item {
                 int offsetWidth = (width - structure.getSize().getX())/2;
 
                 StructurePlacementData structurePlacementData = (new StructurePlacementData()).setIgnoreEntities(true).setChunkPosition((ChunkPos) null);
-                structure.place(serverWorld, pos.add(offsetWidth, 0, offsetWidth), structurePlacementData);
+                structure.place(serverWorld, pos.add(offsetWidth, 0, offsetWidth), structurePlacementData, serverWorld.getRandom());
             }
 
             // set deployed, register nbt
@@ -196,11 +198,12 @@ public class NomadBookItem extends Item {
 
                 return TypedActionResult.pass(itemStack);
             } else {
+                Optional dimension = World.CODEC.parse(NbtOps.INSTANCE, tags.get("Dimension")).result();
                 // if player is too far from the camp
                 if (!((user.getX() >= pos.getX()-CAMP_RETRIEVAL_RADIUS && user.getX() <= pos.getX()+width+CAMP_RETRIEVAL_RADIUS)
                     && (user.getZ() >= pos.getZ()-CAMP_RETRIEVAL_RADIUS && user.getZ() <= pos.getZ()+width+CAMP_RETRIEVAL_RADIUS)
                     && (user.getY() >= pos.getY()-CAMP_RETRIEVAL_RADIUS && user.getY() <= pos.getY()+height+CAMP_RETRIEVAL_RADIUS)
-                    && tags.getInt("Dimension") == world.getDimension().getType().getRawId())) {
+                    && (dimension.isPresent() && (dimension.get() == world.getRegistryKey())))) {
 
                     // if the player is holding an ender pearl in his off hand, tp to camp
                     if (user.getOffHandStack().getItem() == Items.ENDER_PEARL) {
@@ -328,26 +331,33 @@ public class NomadBookItem extends Item {
         if (stack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
             int height = tags.getInt("Height");
             int width = tags.getInt("Width");
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", height).setStyle(field_24360.setColor(Formatting.GRAY)));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.width", width).setStyle(field_24360.setColor(Formatting.GRAY)));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", height).setStyle(EMPTY.withColor(Formatting.GRAY)));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.width", width).setStyle(EMPTY.withColor(Formatting.GRAY)));
             ListTag upgrades = tags.getList("Upgrades", NbtType.STRING);
-            upgrades.forEach(tag -> tooltip.add(new TranslatableText("upgrade.nomadbooks."+tag.asString()).setStyle(field_24360.setColor(Formatting.DARK_AQUA))));
+            upgrades.forEach(tag -> tooltip.add(new TranslatableText("upgrade.nomadbooks."+tag.asString()).setStyle(EMPTY.withColor(Formatting.DARK_AQUA))));
         }
         // if inked, show progress
         if (tags.getBoolean("Inked")) {
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.itinerant_ink", tags.getInt("InkProgress"), tags.getInt("InkGoal")).setStyle(field_24360.setColor(Formatting.BLUE)));
+            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.itinerant_ink", tags.getInt("InkProgress"), tags.getInt("InkGoal")).setStyle(EMPTY.withColor(Formatting.BLUE)));
         }
         // camp coordinates if deployed
         if (stack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f) {
             BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos"));
-            DimensionType dim = DimensionType.byRawId(tags.getInt("Dimension"));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()).setStyle(field_24360.setColor(Formatting.DARK_GRAY)));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dim).setStyle(field_24360.setColor(Formatting.DARK_GRAY)));
+
+
+            Optional dimension = World.CODEC.parse(NbtOps.INSTANCE, tags.get("Dimension")).result();
+
+            if (dimension.isPresent() && dimension.get() == world.getRegistryKey()) {
+                tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()).setStyle(EMPTY.withColor(Formatting.DARK_GRAY)));
+            } else {
+                tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.position", pos.getX()+", "+pos.getY()+", "+pos.getZ()).setStyle(EMPTY.withColor(Formatting.DARK_GRAY).withFormatting(Formatting.OBFUSCATED)));
+            }
+//            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.dimension", dimension).setStyle(EMPTY.withColor(Formatting.DARK_GRAY)));
         }
         // displaying boundaries
         if (stack.getItem() instanceof NomadBookItem) {
             if (tags.getBoolean("DisplayBoundaries")) {
-                tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.boundaries_display").setStyle(field_24360.setColor(Formatting.GREEN).setItalic(true)));
+                tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.boundaries_display").setStyle(EMPTY.withColor(Formatting.GREEN).withItalic(true)));
             }
         }
     }
@@ -374,13 +384,13 @@ public class NomadBookItem extends Item {
 
     public static boolean isBlockReplaceable(BlockState blockState) {
         Material m = blockState.getMaterial();
-        return blockState.isAir() || m.equals(Material.REPLACEABLE_PLANT) || m.equals(Material.PLANT) || m.equals(Material.SNOW);
+        return blockState.isAir() || m.equals(Material.REPLACEABLE_PLANT) || m.equals(Material.PLANT) || m.equals(Material.SNOW_LAYER);
     }
 
     public static boolean isBlockUnderwaterReplaceable(BlockState blockState) {
         Block b = blockState.getBlock();
         Material m = blockState.getMaterial();
-        return b.equals(Blocks.WATER) || m.equals(Material.SEAGRASS) || m.equals(Material.UNDERWATER_PLANT);
+        return b.equals(Blocks.WATER) || m.equals(Material.REPLACEABLE_UNDERWATER_PLANT) || m.equals(Material.UNDERWATER_PLANT);
     }
 
 }

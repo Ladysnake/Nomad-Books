@@ -74,7 +74,7 @@ public class NomadPageCraftRecipe extends ShapedRecipe {
         return width * height >= 2;
     }
 
-    public RecipeSerializer<?> getSerializer() {
-        return NomadBooks.CRAFT_NOMAD_PAGE;
-    }
+//    public RecipeSerializer<?> getSerializer() {
+//        return NomadBooks.CRAFT_NOMAD_PAGE;
+//    }
 }

@@ -51,7 +51,7 @@ public class NomadBooks implements ModInitializer {
 //    public static Block TELEPORTER;
 
     public static SpecialRecipeSerializer<NomadBookCraftRecipe> CRAFT_NOMAD_BOOK;
-    public static SpecialRecipeSerializer<NomadPageCraftRecipe> CRAFT_NOMAD_PAGE;
+//    public static SpecialRecipeSerializer<NomadPageCraftRecipe> CRAFT_NOMAD_PAGE;     // obsolete
     public static SpecialRecipeSerializer<NomadBookHeightUpgradeRecipe> UPGRADE_HEIGHT_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookDismantleRecipe> DISMANTLE_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookUpgradeRecipe> UPGRADE_NOMAD_BOOK;
@@ -60,7 +60,7 @@ public class NomadBooks implements ModInitializer {
     @Override
     public void onInitialize() {
         GRASS_PAGE = registerItem(new Item((new Item.Settings()).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "grass_page");
-        NOMAD_PAGE = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "nomad_page");
+        NOMAD_PAGE = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).rarity(Rarity.UNCOMMON)), "nomad_page");
         NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE)), "nomad_book");
         AQUATIC_MEMBRANE_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "aquatic_membrane"), "aquatic_membrane_page");
         MYCELIUM_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "fungi_support"), "mycelium_page");
@@ -70,73 +70,73 @@ public class NomadBooks implements ModInitializer {
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
             if (DUNGEON_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-                        .withRolls(ConstantLootTableRange.create(1))
-                        .withEntry(ItemEntry.builder(GRASS_PAGE));
+                        .rolls(ConstantLootTableRange.create(1))
+                        .withEntry(ItemEntry.builder(GRASS_PAGE).build());
 
-                supplier.withPool(poolBuilder);
+                supplier.withPool(poolBuilder.build());
             }
             if (MINESHAFT_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-                        .withRolls(ConstantLootTableRange.create(1))
-                        .withEntry(ItemEntry.builder(GRASS_PAGE));
+                        .rolls(ConstantLootTableRange.create(1))
+                        .withEntry(ItemEntry.builder(GRASS_PAGE).build());
 
-                supplier.withPool(poolBuilder);
+                supplier.withPool(poolBuilder.build());
             }
             if (TEMPLE_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-                        .withRolls(ConstantLootTableRange.create(1))
-                        .withEntry(ItemEntry.builder(GRASS_PAGE));
+                        .rolls(ConstantLootTableRange.create(1))
+                        .withEntry(ItemEntry.builder(GRASS_PAGE).build());
 
-                supplier.withPool(poolBuilder);
+                supplier.withPool(poolBuilder.build());
             }
             if (TREASURE_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-                        .withRolls(ConstantLootTableRange.create(1))
-                        .withEntry(ItemEntry.builder(GRASS_PAGE));
+                        .rolls(ConstantLootTableRange.create(1))
+                        .withEntry(ItemEntry.builder(GRASS_PAGE).build());
 
-                supplier.withPool(poolBuilder);
+                supplier.withPool(poolBuilder.build());
             }
             if (OUTPOST_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-                        .withRolls(ConstantLootTableRange.create(1))
-                        .withEntry(ItemEntry.builder(GRASS_PAGE));
+                        .rolls(ConstantLootTableRange.create(1))
+                        .withEntry(ItemEntry.builder(GRASS_PAGE).build());
 
-                supplier.withPool(poolBuilder);
+                supplier.withPool(poolBuilder.build());
             }
             if (CARTOGRAPHER_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-                        .withRolls(ConstantLootTableRange.create(1))
-                        .withEntry(ItemEntry.builder(GRASS_PAGE));
+                        .rolls(ConstantLootTableRange.create(1))
+                        .withEntry(ItemEntry.builder(GRASS_PAGE).build());
 
-                supplier.withPool(poolBuilder);
+                supplier.withPool(poolBuilder.build());
             }
             if (STRONGHOLD_LIBRARY_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-                        .withRolls(ConstantLootTableRange.create(1))
-                        .withEntry(ItemEntry.builder(NOMAD_BOOK))
+                        .rolls(ConstantLootTableRange.create(1))
+                        .withEntry(ItemEntry.builder(NOMAD_BOOK).build())
                         .withFunction(SetNbtLootFunction.builder(Util.make(new CompoundTag(), (compoundTag) -> compoundTag.put(MODID, Util.make(new CompoundTag(), child -> {
                             child.putInt("Height", 3);
                             child.putInt("Width", 7);
                             child.putString("Structure", NomadBookItem.defaultStructurePath);
-                        })))));
+                        })))).build());
 
-                supplier.withPool(poolBuilder);
+                supplier.withPool(poolBuilder.build());
             }
             if (BONUS_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-                        .withRolls(ConstantLootTableRange.create(1))
-                        .withEntry(ItemEntry.builder(NOMAD_BOOK))
+                        .rolls(ConstantLootTableRange.create(1))
+                        .withEntry(ItemEntry.builder(NOMAD_BOOK).build())
                         .withFunction(SetNbtLootFunction.builder(Util.make(new CompoundTag(), (compoundTag) -> compoundTag.put(MODID, Util.make(new CompoundTag(), child -> {
                             child.putInt("Height", 3);
                             child.putInt("Width", 7);
                             child.putString("Structure", NomadBookItem.defaultStructurePath);
-                        })))));
+                        })))).build());
 
-                supplier.withPool(poolBuilder);
+                supplier.withPool(poolBuilder.build());
             }
         });
 
-        MEMBRANE = Registry.register(Registry.BLOCK, MODID + ":membrane", new MembraneBlock(FabricBlockSettings.of(Material.CLAY).strength(0.6f, 0f).nonOpaque().sounds(BlockSoundGroup.HONEY).noCollision().build()));
+        MEMBRANE = Registry.register(Registry.BLOCK, MODID + ":membrane", new MembraneBlock(FabricBlockSettings.of(Material.SOLID_ORGANIC).strength(0.6f, 0f).nonOpaque().sounds(BlockSoundGroup.HONEY).noCollision().build()));
         NOMAD_MUSHROOM_BLOCK = Registry.register(Registry.BLOCK, MODID + ":nomad_mushroom_block", new NomadMushroomBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.PURPLE).strength(0.6F, 0).sounds(BlockSoundGroup.WOOD).build()));
         NOMAD_MUSHROOM_STEM = Registry.register(Registry.BLOCK, MODID + ":nomad_mushroom_stem", new NomadMushroomStemBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.WEB).strength(0.6F, 0).sounds(BlockSoundGroup.WOOD).build()));
 //        TELEPORTER = Registry.register(Registry.BLOCK, MODID + ":teleporter", new TeleporterBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.GREEN).sounds(BlockSoundGroup.GLASS).lightLevel(1).build()));

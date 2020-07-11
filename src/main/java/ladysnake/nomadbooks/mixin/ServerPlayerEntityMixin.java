@@ -9,26 +9,28 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.network.ServerPlayerInteractionManager;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.minecraft.text.Style.field_24360;
+import static net.minecraft.text.Style.EMPTY;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Shadow public abstract void sendMessage(Text message, boolean bl);
 
-    public ServerPlayerEntityMixin(World world, GameProfile profile) {
-        super(world, profile);
+    public ServerPlayerEntityMixin(MinecraftServer server, ServerWorld world, GameProfile profile, ServerPlayerInteractionManager interactionManager) {
+        super(world, world.getSpawnPos(), profile);
     }
 
     @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/advancement/criterion/Criteria;LOCATION:Lnet/minecraft/advancement/criterion/LocationArrivalCriterion;"), method = "playerTick")
@@ -61,7 +63,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                             BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos")).add(-1, 0, -1);
                             tags.put("CampPos", NbtHelper.fromBlockPos(pos));
                             // show a chat message to the player
-                            this.sendMessage(new TranslatableText("info.nomadbooks.itinerant_ink_done", tags.getInt("Width")).setStyle(field_24360.setColor(Formatting.BLUE)), false);
+                            this.sendMessage(new TranslatableText("info.nomadbooks.itinerant_ink_done", tags.getInt("Width")).setStyle(EMPTY.withColor(Formatting.BLUE)), false);
                             // sound effect not working because server side
                             // this.world.playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1, 1, true);
                         } else {
