@@ -55,7 +55,9 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
         if (book != null && upgrade != null) {
             ItemStack ret = book.copy();
             ListTag upgradeList = ret.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING);
-            upgradeList.add(StringTag.of(upgrade));
+            if (!upgradeList.contains(StringTag.of(upgrade))) {
+                upgradeList.add(StringTag.of(upgrade));
+            }
             ret.getOrCreateSubTag(NomadBooks.MODID).put("Upgrades", upgradeList);
 
             return ret;
