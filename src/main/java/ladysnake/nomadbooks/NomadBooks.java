@@ -41,6 +41,7 @@ public class NomadBooks implements ModInitializer {
     public static Item GRASS_PAGE;
     public static Item NOMAD_PAGE;
     public static Item NOMAD_BOOK;
+    public static Item NETHER_NOMAD_BOOK;
     public static Item AQUATIC_MEMBRANE_PAGE;
     public static Item MYCELIUM_PAGE;
 //    public static Item END_PAGE;
@@ -56,12 +57,14 @@ public class NomadBooks implements ModInitializer {
     public static SpecialRecipeSerializer<NomadBookDismantleRecipe> DISMANTLE_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookUpgradeRecipe> UPGRADE_NOMAD_BOOK;
     public static SpecialRecipeSerializer<NomadBookInkRecipe> INK_NOMAD_BOOK;
+    public static SpecialRecipeSerializer<NetherNomadBookCraftRecipe> CRAFT_NETHER_NOMAD_BOOK;
 
     @Override
     public void onInitialize() {
         GRASS_PAGE = registerItem(new Item((new Item.Settings()).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON)), "grass_page");
         NOMAD_PAGE = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).rarity(Rarity.UNCOMMON)), "nomad_page");
         NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE)), "nomad_book");
+        NETHER_NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE).fireproof()), "nether_nomad_book");
         AQUATIC_MEMBRANE_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "aquatic_membrane"), "aquatic_membrane_page");
         MYCELIUM_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "fungi_support"), "mycelium_page");
 //        END_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "end"), "end_page");
@@ -141,7 +144,6 @@ public class NomadBooks implements ModInitializer {
         NOMAD_MUSHROOM_STEM = Registry.register(Registry.BLOCK, MODID + ":nomad_mushroom_stem", new NomadMushroomStemBlock(FabricBlockSettings.of(Material.WOOD, MaterialColor.WEB).strength(0.6F, 0).sounds(BlockSoundGroup.WOOD).build()));
 //        TELEPORTER = Registry.register(Registry.BLOCK, MODID + ":teleporter", new TeleporterBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.GREEN).sounds(BlockSoundGroup.GLASS).lightLevel(1).build()));
 
-        NomadPageCraftRecipe.initCraftResult();
         NomadBookCraftRecipe.initCraftResult();
 //        CRAFT_NOMAD_PAGE = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadpagecraft"), new SpecialRecipeSerializer<>(NomadPageCraftRecipe::new));
         CRAFT_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookcraft"), new SpecialRecipeSerializer<>(NomadBookCraftRecipe::new));
@@ -149,6 +151,7 @@ public class NomadBooks implements ModInitializer {
         DISMANTLE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookdismantle"), new SpecialRecipeSerializer<>(NomadBookDismantleRecipe::new));
         UPGRADE_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookupgrade"), new SpecialRecipeSerializer<>(NomadBookUpgradeRecipe::new));
         INK_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nomadbookink"), new SpecialRecipeSerializer<>(NomadBookInkRecipe::new));
+        CRAFT_NETHER_NOMAD_BOOK = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "crafting_special_nethernomadbookcraft"), new SpecialRecipeSerializer<>(NetherNomadBookCraftRecipe::new));
     }
 
     public static Item registerItem(Item item, String name) {

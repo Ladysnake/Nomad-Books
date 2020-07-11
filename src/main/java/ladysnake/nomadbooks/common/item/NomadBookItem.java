@@ -42,6 +42,7 @@ public class NomadBookItem extends Item {
     public static final int CAMP_RETRIEVAL_RADIUS = 10;
 
     public static final String defaultStructurePath = NomadBooks.MODID + ":campfire7x1x7";
+    public static final String netherDefaultStructurePath = NomadBooks.MODID + ":nethercampfire7x1x7";
 
     public NomadBookItem(Settings settings) {
         super(settings);
@@ -219,7 +220,7 @@ public class NomadBookItem extends Item {
                 }
 
                 // if default structure path, create a new one
-                if (structurePath.equals(defaultStructurePath)) {
+                if (structurePath.equals(defaultStructurePath) || structurePath.equals(netherDefaultStructurePath)) {
                     structurePath = NomadBooks.MODID + ":"+user.getUuid()+"/"+System.currentTimeMillis();
                     tags.putString("Structure", structurePath);
                 }
@@ -328,14 +329,13 @@ public class NomadBookItem extends Item {
         CompoundTag tags = stack.getOrCreateSubTag(NomadBooks.MODID);
 
         // height, width and upgrades
-        if (stack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
-            int height = tags.getInt("Height");
-            int width = tags.getInt("Width");
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", height).setStyle(EMPTY.withColor(Formatting.GRAY)));
-            tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.width", width).setStyle(EMPTY.withColor(Formatting.GRAY)));
-            ListTag upgrades = tags.getList("Upgrades", NbtType.STRING);
-            upgrades.forEach(tag -> tooltip.add(new TranslatableText("upgrade.nomadbooks."+tag.asString()).setStyle(EMPTY.withColor(Formatting.DARK_AQUA))));
-        }
+        int height = tags.getInt("Height");
+        int width = tags.getInt("Width");
+        tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.height", height).setStyle(EMPTY.withColor(Formatting.GRAY)));
+        tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.width", width).setStyle(EMPTY.withColor(Formatting.GRAY)));
+        ListTag upgrades = tags.getList("Upgrades", NbtType.STRING);
+        upgrades.forEach(tag -> tooltip.add(new TranslatableText("upgrade.nomadbooks."+tag.asString()).setStyle(EMPTY.withColor(Formatting.DARK_AQUA))));
+
         // if inked, show progress
         if (tags.getBoolean("Inked")) {
             tooltip.add(new TranslatableText("item.nomadbooks.nomad_book.tooltip.itinerant_ink", tags.getInt("InkProgress"), tags.getInt("InkGoal")).setStyle(EMPTY.withColor(Formatting.BLUE)));
@@ -368,14 +368,11 @@ public class NomadBookItem extends Item {
         stacks.forEach(itemStack -> {
             if (itemStack.getItem() instanceof NomadBookItem) {
                 CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
-                if (itemStack.getItem().equals(NomadBooks.NOMAD_PAGE)) {
-                    tags.putInt("Height", 1);
-                    tags.putInt("Width", 7);
-                    tags.putString("Structure", defaultStructurePath);
-                }
-                if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
-                    tags.putInt("Height", 3);
-                    tags.putInt("Width", 7);
+                tags.putInt("Height", 3);
+                tags.putInt("Width", 7);
+                if (itemStack.getItem() == NomadBooks.NETHER_NOMAD_BOOK) {
+                    tags.putString("Structure", netherDefaultStructurePath);
+                } else {
                     tags.putString("Structure", defaultStructurePath);
                 }
             }
@@ -393,4 +390,8 @@ public class NomadBookItem extends Item {
         return b.equals(Blocks.WATER) || m.equals(Material.REPLACEABLE_UNDERWATER_PLANT) || m.equals(Material.UNDERWATER_PLANT);
     }
 
+    @Override
+    public boolean isFireproof() {
+        return super.isFireproof();
+    }
 }

@@ -6,6 +6,8 @@
 - Dimension will no longer be shown in the tooltip of a deployed camp
 - Coordinates are now obfuscated when the camp is in a different dimension than the player
 - Removed the nomad page from the creative inventory
+- Removed nomad books being able to have multiple times the same upgrade
+- Added the nether nomad book, a fireproof upgrade just like the netherite items, obtainable by combining a nomad book and a netherite ingot
 
 ### Nomad Books 0.4.2 - 20w17a
 

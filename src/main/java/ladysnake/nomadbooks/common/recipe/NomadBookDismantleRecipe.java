@@ -1,6 +1,7 @@
 package ladysnake.nomadbooks.common.recipe;
 
 import ladysnake.nomadbooks.NomadBooks;
+import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.util.NbtType;
@@ -21,7 +22,7 @@ public class NomadBookDismantleRecipe extends SpecialCraftingRecipe {
 
         for(int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack = craftingInventory.getStack(i);
-            if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+            if (itemStack.getItem() instanceof NomadBookItem) {
                 book = itemStack;
             } else if (!itemStack.isEmpty()) {
                 return false;
@@ -36,7 +37,7 @@ public class NomadBookDismantleRecipe extends SpecialCraftingRecipe {
 
         for(int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack = craftingInventory.getStack(i);
-            if (itemStack.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+            if (itemStack.getItem() instanceof NomadBookItem) {
                 book = itemStack;
             } else if (!itemStack.isEmpty()) {
                 return ItemStack.EMPTY;

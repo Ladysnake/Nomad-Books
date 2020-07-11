@@ -14,7 +14,7 @@ Grass pages can be found in all dungeon, mineshaft, jungle temple chests and car
 
 Grass pages can also be obtained from nomad books and pages. When putting a deployed nomad book or page in a crafting inventory, said book or page can be dismantled into its corresponding number of pages.
 
-## Nomad Books (and Nomad Pages)
+## Nomad Books
 
 A **nomad book** is an item that can store a WxHxW sized camp, with W the width and H the height. When the camp is stored in the book, the cover of the book displays a campfire. When the camp is deployed, the cover does not display said campfire.
 
@@ -22,7 +22,7 @@ A **nomad book** is an item that can store a WxHxW sized camp, with W the width 
 
 Nomad books can be obtained by combining a campfire and grass pages. A newly crafted nomad book will have a height of 3 and a width of 7.
 
-![image-20200102175340377](https://raw.githubusercontent.com/Ladysnake/Nomad-Books/master/README.assets/image-20200102175340377.png)
+![image-20200102175340377](README.assets/image-20200102175340377.png)
 
 Nomad books of 3 in height and 7 in width can also be found in all stronghold libraries chests in stacks of 1.
 
@@ -77,3 +77,11 @@ The **mycelium page** is a special page granting the **Fungi Support** upgrade. 
 Mycelium pages can be crafted by shapelessly combining purple dye, a poisonous potato, bone meal and a grass page.
 
 ![image-20200113231129702](README.assets/image-20200113231129702.png)
+
+
+
+### Nether Nomad Book
+
+The **nether nomad book** is an upgrade similar to all netherite items: for the price of one netherite ingot, the dropped nomad book item is rendered fireproof and will float upwards if it were to fall into lava (when crafting a nether nomad book all properties are preserved).
+
+![image-20200712011325460](C:\Users\river\AppData\Roaming\Typora\typora-user-images\image-20200712011325460.png)

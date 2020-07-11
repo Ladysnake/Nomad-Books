@@ -13,5 +13,6 @@ public class NomadBooksClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(NomadBooks.MEMBRANE, RenderLayer.getTranslucent());
 
         FabricModelPredicateProviderRegistry.register(new Identifier(NomadBooks.MODID + ":deployed"), (itemStack, world, livingEntity) -> itemStack.getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed"));
+        FabricModelPredicateProviderRegistry.register(new Identifier(NomadBooks.MODID + ":fireproof"), (itemStack, world, livingEntity) -> itemStack.getOrCreateTag().getFloat(NomadBooks.MODID + ":fireproof"));
     }
 }

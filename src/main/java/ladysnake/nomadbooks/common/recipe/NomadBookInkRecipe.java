@@ -2,6 +2,7 @@ package ladysnake.nomadbooks.common.recipe;
 
 import com.google.common.collect.Lists;
 import ladysnake.nomadbooks.NomadBooks;
+import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
@@ -27,7 +28,7 @@ public class NomadBookInkRecipe extends SpecialCraftingRecipe {
         for(int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack = craftingInventory.getStack(i);
             Item item = itemStack.getItem();
-            if (item.equals(NomadBooks.NOMAD_BOOK)) {
+            if (item instanceof NomadBookItem) {
                 book = itemStack;
             } else if (item.equals(Items.GHAST_TEAR) || item.equals(Items.CHARCOAL) || item.equals(Items.BLUE_DYE)) {
                 ingredients.add(item);
@@ -44,7 +45,7 @@ public class NomadBookInkRecipe extends SpecialCraftingRecipe {
         for(int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack = craftingInventory.getStack(i);
             Item item = itemStack.getItem();
-            if (item.equals(NomadBooks.NOMAD_BOOK)) {
+            if (item instanceof NomadBookItem) {
                 book = itemStack;
             } else if (item.equals(Items.GHAST_TEAR) || item.equals(Items.CHARCOAL) || item.equals(Items.BLUE_DYE)) {
                 ingredients.add(item);

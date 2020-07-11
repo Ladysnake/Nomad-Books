@@ -2,6 +2,7 @@ package ladysnake.nomadbooks.common.recipe;
 
 import com.google.common.collect.Lists;
 import ladysnake.nomadbooks.NomadBooks;
+import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
@@ -26,7 +27,7 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
         for(int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack2 = craftingInventory.getStack(i);
             if (!itemStack2.isEmpty()) {
-                if (itemStack2.getItem().equals(NomadBooks.NOMAD_BOOK)) {
+                if (itemStack2.getItem() instanceof NomadBookItem) {
                     if (!itemStack.isEmpty()) {
                         return false;
                     }
@@ -53,7 +54,7 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
             ItemStack itemStack2 = craftingInventory.getStack(i);
             if (!itemStack2.isEmpty()) {
                 Item item = itemStack2.getItem();
-                if (item.equals(NomadBooks.NOMAD_BOOK)) {
+                if (item instanceof NomadBookItem) {
                     if (!itemStack.isEmpty()) {
                         return ItemStack.EMPTY;
                     }
