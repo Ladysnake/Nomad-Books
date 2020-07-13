@@ -1,7 +1,6 @@
 package ladysnake.nomadbooks.common.recipe;
 
 import ladysnake.nomadbooks.NomadBooks;
-import ladysnake.nomadbooks.common.item.BookUpgradeItem;
 import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -10,7 +9,6 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
@@ -81,6 +79,6 @@ public class NetherNomadBookCraftRecipe extends SpecialCraftingRecipe {
     }
 
     public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializer.SHAPELESS;
+        return NomadBooks.CRAFT_NETHER_NOMAD_BOOK;
     }
 }

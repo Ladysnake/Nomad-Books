@@ -1,5 +1,8 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.5.1 - 1.16.1
+- Fixed an issue where players would get instantly kicked from the server upon joining
+
 ### Nomad Books 0.5 - 1.16.1
 
 - Updated to Minecraft 1.16.1
