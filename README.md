@@ -84,4 +84,4 @@ Mycelium pages can be crafted by shapelessly combining purple dye, a poisonous p
 
 The **nether nomad book** is an upgrade similar to all netherite items: for the price of one netherite ingot, the dropped nomad book item is rendered fireproof and will float upwards if it were to fall into lava (when crafting a nether nomad book all properties are preserved).
 
-![image-20200712011325460](C:\Users\river\AppData\Roaming\Typora\typora-user-images\image-20200712011325460.png)
+![image-20200712011325460](README.assets/image-20200712011325460.png)
