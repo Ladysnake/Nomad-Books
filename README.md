@@ -54,6 +54,10 @@ Nomad books and pages can be dismantled into grass pages. To do so, they need th
 
 ![image-20200113230552606](README.assets/image-20200113230552606.png)
 
+#### Teleporting
+
+If a nomad book is deployed and you are too far to retrieve the camp, holding an ender pearl in your offhand will allow you to teleport to it.
+
 ## Special pages and upgrades
 
 **Special pages** are unique pages that trigger very specific effects upon camp deployment when combined with a nomad book.

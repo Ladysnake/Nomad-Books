@@ -4,6 +4,7 @@
 - Changed firefly camp limit render to use custom particles
 - Fixed an issue where players would get kick from a server upon applying itinerant ink
 - Fixed an issue where some blocks would drop items upon retrieving the camp
+- Fixed an issue where fluids would stay upon retrieving a camp
 
 ### Nomad Books 0.5.1 - 1.16.1
 - Fixed an issue where players would get instantly kicked from a server upon joining
