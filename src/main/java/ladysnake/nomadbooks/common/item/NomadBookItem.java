@@ -310,7 +310,11 @@ public class NomadBookItem extends Item {
                     // remove blocks dropped by accident
                     BlockPos p2 = pos.add(new BlockPos(width, height, width));
                     List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), itemEntity -> true);
-                    itemEntities.forEach(itemEntity -> System.out.println(itemEntity.getOwner()));
+                    itemEntities.forEach(itemEntity -> {
+                        if (itemEntity.getAge() < 1) {
+                            itemEntity.remove();
+                        }
+                    });
                 }
 
                 // remove boundaries display
