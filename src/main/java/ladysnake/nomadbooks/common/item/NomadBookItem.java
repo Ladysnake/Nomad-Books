@@ -261,7 +261,7 @@ public class NomadBookItem extends Item {
                     for (int z = 0; z < width; z++) {
                         for (int y = 0; y < height; y++) {
                             BlockPos p = pos.add(new BlockPos(x, y, z));
-                            world.breakBlock(p, false);
+                            removeBlock(world, p);
                         }
                     }
                 }
@@ -291,14 +291,14 @@ public class NomadBookItem extends Item {
                             BlockPos p = pos.add(new BlockPos(x, -1, z));
                             BlockState bs = world.getBlockState(p);
                             if (bs.getBlock().equals(NomadBooks.NOMAD_MUSHROOM_BLOCK)) {
-                                world.breakBlock(p, false);
+                                removeBlock(world, p);
                             }
 
                             if (x >= width/2-1 && x <= width/2+1 && z >= width/2-1 && z <= width/2+1) {
                                 for (int y = -2; y > -6; y--) {
                                     BlockPos p2 = pos.add(new BlockPos(x, y, z));
                                     if (world.getBlockState(p2).getBlock() instanceof NomadMushroomBlock) {
-                                        world.breakBlock(p2, false);
+                                        removeBlock(world, p2);
                                     }
                                 }
                             }
@@ -397,5 +397,10 @@ public class NomadBookItem extends Item {
     @Override
     public boolean isFireproof() {
         return super.isFireproof();
+    }
+
+    public void removeBlock(World world, BlockPos blockPos) {
+        world.breakBlock(blockPos, false);
+        world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
     }
 }
