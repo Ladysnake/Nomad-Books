@@ -31,6 +31,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -200,6 +201,30 @@ public class NomadBookItem extends Item {
                 return TypedActionResult.pass(itemStack);
             } else {
                 Optional dimension = World.CODEC.parse(NbtOps.INSTANCE, tags.get("Dimension")).result();
+                int distanceFromCamp = user.getBlockPos().getManhattanDistance(pos.add(new Vec3i(width/2, 0, width/2)))-(CAMP_RETRIEVAL_RADIUS+width/2);
+
+                // if in correct dimension
+                if (dimension.isPresent() && (dimension.get() == world.getRegistryKey())) {
+                    // if the camp is too far
+                    if (distanceFromCamp > 0) {
+                        // if the player is holding an ender pearl in his off hand, tp to camp
+                        if (user.getOffHandStack().getItem() == Items.ENDER_PEARL) {
+                            world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
+                            user.refreshPositionAndAngles(pos.getX() + width / 2 + 0.5, pos.getY(), pos.getZ() + width / 2 + 0.5, user.yaw, user.pitch);
+                            if (!user.isCreative()) {
+                                user.getOffHandStack().decrement(1);
+                            }
+                            world.playSound(pos.getX() + width / 2 + 0.5, pos.getY(), pos.getZ() + width / 2 + 0.5, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
+                            return TypedActionResult.success(itemStack);
+                        } else {
+                            user.sendMessage(new TranslatableText("error.nomadbooks.camp_too_far"), true);
+                            return TypedActionResult.fail(itemStack);
+                        }
+                    }
+                } else {
+                    user.sendMessage(new TranslatableText("error.nomadbooks.different_dimension"), true);
+                    return TypedActionResult.fail(itemStack);
+                }
                 // if player is too far from the camp
                 if (!((user.getX() >= pos.getX()-CAMP_RETRIEVAL_RADIUS && user.getX() <= pos.getX()+width+CAMP_RETRIEVAL_RADIUS)
                     && (user.getZ() >= pos.getZ()-CAMP_RETRIEVAL_RADIUS && user.getZ() <= pos.getZ()+width+CAMP_RETRIEVAL_RADIUS)
