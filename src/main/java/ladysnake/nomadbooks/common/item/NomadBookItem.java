@@ -210,7 +210,9 @@ public class NomadBookItem extends Item {
                     if (user.getOffHandStack().getItem() == Items.ENDER_PEARL) {
                         world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
                         user.refreshPositionAndAngles(pos.getX()+width/2+0.5, pos.getY(), pos.getZ()+width/2+0.5, user.yaw, user.pitch);
-                        user.getOffHandStack().decrement(1);
+                        if (!user.isCreative()) {
+                            user.getOffHandStack().decrement(1);
+                        }
                         world.playSound(pos.getX()+width/2+0.5, pos.getY(), pos.getZ()+width/2+0.5, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
                         return TypedActionResult.success(itemStack);
                     } else {
