@@ -207,43 +207,25 @@ public class NomadBookItem extends Item {
                 if (dimension.isPresent() && (dimension.get() == world.getRegistryKey())) {
                     // if the camp is too far
                     if (distanceFromCamp > 0) {
-                        // if the player is holding an ender pearl in his off hand, tp to camp
-                        if (user.getOffHandStack().getItem() == Items.ENDER_PEARL) {
+                        int enderPrice = (int) Math.ceil(((double) distanceFromCamp) / 100);
+
+                        // if the player is holding enough ender pearls in his off hand, tp to camp
+                        if (user.getOffHandStack().getItem() == Items.ENDER_PEARL && user.getOffHandStack().getCount() >= enderPrice) {
                             world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
                             user.refreshPositionAndAngles(pos.getX() + width / 2 + 0.5, pos.getY(), pos.getZ() + width / 2 + 0.5, user.yaw, user.pitch);
                             if (!user.isCreative()) {
-                                user.getOffHandStack().decrement(1);
+                                user.getOffHandStack().decrement(enderPrice);
                             }
                             world.playSound(pos.getX() + width / 2 + 0.5, pos.getY(), pos.getZ() + width / 2 + 0.5, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
                             return TypedActionResult.success(itemStack);
                         } else {
                             user.sendMessage(new TranslatableText("error.nomadbooks.camp_too_far"), true);
-                            return TypedActionResult.fail(itemStack);
+                            return TypedActionResult.success(itemStack);
                         }
                     }
                 } else {
                     user.sendMessage(new TranslatableText("error.nomadbooks.different_dimension"), true);
-                    return TypedActionResult.fail(itemStack);
-                }
-                // if player is too far from the camp
-                if (!((user.getX() >= pos.getX()-CAMP_RETRIEVAL_RADIUS && user.getX() <= pos.getX()+width+CAMP_RETRIEVAL_RADIUS)
-                    && (user.getZ() >= pos.getZ()-CAMP_RETRIEVAL_RADIUS && user.getZ() <= pos.getZ()+width+CAMP_RETRIEVAL_RADIUS)
-                    && (user.getY() >= pos.getY()-CAMP_RETRIEVAL_RADIUS && user.getY() <= pos.getY()+height+CAMP_RETRIEVAL_RADIUS)
-                    && (dimension.isPresent() && (dimension.get() == world.getRegistryKey())))) {
-
-                    // if the player is holding an ender pearl in his off hand, tp to camp
-                    if (user.getOffHandStack().getItem() == Items.ENDER_PEARL) {
-                        world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
-                        user.refreshPositionAndAngles(pos.getX()+width/2+0.5, pos.getY(), pos.getZ()+width/2+0.5, user.yaw, user.pitch);
-                        if (!user.isCreative()) {
-                            user.getOffHandStack().decrement(1);
-                        }
-                        world.playSound(pos.getX()+width/2+0.5, pos.getY(), pos.getZ()+width/2+0.5, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
-                        return TypedActionResult.success(itemStack);
-                    } else {
-                        user.sendMessage(new TranslatableText("error.nomadbooks.camp_too_far"), true);
-                        return TypedActionResult.fail(itemStack);
-                    }
+                    return TypedActionResult.success(itemStack);
                 }
 
                 // if default structure path, create a new one
@@ -261,7 +243,7 @@ public class NomadBookItem extends Item {
                     try {
                         structure = structureManager.getStructureOrBlank(new Identifier(structurePath));
                     } catch (InvalidIdentifierException var8) {
-                        return TypedActionResult.fail(itemStack);
+                        return TypedActionResult.success(itemStack);
                     }
 
                     structure.saveFromWorld(world, pos.add(new BlockPos(0, 0, 0)), new BlockPos(width, height, width), true, Blocks.STRUCTURE_VOID);
@@ -351,7 +333,7 @@ public class NomadBookItem extends Item {
                 return TypedActionResult.success(itemStack);
             }
         } else {
-            return TypedActionResult.fail(itemStack);
+            return TypedActionResult.success(itemStack);
         }
     }
 

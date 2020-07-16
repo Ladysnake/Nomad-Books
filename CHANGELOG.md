@@ -2,11 +2,12 @@
 
 ### Nomad Books 0.5.2 - 1.16.1
 - Changed firefly camp limit render to use custom particles
+- Reintroduced the specific error message when trying to retrieve a camp in a different dimension
+- Teleporting to a camp using ender pearls will now cost one pearl for every 60 blocks instead of one for any distance
 - Fixed an issue where players would get kick from a server upon applying itinerant ink
 - Fixed an issue where some blocks would drop items upon retrieving the camp
 - Fixed an issue where fluids would stay upon retrieving a camp
 - Fixed an issue where teleporting back to a camp in creative mode would consume an ender pearl
-- Reintroduced the specific error message when trying to retrieve a camp in a different dimension
 
 ### Nomad Books 0.5.1 - 1.16.1
 - Fixed an issue where players would get instantly kicked from a server upon joining
