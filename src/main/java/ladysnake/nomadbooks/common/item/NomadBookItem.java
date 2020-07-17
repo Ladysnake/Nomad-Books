@@ -3,15 +3,15 @@ package ladysnake.nomadbooks.common.item;
 import ladysnake.nomadbooks.NomadBooks;
 import ladysnake.nomadbooks.common.block.NomadMushroomBlock;
 import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BedBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.datafixer.NbtOps;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
@@ -238,6 +238,20 @@ public class NomadBookItem extends Item {
                     ServerWorld serverWorld = (ServerWorld) world;
                     StructureManager structureManager = serverWorld.getStructureManager();
 
+                    // free beds so they don't redeploy as occupied
+                    for (int x = 0; x < width; x++) {
+                        for (int z = 0; z < width; z++) {
+                            for (int y = 0; y < height; y++) {
+                                BlockPos p = pos.add(new BlockPos(x, y, z));
+                                if (world.getBlockState(p).getBlock() instanceof BedBlock) {
+                                    System.out.println(world.getBlockState(p));
+                                    BlockState bed = world.getBlockState(p);
+                                    world.setBlockState(p, bed.with(BedBlock.OCCUPIED, false));
+                                }
+                            }
+                        }
+                    }
+
                     // save structure
                     Structure structure;
                     try {
@@ -305,9 +319,9 @@ public class NomadBookItem extends Item {
 
                             if (x >= width/2-1 && x <= width/2+1 && z >= width/2-1 && z <= width/2+1) {
                                 for (int y = -2; y > -6; y--) {
-                                    BlockPos p2 = pos.add(new BlockPos(x, y, z));
-                                    if (world.getBlockState(p2).getBlock() instanceof NomadMushroomBlock) {
-                                        removeBlock(world, p2);
+                                    BlockPos p3 = pos.add(new BlockPos(x, y, z));
+                                    if (world.getBlockState(p3).getBlock() instanceof NomadMushroomBlock) {
+                                        removeBlock(world, p3);
                                     }
                                 }
                             }
@@ -315,8 +329,8 @@ public class NomadBookItem extends Item {
                     }
                 }
 
+                // remove blocks dropped by accident
                 if (!world.isClient()) {
-                    // remove blocks dropped by accident
                     BlockPos p2 = pos.add(new BlockPos(width, height, width));
                     List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), itemEntity -> true);
                     itemEntities.forEach(itemEntity -> {
@@ -333,7 +347,7 @@ public class NomadBookItem extends Item {
                 return TypedActionResult.success(itemStack);
             }
         } else {
-            return TypedActionResult.success(itemStack);
+            return TypedActionResult.fail(itemStack);
         }
     }
 

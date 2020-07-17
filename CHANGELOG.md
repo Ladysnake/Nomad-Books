@@ -8,6 +8,7 @@
 - Fixed an issue where some blocks would drop items upon retrieving the camp
 - Fixed an issue where fluids would stay upon retrieving a camp
 - Fixed an issue where teleporting back to a camp in creative mode would consume an ender pearl
+- Fixed an issue where beds would still be counted as occupied when redeploying a camp
 
 ### Nomad Books 0.5.1 - 1.16.1
 - Fixed an issue where players would get instantly kicked from a server upon joining
