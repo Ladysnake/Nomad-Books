@@ -54,6 +54,10 @@ Nomad books and pages can be dismantled into grass pages. To do so, they need th
 
 ![image-20200113230552606](README.assets/image-20200113230552606.png)
 
+#### Teleporting
+
+If a nomad book is deployed and you are too far to retrieve the camp, holding ender pearls in your offhand will allow you to teleport to it for the price of an ender pearl for every 60 blocks separating you from your camp.
+
 ## Special pages and upgrades
 
 **Special pages** are unique pages that trigger very specific effects upon camp deployment when combined with a nomad book.
@@ -82,6 +86,6 @@ Mycelium pages can be crafted by shapelessly combining purple dye, a poisonous p
 
 ### Nether Nomad Book
 
-The **nether nomad book** is an upgrade similar to all netherite items: for the price of one netherite ingot, the dropped nomad book item is rendered fireproof and will float upwards if it were to fall into lava (when crafting a nether nomad book all properties are preserved).
+The **nether nomad book** is an upgrade similar to all netherite items: for the cost of one netherite ingot, the dropped nomad book item is rendered fireproof and will float upwards if it were to fall into lava (when crafting a nether nomad book all properties are preserved).
 
 ![image-20200712011325460](README.assets/image-20200712011325460.png)

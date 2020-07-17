@@ -3,15 +3,15 @@ package ladysnake.nomadbooks.common.item;
 import ladysnake.nomadbooks.NomadBooks;
 import ladysnake.nomadbooks.common.block.NomadMushroomBlock;
 import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BedBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.datafixer.NbtOps;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
@@ -31,6 +31,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -200,23 +201,31 @@ public class NomadBookItem extends Item {
                 return TypedActionResult.pass(itemStack);
             } else {
                 Optional dimension = World.CODEC.parse(NbtOps.INSTANCE, tags.get("Dimension")).result();
-                // if player is too far from the camp
-                if (!((user.getX() >= pos.getX()-CAMP_RETRIEVAL_RADIUS && user.getX() <= pos.getX()+width+CAMP_RETRIEVAL_RADIUS)
-                    && (user.getZ() >= pos.getZ()-CAMP_RETRIEVAL_RADIUS && user.getZ() <= pos.getZ()+width+CAMP_RETRIEVAL_RADIUS)
-                    && (user.getY() >= pos.getY()-CAMP_RETRIEVAL_RADIUS && user.getY() <= pos.getY()+height+CAMP_RETRIEVAL_RADIUS)
-                    && (dimension.isPresent() && (dimension.get() == world.getRegistryKey())))) {
+                int distanceFromCamp = user.getBlockPos().getManhattanDistance(pos.add(new Vec3i(width/2, 0, width/2)))-(CAMP_RETRIEVAL_RADIUS+width/2);
 
-                    // if the player is holding an ender pearl in his off hand, tp to camp
-                    if (user.getOffHandStack().getItem() == Items.ENDER_PEARL) {
-                        world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
-                        user.refreshPositionAndAngles(pos.getX()+width/2+0.5, pos.getY(), pos.getZ()+width/2+0.5, user.yaw, user.pitch);
-                        user.getOffHandStack().decrement(1);
-                        world.playSound(pos.getX()+width/2+0.5, pos.getY(), pos.getZ()+width/2+0.5, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
-                        return TypedActionResult.success(itemStack);
-                    } else {
-                        user.sendMessage(new TranslatableText("error.nomadbooks.camp_too_far"), true);
-                        return TypedActionResult.fail(itemStack);
+                // if in correct dimension
+                if (dimension.isPresent() && (dimension.get() == world.getRegistryKey())) {
+                    // if the camp is too far
+                    if (distanceFromCamp > 0) {
+                        int enderPrice = (int) Math.ceil(((double) distanceFromCamp) / 100);
+
+                        // if the player is holding enough ender pearls in his off hand, tp to camp
+                        if (user.getOffHandStack().getItem() == Items.ENDER_PEARL && user.getOffHandStack().getCount() >= enderPrice) {
+                            world.playSound(user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
+                            user.refreshPositionAndAngles(pos.getX() + width / 2 + 0.5, pos.getY(), pos.getZ() + width / 2 + 0.5, user.yaw, user.pitch);
+                            if (!user.isCreative()) {
+                                user.getOffHandStack().decrement(enderPrice);
+                            }
+                            world.playSound(pos.getX() + width / 2 + 0.5, pos.getY(), pos.getZ() + width / 2 + 0.5, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f, true);
+                            return TypedActionResult.success(itemStack);
+                        } else {
+                            user.sendMessage(new TranslatableText("error.nomadbooks.camp_too_far"), true);
+                            return TypedActionResult.success(itemStack);
+                        }
                     }
+                } else {
+                    user.sendMessage(new TranslatableText("error.nomadbooks.different_dimension"), true);
+                    return TypedActionResult.success(itemStack);
                 }
 
                 // if default structure path, create a new one
@@ -229,12 +238,26 @@ public class NomadBookItem extends Item {
                     ServerWorld serverWorld = (ServerWorld) world;
                     StructureManager structureManager = serverWorld.getStructureManager();
 
+                    // free beds so they don't redeploy as occupied
+                    for (int x = 0; x < width; x++) {
+                        for (int z = 0; z < width; z++) {
+                            for (int y = 0; y < height; y++) {
+                                BlockPos p = pos.add(new BlockPos(x, y, z));
+                                if (world.getBlockState(p).getBlock() instanceof BedBlock) {
+                                    System.out.println(world.getBlockState(p));
+                                    BlockState bed = world.getBlockState(p);
+                                    world.setBlockState(p, bed.with(BedBlock.OCCUPIED, false));
+                                }
+                            }
+                        }
+                    }
+
                     // save structure
                     Structure structure;
                     try {
                         structure = structureManager.getStructureOrBlank(new Identifier(structurePath));
                     } catch (InvalidIdentifierException var8) {
-                        return TypedActionResult.fail(itemStack);
+                        return TypedActionResult.success(itemStack);
                     }
 
                     structure.saveFromWorld(world, pos.add(new BlockPos(0, 0, 0)), new BlockPos(width, height, width), true, Blocks.STRUCTURE_VOID);
@@ -261,7 +284,7 @@ public class NomadBookItem extends Item {
                     for (int z = 0; z < width; z++) {
                         for (int y = 0; y < height; y++) {
                             BlockPos p = pos.add(new BlockPos(x, y, z));
-                            world.breakBlock(p, false);
+                            removeBlock(world, p);
                         }
                     }
                 }
@@ -291,14 +314,14 @@ public class NomadBookItem extends Item {
                             BlockPos p = pos.add(new BlockPos(x, -1, z));
                             BlockState bs = world.getBlockState(p);
                             if (bs.getBlock().equals(NomadBooks.NOMAD_MUSHROOM_BLOCK)) {
-                                world.breakBlock(p, false);
+                                removeBlock(world, p);
                             }
 
                             if (x >= width/2-1 && x <= width/2+1 && z >= width/2-1 && z <= width/2+1) {
                                 for (int y = -2; y > -6; y--) {
-                                    BlockPos p2 = pos.add(new BlockPos(x, y, z));
-                                    if (world.getBlockState(p2).getBlock() instanceof NomadMushroomBlock) {
-                                        world.breakBlock(p2, false);
+                                    BlockPos p3 = pos.add(new BlockPos(x, y, z));
+                                    if (world.getBlockState(p3).getBlock() instanceof NomadMushroomBlock) {
+                                        removeBlock(world, p3);
                                     }
                                 }
                             }
@@ -306,11 +329,15 @@ public class NomadBookItem extends Item {
                     }
                 }
 
+                // remove blocks dropped by accident
                 if (!world.isClient()) {
-                    // remove blocks dropped by accident
                     BlockPos p2 = pos.add(new BlockPos(width, height, width));
                     List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), itemEntity -> true);
-                    itemEntities.forEach(itemEntity -> System.out.println(itemEntity.getOwner()));
+                    itemEntities.forEach(itemEntity -> {
+                        if (itemEntity.getAge() < 1) {
+                            itemEntity.remove();
+                        }
+                    });
                 }
 
                 // remove boundaries display
@@ -393,5 +420,10 @@ public class NomadBookItem extends Item {
     @Override
     public boolean isFireproof() {
         return super.isFireproof();
+    }
+
+    public void removeBlock(World world, BlockPos blockPos) {
+        world.breakBlock(blockPos, false);
+        world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
     }
 }

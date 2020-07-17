@@ -1,10 +1,19 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.5.2 - 1.16.1
+- Changed firefly camp limit render to use custom particles
+- Reintroduced the specific error message when trying to retrieve a camp in a different dimension
+- Teleporting to a camp using ender pearls will now cost one pearl for every 60 blocks instead of one for any distance
+- Fixed an issue where players would get kick from a server upon applying itinerant ink
+- Fixed an issue where some blocks would drop items upon retrieving the camp
+- Fixed an issue where fluids would stay upon retrieving a camp
+- Fixed an issue where teleporting back to a camp in creative mode would consume an ender pearl
+- Fixed an issue where beds would still be counted as occupied when redeploying a camp
+
 ### Nomad Books 0.5.1 - 1.16.1
-- Fixed an issue where players would get instantly kicked from the server upon joining
+- Fixed an issue where players would get instantly kicked from a server upon joining
 
 ### Nomad Books 0.5 - 1.16.1
-
 - Updated to Minecraft 1.16.1
 - Dimension will no longer be shown in the tooltip of a deployed camp
 - Coordinates are now obfuscated when the camp is in a different dimension than the player
@@ -13,15 +22,12 @@
 - Added the nether nomad book, a fireproof upgrade just like the netherite items, obtainable by combining a nomad book and a netherite ingot
 
 ### Nomad Books 0.4.2 - 20w17a
-
 - Updated to Minecraft snapshot 20w17a
 
 ### Nomad Books 0.4.1 - 20w13b
-
 - Updated to Minecraft snapshot 20w13b
 
 ### Nomad Books 0.4 - 20w09a
-
 - Player now needs to be in a 10 block radius from the camp to be able to retrieve it
 - Players can now use a nomad book with an ender pearl in their off hand to teleport to their deployed camp (when far enough from the camp)
 - Grass pages now appear in burried treasure chests and pillager outposts
@@ -31,19 +37,16 @@
 - Updated to Minecraft snapshot 20w09a
 
 ### Nomad Books 0.3 - 20w06a
-
 - Removed console spam when crafting or upgrading nomad books
 - Updated to Minecraft snapshot 20w06a
 
 ### Nomad Books 0.2.1 - 1.15.1
-
 - All plants (flowers, lily-pads, vines...) will now be destroyed when deploying a camp
 - Make nomad book and nomad page recipes appear in REI
 - Fixed a bug where the fungi support mushroom stem would destroy terrain
 - Fixed a bug that made newly crafted nomad books and pages have a width of 0 instead of 7
 
 ### Nomad Books 0.2 - 1.15.1
-
 - Introduced special book upgrades, obtained by combining special pages with your nomad book, that trigger additional effects upon setting up your camp:
   - Introduced "Aquatic Membrane", obtained from the aquatic membrane page
   - Introduced "Fungi Support", obtained from the mycelium page

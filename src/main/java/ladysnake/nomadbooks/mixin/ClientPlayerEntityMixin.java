@@ -2,6 +2,7 @@ package ladysnake.nomadbooks.mixin;
 
 import com.mojang.authlib.GameProfile;
 import ladysnake.nomadbooks.NomadBooks;
+import ladysnake.nomadbooks.client.NomadBooksClient;
 import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -40,7 +41,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
                                             || y == height && x == 0 || y == height && x == width || y == height && z == 0 || y == height && z == width
                                             || y == 0 && x == 0 || y == 0 && x == width || y == 0 && z == 0 || y == 0 && z == width) {
                                         BlockPos p = pos.add(new BlockPos(x, y, z));
-                                        world.addParticle(ParticleTypes.HAPPY_VILLAGER, true, p.getX(), p.getY()+0.02, p.getZ(), 0, 0, 0);
+                                        world.addParticle(NomadBooksClient.CAMP_LIMIT, true, p.getX(), p.getY()+0.02, p.getZ(), 0, 0, 0);
                                     }
                                 }
                             }
