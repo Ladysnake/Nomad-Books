@@ -279,6 +279,16 @@ public class NomadBookItem extends Item {
                     itemStack.getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 0F);
                 }
 
+                // replace everything with barriers so no surface dependant blocks drop
+                for (int x = 0; x < width; x++) {
+                    for (int z = 0; z < width; z++) {
+                        for (int y = 0; y < height; y++) {
+                            BlockPos p = pos.add(new BlockPos(x, y, z));
+                            world.setBlockState(p, Blocks.BARRIER.getDefaultState());
+                        }
+                    }
+                }
+
                 // remove blocks
                 for (int x = 0; x < width; x++) {
                     for (int z = 0; z < width; z++) {
@@ -300,7 +310,7 @@ public class NomadBookItem extends Item {
                                         !((x == -1 && z == -1) || (x == -1 && z == width) || (x == width && z == -1) || (x == width && z == width)
                                                 || (y == height && x == -1) || (y == height && x == width) || (y == height && z == -1) || (y == height && z == width)) &&
                                         (x == -1 || x == width || y == -1 || y == height || z == -1 || z == width)) {
-                                    world.breakBlock(p, true);
+                                    removeBlock(world, p);
                                 }
                             }
                         }
@@ -327,17 +337,6 @@ public class NomadBookItem extends Item {
                             }
                         }
                     }
-                }
-
-                // remove blocks dropped by accident
-                if (!world.isClient()) {
-                    BlockPos p2 = pos.add(new BlockPos(width, height, width));
-                    List<ItemEntity> itemEntities = world.getEntities(EntityType.ITEM, new Box(pos.getX(), pos.getY(), pos.getZ(), p2.getX(), p2.getY(), p2.getZ()), itemEntity -> true);
-                    itemEntities.forEach(itemEntity -> {
-                        if (itemEntity.getAge() < 1) {
-                            itemEntity.remove();
-                        }
-                    });
                 }
 
                 // remove boundaries display
@@ -423,7 +422,7 @@ public class NomadBookItem extends Item {
     }
 
     public void removeBlock(World world, BlockPos blockPos) {
-        world.breakBlock(blockPos, false);
+//        world.breakBlock(blockPos, false);
         world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
     }
 }
