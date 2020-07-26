@@ -1,5 +1,8 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.5.4 - 1.16.1
+- Fixed an issue where double horizontal blocks such as beds would drop as items
+
 ### Nomad Books 0.5.3 - 1.16.1
 - Removed block breaking effects when reclaiming a camp
 - Fixed an issue where the server would crash upon a player retrieving their camp
