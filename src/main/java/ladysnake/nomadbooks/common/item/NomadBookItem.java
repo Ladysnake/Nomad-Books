@@ -279,16 +279,6 @@ public class NomadBookItem extends Item {
                     itemStack.getOrCreateTag().putFloat(NomadBooks.MODID + ":deployed", 0F);
                 }
 
-                // replace everything with barriers so no surface dependant blocks drop
-                for (int x = 0; x < width; x++) {
-                    for (int z = 0; z < width; z++) {
-                        for (int y = 0; y < height; y++) {
-                            BlockPos p = pos.add(new BlockPos(x, y, z));
-                            world.setBlockState(p, Blocks.BARRIER.getDefaultState());
-                        }
-                    }
-                }
-
                 // remove blocks
                 for (int x = 0; x < width; x++) {
                     for (int z = 0; z < width; z++) {
@@ -422,7 +412,6 @@ public class NomadBookItem extends Item {
     }
 
     public void removeBlock(World world, BlockPos blockPos) {
-//        world.breakBlock(blockPos, false);
-        world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+        world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), 0b0010000);
     }
 }
