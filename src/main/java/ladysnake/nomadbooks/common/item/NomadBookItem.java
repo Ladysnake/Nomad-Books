@@ -4,20 +4,11 @@ import ladysnake.nomadbooks.NomadBooks;
 import ladysnake.nomadbooks.common.block.NomadMushroomBlock;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BedBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.datafixer.NbtOps;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -29,7 +20,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -284,7 +274,27 @@ public class NomadBookItem extends Item {
                     for (int z = 0; z < width; z++) {
                         for (int y = 0; y < height; y++) {
                             BlockPos p = pos.add(new BlockPos(x, y, z));
-                            removeBlock(world, p);
+                            world.setBlockState(p, Blocks.AIR.getDefaultState(), 0b0010000);
+                        }
+                    }
+                }
+
+                // update neighbors
+                // now I know, this is against the geneva convention, but updateNeighbors doesn't work, so fuck it
+                // only problem is I still have some fucking lighting bugs when reclaiming a camp, but I give up
+                for (int x = 0; x < width; x++) {
+                    for (int z = 0; z < width; z++) {
+                        for (int y = 0; y < height; y++) {
+                            BlockPos p = pos.add(new BlockPos(x, y, z));
+                            world.setBlockState(p, Blocks.BEDROCK.getDefaultState());
+                        }
+                    }
+                }
+                for (int x = 0; x < width; x++) {
+                    for (int z = 0; z < width; z++) {
+                        for (int y = 0; y < height; y++) {
+                            BlockPos p = pos.add(new BlockPos(x, y, z));
+                            world.setBlockState(p, Blocks.AIR.getDefaultState());
                         }
                     }
                 }
@@ -412,6 +422,6 @@ public class NomadBookItem extends Item {
     }
 
     public void removeBlock(World world, BlockPos blockPos) {
-        world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), 0b0010000);
+        world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
     }
 }
