@@ -259,8 +259,7 @@ public class NomadBookItem extends Item {
                         for (int z = 0; z < width; z++) {
                             for (int y = 0; y < height; y++) {
                                 BlockPos p = pos.add(new BlockPos(x, y, z));
-                                BlockEntity blockEntity = serverWorld.getBlockEntity(p);
-                                Clearable.clear(blockEntity);
+                                world.removeBlockEntity(p);
                             }
                         }
                     }
