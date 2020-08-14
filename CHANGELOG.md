@@ -1,17 +1,30 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.5.5 - 1.16.2
+- Fixed an issue where ghost camps would visually stay for other clients when retrieving a camp
+- Fixed an issue where furnaces would drop experience despite keeping it when redeployed
+- Added a nomad book to the creative inventory (master nomad book) that has all upgrades and a width and height of 15 by default
+- Updated to Minecraft 1.16.2
+
+### Nomad Books 0.5.4 - 1.16.1
+- Fixed an issue where double horizontal blocks such as beds would drop as items
+
+### Nomad Books 0.5.3 - 1.16.1
+- Removed block breaking effects when reclaiming a camp
+- Fixed an issue where the server would crash upon a player retrieving their camp
+
 ### Nomad Books 0.5.2 - 1.16.1
 - Changed firefly camp limit render to use custom particles
 - Reintroduced the specific error message when trying to retrieve a camp in a different dimension
 - Teleporting to a camp using ender pearls will now cost one pearl for every 60 blocks instead of one for any distance
-- Fixed an issue where players would get kick from a server upon applying itinerant ink
+- Fixed an issue where players would get kicked from the server upon applying itinerant ink
 - Fixed an issue where some blocks would drop items upon retrieving the camp
 - Fixed an issue where fluids would stay upon retrieving a camp
 - Fixed an issue where teleporting back to a camp in creative mode would consume an ender pearl
 - Fixed an issue where beds would still be counted as occupied when redeploying a camp
 
 ### Nomad Books 0.5.1 - 1.16.1
-- Fixed an issue where players would get instantly kicked from a server upon joining
+- Fixed an issue where players would get instantly kicked from the server upon joining
 
 ### Nomad Books 0.5 - 1.16.1
 - Updated to Minecraft 1.16.1
