@@ -392,7 +392,17 @@ public class NomadBookItem extends Item {
     public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
         super.appendStacks(group, stacks);
         stacks.forEach(itemStack -> {
-            if (itemStack.getItem() instanceof NomadBookItem) {
+            if (itemStack.getItem() == NomadBooks.CREATIVE_NOMAD_BOOK) {
+                CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
+                tags.putInt("Height", 15);
+                tags.putInt("Width", 15);
+                tags.putString("Structure", netherDefaultStructurePath);
+                // upgrades
+                ListTag upgradeList = new ListTag();
+                upgradeList.add(StringTag.of("aquatic_membrane"));
+                upgradeList.add(StringTag.of("fungi_support"));
+                tags.put("Upgrades", upgradeList);
+            } else if (itemStack.getItem() instanceof NomadBookItem) {
                 CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
                 tags.putInt("Height", 3);
                 tags.putInt("Width", 7);

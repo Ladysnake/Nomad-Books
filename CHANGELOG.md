@@ -2,7 +2,7 @@
 
 ### Nomad Books 0.5.5 - 1.16.2
 - Fixed an issue where ghost camps would visually stay for other clients when retrieving a camp
-- Added an additional nomad book to the creative inventory that has all upgrades and a width and height of 15 by default
+- Added an additional nomad book to the creative inventory (master nomad book) that has all upgrades and a width and height of 15 by default
 - Updated to Minecraft 1.16.2
 
 ### Nomad Books 0.5.4 - 1.16.1
