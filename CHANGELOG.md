@@ -1,5 +1,8 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.5.6 - 1.16.3
+- Updated to Minecraft 1.16.3
+
 ### Nomad Books 0.5.5 - 1.16.2
 - Fixed an issue where ghost camps would visually stay for other clients when retrieving a camp
 - Fixed an issue where furnaces would drop experience despite keeping it when redeployed
