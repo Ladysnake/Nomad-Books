@@ -1,5 +1,8 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.5.6-1.16.1 - 1.16.1
+- Backported to Minecraft 1.16.1
+
 ### Nomad Books 0.5.6 - 1.16.3
 - Updated to Minecraft 1.16.3
 
