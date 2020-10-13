@@ -14,6 +14,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.network.ServerPlayerInteractionManager;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -33,6 +36,8 @@ import static net.minecraft.text.Style.EMPTY;
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Shadow public abstract void sendMessage(Text message, boolean bl);
 
+    @Shadow public abstract void playSound(SoundEvent event, SoundCategory category, float volume, float pitch);
+
     public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
         super(world, pos, yaw, profile);
     }
@@ -46,8 +51,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                 // if inventory has an inked nomad book
                 if (tags.getBoolean("Inked")) {
                     ListTag visitedBiomes = tags.getList("VisitedBiomes", NbtType.STRING);
-                    if (BuiltinRegistries.BIOME.getId(this.world.getBiome(this.getBlockPos())) != null) {
-                        StringTag biome = StringTag.of(BuiltinRegistries.BIOME.getId(this.world.getBiome(this.getBlockPos())).toString());
+                    if (this.world.getBiome(this.getBlockPos()).toString() != null) {
+                        StringTag biome = StringTag.of(this.world.getBiome(this.getBlockPos()).toString());
                         if (!visitedBiomes.contains(biome)) {
                             // if not the first biome (just crafted), increment progress
                             if (!visitedBiomes.isEmpty()) {
@@ -68,6 +73,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                                 BlockPos pos = NbtHelper.toBlockPos(tags.getCompound("CampPos")).add(-1, 0, -1);
                                 tags.put("CampPos", NbtHelper.fromBlockPos(pos));
                                 // show a chat message to the player
+                                this.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 0.1f, 0.75f);
                                 this.sendMessage(new TranslatableText("info.nomadbooks.itinerant_ink_done", tags.getInt("Width")).setStyle(EMPTY.withColor(Formatting.BLUE)), false);
                                 // sound effect not working because server side
                                 // this.world.playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1, 1, true);
