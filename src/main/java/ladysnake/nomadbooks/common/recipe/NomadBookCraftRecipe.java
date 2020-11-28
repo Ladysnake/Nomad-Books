@@ -34,11 +34,7 @@ public class NomadBookCraftRecipe extends ShapedRecipe {
         ItemStack result = new ItemStack(NomadBooks.NOMAD_BOOK);
         result.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", 3);
         result.getOrCreateSubTag(NomadBooks.MODID).putInt("Width", 7);
-        if (result.getItem() == NomadBooks.NETHER_NOMAD_BOOK) {
-            result.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.netherDefaultStructurePath);
-        } else {
-            result.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.defaultStructurePath);
-        }
+        result.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.defaultStructurePath);
 
         return result;
     }

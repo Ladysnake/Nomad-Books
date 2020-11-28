@@ -23,11 +23,6 @@ public class NetherNomadBookCraftRecipe extends SpecialCraftingRecipe {
         ItemStack result = new ItemStack(NomadBooks.NETHER_NOMAD_BOOK);
         result.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", 3);
         result.getOrCreateSubTag(NomadBooks.MODID).putInt("Width", 7);
-        if (result.getItem() == NomadBooks.NETHER_NOMAD_BOOK) {
-            result.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.netherDefaultStructurePath);
-        } else {
-            result.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.defaultStructurePath);
-        }
 
         return result;
     }
