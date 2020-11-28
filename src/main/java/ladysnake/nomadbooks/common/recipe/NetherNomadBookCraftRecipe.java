@@ -19,8 +19,20 @@ public class NetherNomadBookCraftRecipe extends SpecialCraftingRecipe {
         super(identifier);
     }
 
-    public static final ItemStack CRAFT_RESULT = new ItemStack(NomadBooks.NETHER_NOMAD_BOOK);
+    public static ItemStack getCraftResult() {
+        ItemStack result = new ItemStack(NomadBooks.NETHER_NOMAD_BOOK);
+        result.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", 3);
+        result.getOrCreateSubTag(NomadBooks.MODID).putInt("Width", 7);
+        if (result.getItem() == NomadBooks.NETHER_NOMAD_BOOK) {
+            result.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.netherDefaultStructurePath);
+        } else {
+            result.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.defaultStructurePath);
+        }
 
+        return result;
+    }
+
+    @Override
     public boolean matches(CraftingInventory craftingInventory, World world) {
         ItemStack book = null;
         boolean ingot = false;
@@ -39,6 +51,7 @@ public class NetherNomadBookCraftRecipe extends SpecialCraftingRecipe {
         return book != null && ingot && book.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 0.0f;
     }
 
+    @Override
     public ItemStack craft(CraftingInventory craftingInventory) {
         ItemStack book = null;
         boolean ingot = false;
@@ -58,16 +71,18 @@ public class NetherNomadBookCraftRecipe extends SpecialCraftingRecipe {
             ItemStack ret = book.copy();
             ListTag upgradeList = ret.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING);
 
-            CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", book.getOrCreateSubTag(NomadBooks.MODID).getInt("Height"));
-            CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putInt("Width", book.getOrCreateSubTag(NomadBooks.MODID).getInt("Width"));
-            CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).put("Upgrades", book.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING));
+            ItemStack result = getCraftResult();
+
+            result.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", book.getOrCreateSubTag(NomadBooks.MODID).getInt("Height"));
+            result.getOrCreateSubTag(NomadBooks.MODID).putInt("Width", book.getOrCreateSubTag(NomadBooks.MODID).getInt("Width"));
+            result.getOrCreateSubTag(NomadBooks.MODID).put("Upgrades", book.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING));
             if (book.getOrCreateSubTag(NomadBooks.MODID).getString("Structure").equals(NomadBookItem.defaultStructurePath)) {
-                CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.netherDefaultStructurePath);
+                result.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", NomadBookItem.netherDefaultStructurePath);
             } else {
-                CRAFT_RESULT.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", book.getOrCreateSubTag(NomadBooks.MODID).getString("Structure"));
+                result.getOrCreateSubTag(NomadBooks.MODID).putString("Structure", book.getOrCreateSubTag(NomadBooks.MODID).getString("Structure"));
             }
 
-            return CRAFT_RESULT;
+            return result;
         }
 
         return ItemStack.EMPTY;

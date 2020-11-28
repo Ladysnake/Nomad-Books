@@ -20,6 +20,7 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
         super(identifier);
     }
 
+    @Override
     public boolean matches(CraftingInventory craftingInventory, World world) {
         ItemStack itemStack = ItemStack.EMPTY;
         List<ItemStack> list = Lists.newArrayList();
@@ -46,6 +47,7 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
         return !itemStack.isEmpty() && !list.isEmpty() && itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Height") + list.size() <= itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Width");
     }
 
+    @Override
     public ItemStack craft(CraftingInventory craftingInventory) {
         List<Item> list = Lists.newArrayList();
         ItemStack itemStack = ItemStack.EMPTY;

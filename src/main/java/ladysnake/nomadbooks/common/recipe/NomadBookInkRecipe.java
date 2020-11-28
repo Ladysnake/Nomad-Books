@@ -21,6 +21,7 @@ public class NomadBookInkRecipe extends SpecialCraftingRecipe {
         super(identifier);
     }
 
+    @Override
     public boolean matches(CraftingInventory craftingInventory, World world) {
         List<Item> ingredients = Lists.newArrayList();
         ItemStack book = null;
@@ -38,6 +39,7 @@ public class NomadBookInkRecipe extends SpecialCraftingRecipe {
         return book != null && ingredients.size() == 3 && ingredients.contains(Items.GHAST_TEAR) && ingredients.contains(Items.CHARCOAL) && ingredients.contains(Items.BLUE_DYE);
     }
 
+    @Override
     public ItemStack craft(CraftingInventory craftingInventory) {
         List<Item> ingredients = Lists.newArrayList();
         ItemStack book = null;

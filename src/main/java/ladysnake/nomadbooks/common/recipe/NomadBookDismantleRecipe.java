@@ -17,6 +17,7 @@ public class NomadBookDismantleRecipe extends SpecialCraftingRecipe {
         super(identifier);
     }
 
+    @Override
     public boolean matches(CraftingInventory craftingInventory, World world) {
         ItemStack book = null;
 
@@ -32,6 +33,7 @@ public class NomadBookDismantleRecipe extends SpecialCraftingRecipe {
         return book != null && book.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f;
     }
 
+    @Override
     public ItemStack craft(CraftingInventory craftingInventory) {
         ItemStack book = null;
 

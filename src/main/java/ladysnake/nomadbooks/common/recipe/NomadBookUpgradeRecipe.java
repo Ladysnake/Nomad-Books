@@ -20,6 +20,7 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
         super(identifier);
     }
 
+    @Override
     public boolean matches(CraftingInventory craftingInventory, World world) {
         ItemStack book = null;
         String upgrade = null;
@@ -38,6 +39,7 @@ public class NomadBookUpgradeRecipe extends SpecialCraftingRecipe {
         return book != null && upgrade != null;
     }
 
+    @Override
     public ItemStack craft(CraftingInventory craftingInventory) {
         ItemStack book = null;
         String upgrade = null;
