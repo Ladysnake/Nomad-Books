@@ -1,7 +1,8 @@
 # Nomad Books - Changelog
 
-### Nomad Books 0.5.8 - 1.16.4
+### Nomad Books 0.5.8 - 1.16.5
 - Fixed an issue where only one nomad book would be craftable per Minecraft instance
+- Added Vanguard auto-updater
 
 ### Nomad Books 0.5.7 - 1.16.3
 - Fixed an issue that made inked nomad books unable to progress
