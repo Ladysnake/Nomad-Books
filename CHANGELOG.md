@@ -1,5 +1,8 @@
 # Nomad Books - Changelog
 
+### Nomad Books 0.5.9 - 1.16.5
+- Fixed an issue that would cause a server crash on startup
+
 ### Nomad Books 0.5.8 - 1.16.5
 - Fixed an issue where only one nomad book would be craftable per Minecraft instance
 - Added Vanguard auto-updater
