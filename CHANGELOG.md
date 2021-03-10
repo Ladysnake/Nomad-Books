@@ -1,5 +1,15 @@
 # Nomad Books - Changelog
 
+### Nomad Books 1.0 - 1.16.5
+- Reduced the starting size of the nomad books from 7x3x7 to 3x1x3, this change serving multiple purposes:
+    - This acts as a nerf by bringing down the utility level of the nomad book in the early game, as it was too much of a powerful tool too early
+    - This makes the itinerant ink more relevant, as the previous 7 width rarely made the user feel they needed more horizontal space
+    - This allows users for more versatility in choosing how big they want their nomad book to be, some users requiring less space than the previous 7x3x7 minimum allowed them
+    - This also brings the crafting result more in line with the actual recipe, being a campfire and three pages
+- TODO In exchange of that nerf, the height upgrade is no longer limited to the width of the books, so it stays in line with the idea of giving more versatility and choice to the player
+- Removed the special texture and name of the master nomad book to avoid players being confused on its obtainability
+- Removed Vanguard
+
 ### Nomad Books 0.5.9 - 1.16.5
 - Fixed an issue that would cause a server crash on startup
 
