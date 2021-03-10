@@ -32,8 +32,8 @@ import static net.minecraft.text.Style.EMPTY;
 public class NomadBookItem extends Item {
     public static final int CAMP_RETRIEVAL_RADIUS = 10;
 
-    public static final String defaultStructurePath = NomadBooks.MODID + ":campfire7x1x7";
-    public static final String netherDefaultStructurePath = NomadBooks.MODID + ":nethercampfire7x1x7";
+    public static final String defaultStructurePath = NomadBooks.MODID + ":campfire3x1x3";
+    public static final String netherDefaultStructurePath = NomadBooks.MODID + ":nethercampfire3x1x3";
 
     public NomadBookItem(Settings settings) {
         super(settings);
@@ -403,8 +403,8 @@ public class NomadBookItem extends Item {
                 tags.put("Upgrades", upgradeList);
             } else if (itemStack.getItem() instanceof NomadBookItem) {
                 CompoundTag tags = itemStack.getOrCreateSubTag(NomadBooks.MODID);
-                tags.putInt("Height", 3);
-                tags.putInt("Width", 7);
+                tags.putInt("Height", 1);
+                tags.putInt("Width", 3);
                 if (itemStack.getItem() == NomadBooks.NETHER_NOMAD_BOOK) {
                     tags.putString("Structure", netherDefaultStructurePath);
                 } else {
