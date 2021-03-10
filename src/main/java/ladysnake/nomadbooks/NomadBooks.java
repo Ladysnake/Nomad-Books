@@ -65,7 +65,7 @@ public class NomadBooks implements ModInitializer {
         NETHER_NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE).fireproof()), "nether_nomad_book");
         AQUATIC_MEMBRANE_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "aquatic_membrane"), "aquatic_membrane_page");
         MYCELIUM_PAGE = registerItem(new BookUpgradeItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.UNCOMMON), "fungi_support"), "mycelium_page");
-        CREATIVE_NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE).fireproof()), "master_nomad_book");
+        CREATIVE_NOMAD_BOOK = registerItem(new NomadBookItem((new Item.Settings()).maxCount(1).group(ItemGroup.MISC).rarity(Rarity.RARE).fireproof()), "creative_nomad_book");
 
         // add loot to dungeons, mineshafts, jungle temples, and stronghold libraries chests loot tables
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
