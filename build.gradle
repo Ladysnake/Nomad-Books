@@ -36,9 +36,6 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-	// Includes Vanguard as a Jar-in-Jar dependency
-	include "io.github.ladysnake:vanguard:${vanguard_version}"
 }
 
 processResources {
