@@ -44,7 +44,7 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
             }
         }
 
-        return !itemStack.isEmpty() && !list.isEmpty() && itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Height") + list.size() <= itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Width");
+        return !itemStack.isEmpty() && !list.isEmpty();
     }
 
     @Override
