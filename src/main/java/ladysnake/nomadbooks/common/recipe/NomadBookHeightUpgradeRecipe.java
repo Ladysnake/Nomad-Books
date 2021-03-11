@@ -44,7 +44,7 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
             }
         }
 
-        return !itemStack.isEmpty() && !list.isEmpty();
+        return !itemStack.isEmpty() && !list.isEmpty() && itemStack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 0.0f;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
             }
         }
 
-        if (!itemStack.isEmpty() && !list.isEmpty()) {
+        if (!itemStack.isEmpty() && !list.isEmpty() && itemStack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 0.0f) {
             int height = itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Height");
             itemStack.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", height + list.size());
             return itemStack;

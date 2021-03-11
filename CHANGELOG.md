@@ -10,6 +10,7 @@
 - Removed the special texture and name of the master nomad book to avoid players being confused on its obtainability
 - Grass Pages now have a 50% chance of generating in structure chests, instead of the previous 100%
 - Nomad Books now have a 50% chance of generating in stronghold library chests, instead of the previous 100%
+- Upgrading the height of a Nomad Book with grass pages now requires the camp to be undeployed
 - Removed Vanguard
 
 ### Nomad Books 0.5.9 - 1.16.5
