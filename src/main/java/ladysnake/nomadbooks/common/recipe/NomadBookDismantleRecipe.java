@@ -47,7 +47,7 @@ public class NomadBookDismantleRecipe extends SpecialCraftingRecipe {
         }
 
         if (book != null && book.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 1.0f) {
-        int amount = book.getOrCreateSubTag(NomadBooks.MODID).getInt("Height") + (book.getOrCreateSubTag(NomadBooks.MODID).getInt("Width")-7)/2 + book.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING).size();
+        int amount = 3 + book.getOrCreateSubTag(NomadBooks.MODID).getInt("Height")-1 + (book.getOrCreateSubTag(NomadBooks.MODID).getInt("Width")-3)/2 + book.getOrCreateSubTag(NomadBooks.MODID).getList("Upgrades", NbtType.STRING).size();
             return new ItemStack(NomadBooks.GRASS_PAGE, amount);
         } else {
             return ItemStack.EMPTY;
