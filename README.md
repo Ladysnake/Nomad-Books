@@ -10,9 +10,7 @@ Blades of grass magically and carefully weaved into a delicate page. Crafting an
 
 #### Obtaining
 
-Grass pages can be found in all dungeon, mineshaft, jungle temple chests and cartographer chests in stacks of 1.
-
-Grass pages can also be obtained from nomad books and pages. When putting a deployed nomad book or page in a crafting inventory, said book or page can be dismantled into its corresponding number of pages.
+Grass pages have a 50% chance to be found in any dungeon, mineshaft, jungle temple chests and cartographer chests in stacks of 1. Grass pages can also be obtained from nomad books by dismantling them.
 
 ## Nomad Books
 
@@ -20,11 +18,11 @@ A **nomad book** is an item that can store a WxHxW sized camp, with W the width 
 
 #### Obtaining
 
-Nomad books can be obtained by combining a campfire and grass pages. A newly crafted nomad book will have a height of 3 and a width of 7.
+Nomad books can be obtained by combining a campfire and grass pages. A newly crafted nomad book will have a height of 1 and a width of 3.
 
 ![image-20200102175340377](README.assets/image-20200102175340377.png)
 
-Nomad books of 3 in height and 7 in width can also be found in all stronghold libraries chests in stacks of 1.
+Nomad books of 1 in height and 3 in width can also be found with a 50% chance in all stronghold libraries chests in stacks of 1.
 
 #### Usage
 
@@ -36,7 +34,7 @@ When a nomad book does not store a camp (meaning the camp is deployed), using it
 
 ##### Height
 
-A book's height can be upgraded by shapelessly combining it with grass pages in a crafting inventory. The maximum height is equal to the current width of the book.
+A book's height can be upgraded by shapelessly combining it with grass pages in a crafting inventory. The camp has to be undeployed in order for the player to be able to upgrade the book.
 
 ![image-20200113230337419](README.assets/image-20200113230337419.png)
 
@@ -50,7 +48,7 @@ Upon application, a goal will be decided depending on the current width size. Pr
 
 #### Dismantling
 
-Nomad books and pages can be dismantled into grass pages. To do so, they need their camp to be deployed and be placed into a crafting inventory. Dismantling will give one page per height, one page per 2 width above 7, and one page for each special page applied.
+Nomad books and pages can be dismantled into grass pages. To do so, they need their camp to be deployed and be placed into a crafting inventory. Dismantling will give three grass pages plus one page per height above 1, one page per 2 width above 3, and one page for each special page applied.
 
 ![image-20200113230552606](README.assets/image-20200113230552606.png)
 
