@@ -10,7 +10,6 @@
     - This makes the itinerant ink more relevant, as the previous 7 width rarely made the user feel they needed more horizontal space
     - This allows users for more versatility in choosing how big they want their nomad book to be, some users requiring less space than the previous 7x3x7 minimum allowed them
     - This also brings the crafting result more in line with the actual recipe, being a campfire and three pages
-<<<<<<< Updated upstream
 - In exchange for that nerf, the height upgrade is no longer limited to the width of the books, so it stays in line with the idea of giving more versatility and choice to the player
 - Removed the special texture and name of the master nomad book to avoid players being confused on its obtainability
 - Grass Pages now have a 50% chance of generating in structure chests, instead of the previous 100%
