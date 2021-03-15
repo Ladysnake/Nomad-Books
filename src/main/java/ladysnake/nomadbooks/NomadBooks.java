@@ -116,13 +116,8 @@ public class NomadBooks implements ModInitializer {
             }
             if (STRONGHOLD_LIBRARY_CHEST_LOOT_TABLE_ID.equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-                        .rolls(lootTableRange)
-                        .withEntry(ItemEntry.builder(NOMAD_BOOK).build())
-                        .withFunction(SetNbtLootFunction.builder(Util.make(new CompoundTag(), (compoundTag) -> compoundTag.put(MODID, Util.make(new CompoundTag(), child -> {
-                            child.putInt("Height", 1);
-                            child.putInt("Width", 3);
-                            child.putString("Structure", NomadBookItem.defaultStructurePath);
-                        })))).build());
+                        .rolls(UniformLootTableRange.between(0, 3))
+                        .withEntry(ItemEntry.builder(GRASS_PAGE).build());
 
                 supplier.withPool(poolBuilder.build());
             }
