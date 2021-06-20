@@ -61,7 +61,7 @@ A book's width can be upgraded by using itinerant ink. Itinerant ink can be appl
 
 Upon application, a goal will be decided depending on the current width size. Progress towards this goal is made by visiting biomes that the book hasn't been to yet. Note that it does **not** have to be a new **kind** of biome.
 
-![NomadBookItinerantInk](https://user-images.githubusercontent.com/83953120/121964527-f9bc6400-cd6b-11eb-8587-cd5bcfadc741.png)
+![ItinerantInkRecipe](https://user-images.githubusercontent.com/83953120/122669328-1964e980-d1bd-11eb-8d9c-a8afb516bcd5.png)
 
 #### Special Upgrades
 
@@ -87,4 +87,4 @@ The Mycelium Page is a special page granting the Fungi Support upgrade. Fungi su
 
 By combining the Nomad Book with a netherite ingot in an usual crafting grid the dropped item won't be destroyed in lava and instead swims up in it, similar to netherite ingots, tools and armour.
 
-![NetherNomadBookRecipe](https://user-images.githubusercontent.com/83953120/121965805-e4e0d000-cd6d-11eb-98f8-4a6bd7f1887f.png)
+![NetherNomadBookRecipe](https://user-images.githubusercontent.com/83953120/122669340-2550ab80-d1bd-11eb-826d-113af5ce1d42.png)
