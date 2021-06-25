@@ -1,89 +1,90 @@
 # Nomad Books
 
-**Nomad Books** is a Minecraft Fabric mod that introduces a solution for players that are always adventuring around their world. Nomad books and pages allow these players to store their camp under the form of an item and redeploy it whenever and wherever they wish.
+[![img](https://img.shields.io/discord/292744693803122688?color=informational&label=Ladysnake&logo=Discord)](https://ladysnake.glitch.me)[![img](http://cf.way2muchnoise.eu/full_rats-mischief_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/nomad-books)[![img](http://cf.way2muchnoise.eu/versions/minecraft_nomad-books_latest.svg)](https://www.curseforge.com/minecraft/mc-mods/nomad-books)
 
-# Items
+**Nomad Books** is a Minecraft Fabric mod that introduces a solution for players that are always adventuring around their world. Nomad books and pages allow these players to store their camp in the form of an item and redeploy it whenever and wherever they wish.
 
-## Grass Page
+## Wiki
 
-Blades of grass magically and carefully weaved into a delicate page. Crafting and upgrade material for nomad books and nomad pages.
+### Nomad Books
 
-#### Obtaining
 
-Grass pages have a 50% chance to be found in any dungeon, mineshaft, jungle temple chests and cartographer chests in stacks of 1. Grass pages can also be obtained from nomad books by dismantling them.
+A nomad book is an item that can store a 3x1x3 sized camp. The book displays a campfire as indicator if the camp is deployed (campfire absent) or not (campfire visible).
 
-## Nomad Books
+![CampfireIndicator](https://user-images.githubusercontent.com/83953120/121961233-700a9780-cd67-11eb-89a1-0a8febe0c533.png)
 
-A **nomad book** is an item that can store a WxHxW sized camp, with W the width and H the height. When the camp is stored in the book, the cover of the book displays a campfire. When the camp is deployed, the cover does not display said campfire.
 
-#### Obtaining
+To **deploy** a camp simply find a flat spot with sufficient space blocked by nothing but plants (grass, flowers, vines,...) and snow and use the nomad book where you want the centre of your camp to be.
 
-Nomad books can be obtained by combining a campfire and grass pages. A newly crafted nomad book will have a height of 1 and a width of 3.
+To **retrieve** a camp the player needs to be in a 10 block radius to the centre and use the book again. If you are too far away from the camp to retrieve it you can hold enderpearls in your offhand while using the book to teleport back to the centre of the camp at the cost of one enderpearl per 60 blocks of distance travelled.
 
-![image-20200102175340377](README.assets/image-20200102175340377.png)
 
-Nomad books of 1 in height and 3 in width can also be found with a 50% chance in all stronghold libraries chests in stacks of 1.
+Shift-using with the nomad books will reveal the boundaries of the camp.
 
-#### Usage
+![CampBoundaries](https://user-images.githubusercontent.com/83953120/121962532-2622b100-cd69-11eb-956b-0243b1ac366e.png)
 
-When a nomad book has a camp stored inside it, using it on a block with the book will deploy the camp. To deploy the camp, the surface needs to be wide enough and the area needs to be free of non-replaceable blocks (the camp will automatically destroy grass and snow when deployed).
+Default camp setup with boundaries toggled on.
 
-When a nomad book does not store a camp (meaning the camp is deployed), using it will retrieve the camp. However, camps cannot be retrieved across dimensions. Alternatively, using it while sneaking will reveal the camp's boundaries (blocks highlighted being included).
+### Obtaining
 
-#### Upgrading
+#### Nomad Books
+
+Nomad Books can be crafted using three grass pages and a campfire.
+
+![NomadBookRecipe](https://user-images.githubusercontent.com/83953120/121963651-b6adc100-cd6a-11eb-8351-d6ba0a5cdd83.png)
+
+There will always be a Nomad Book appearing in the bonus chest (if enabled) at the start of the game.
+
+#### Grass Pages
+
+Grass pages - which allow the player to craft and upgrade nomad books - can be found with a **50%** chance in the loot chests of buried treasures, cartographer villagers,  dungeons, jungle temples, mineshafts and pillager outposts.
+
+They can also be found in stronghold library chests in stacks of **0-3**.
+
+Another way of obtaining grass pages is by dismantling Nomad Books in a crafting grid while the camp is deployed. For dismantling a Nomad Book the player will receive 3 grass pages for the book itself, 1 page per height upgrade and 2 pages per width upgrade as well as 1 page per special upgrade.
+
+
+### Upgrading
+
+
+Upgrades to the book can only be done while the camp is undeployed.
 
 ##### Height
 
-A book's height can be upgraded by shapelessly combining it with grass pages in a crafting inventory. The camp has to be undeployed in order for the player to be able to upgrade the book.
 
-![image-20200113230337419](README.assets/image-20200113230337419.png)
+A book's height can be upgraded by shapelessly combining it with grass pages in a crafting inventory. Despite there being no limit to the height of a camp, the higher it gets the more difficult the search for a good spot may be since not only space that is actually used must be emptied of obstacles.
 
 ##### Width
 
+
 A book's width can be upgraded by using itinerant ink. Itinerant ink can be applied to a book by shapelessly combining it with a ghast tear, blue dye and charcoal.
 
-![image-20200113230319255](README.assets/image-20200113230319255.png)
+Upon application, a goal will be decided depending on the current width size. Progress towards this goal is made by visiting biomes that the book hasn't been to yet. Note that it does **not** have to be a new **kind** of biome.
 
-Upon application, a goal will be decided depending on the current width size. Progress towards this goal needs to be made by exploring and going through different biomes. Upon reaching the goal, the book will gain 2 in width.
+![ItinerantInkRecipe](https://user-images.githubusercontent.com/83953120/122669328-1964e980-d1bd-11eb-8d9c-a8afb516bcd5.png)
 
-#### Dismantling
-
-Nomad books and pages can be dismantled into grass pages. To do so, they need their camp to be deployed and be placed into a crafting inventory. Dismantling will give three grass pages plus one page per height above 1, one page per 2 width above 3, and one page for each special page applied.
-
-![image-20200113230552606](README.assets/image-20200113230552606.png)
-
-#### Teleporting
-
-If a nomad book is deployed and you are too far to retrieve the camp, holding ender pearls in your offhand will allow you to teleport to it for the price of an ender pearl for every 60 blocks separating you from your camp.
-
-## Special pages and upgrades
-
-**Special pages** are unique pages that trigger very specific effects upon camp deployment when combined with a nomad book.
-
-### Aquatic Membrane Page
-
-The **aquatic membrane page** is a special page granting the **Aquatic Membrane** upgrade. **Aquatic membrane** allows the camp to be deployed underwater protected by a membrane. Any entity can freely go through membrane blocks but fluids will be blocked.
-
-#### Obtaining
-
-Aquatic membrane pages can be crafted by combining 3 phantom membranes and a heart of the sea.
-
-![image-20200113231238569](README.assets/image-20200113231238569.png)
-
-### Mycelium Page
-
-The **mycelium page** is a special page granting the **Fungi Support** upgrade. **Fungi support** allows the camp to be deployed on unstable surfaces, as long as nothing is in the way, by growing a special mushroom.
-
-#### Obtaining
-
-Mycelium pages can be crafted by shapelessly combining purple dye, a poisonous potato, bone meal and a grass page.
-
-![image-20200113231129702](README.assets/image-20200113231129702.png)
+#### Special Upgrades
 
 
+Special upgrades are upgrades that only have to be applied once to a book and add special properties to itself or the camp. Upgrades are applied by combining the book with a specific item in a crafting grid.
 
-### Nether Nomad Book
+##### Aquatic Membrane Page
 
-The **nether nomad book** is an upgrade similar to all netherite items: for the cost of one netherite ingot, the dropped nomad book item is rendered fireproof and will float upwards if it were to fall into lava (when crafting a nether nomad book all properties are preserved).
 
-![image-20200712011325460](README.assets/image-20200712011325460.png)
+The Aquatic Membrane page (crafted as seen below) adds a membrane to your camp that will stop fluids from entering but lets the player as well as other entities pass, opening up the possibility to place your camp underwater!
+
+![AquaticMembraneRecipe](https://user-images.githubusercontent.com/83953120/121964948-91ba4d80-cd6c-11eb-93b0-c2df2f64022b.png)
+
+##### Mycelium Page
+
+
+The Mycelium Page is a special page granting the Fungi Support upgrade. Fungi support allows the camp to be deployed on rough surfaces, as long as no obstacles interfere, by growing a special mushroom to fill up the missing floor blocks.
+
+![MyceliumPage](https://user-images.githubusercontent.com/83953120/121965215-fb3a5c00-cd6c-11eb-842f-719bc7cf46e6.png)
+
+##### Nether Nomad Book
+
+
+By combining the Nomad Book with a netherite ingot in an usual crafting grid the dropped item won't be destroyed in lava and instead swims up in it, similar to netherite ingots, tools and armour.
+
+![NetherNomadBookRecipe](https://user-images.githubusercontent.com/83953120/122669340-2550ab80-d1bd-11eb-826d-113af5ce1d42.png)
