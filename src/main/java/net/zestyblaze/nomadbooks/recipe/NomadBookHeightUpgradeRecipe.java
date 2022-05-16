@@ -1,32 +1,32 @@
-package ladysnake.nomadbooks.common.recipe;
+package net.zestyblaze.nomadbooks.recipe;
 
 import com.google.common.collect.Lists;
-import ladysnake.nomadbooks.NomadBooks;
-import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
+import net.zestyblaze.nomadbooks.NomadBooks;
+import net.zestyblaze.nomadbooks.item.NomadBookItem;
 
 import java.util.List;
 
-public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
-    public NomadBookHeightUpgradeRecipe(Identifier identifier) {
-        super(identifier);
+public class NomadBookHeightUpgradeRecipe extends CustomRecipe {
+    public NomadBookHeightUpgradeRecipe(ResourceLocation resourceLocation) {
+        super(resourceLocation);
     }
 
     @Override
-    public boolean matches(CraftingInventory craftingInventory, World world) {
+    public boolean matches(CraftingContainer container, Level level) {
         ItemStack itemStack = ItemStack.EMPTY;
         List<ItemStack> list = Lists.newArrayList();
 
-        for(int i = 0; i < craftingInventory.size(); ++i) {
-            ItemStack itemStack2 = craftingInventory.getStack(i);
+        for(int i = 0; i < container.getContainerSize(); ++i) {
+            ItemStack itemStack2 = container.getItem(i);
             if (!itemStack2.isEmpty()) {
                 if (itemStack2.getItem() instanceof NomadBookItem) {
                     if (!itemStack.isEmpty()) {
@@ -48,12 +48,12 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory craftingInventory) {
+    public ItemStack assemble(CraftingContainer container) {
         List<Item> list = Lists.newArrayList();
         ItemStack itemStack = ItemStack.EMPTY;
 
-        for(int i = 0; i < craftingInventory.size(); ++i) {
-            ItemStack itemStack2 = craftingInventory.getStack(i);
+        for(int i = 0; i < container.getContainerSize(); ++i) {
+            ItemStack itemStack2 = container.getItem(i);
             if (!itemStack2.isEmpty()) {
                 Item item = itemStack2.getItem();
                 if (item instanceof NomadBookItem) {
@@ -71,10 +71,9 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
                 }
             }
         }
-
-        if (!itemStack.isEmpty() && !list.isEmpty() && itemStack.getOrCreateTag().getFloat(NomadBooks.MODID+":deployed") == 0.0f) {
-            int height = itemStack.getOrCreateSubTag(NomadBooks.MODID).getInt("Height");
-            itemStack.getOrCreateSubTag(NomadBooks.MODID).putInt("Height", height + list.size());
+        if (!itemStack.isEmpty() && !list.isEmpty() && itemStack.getOrCreateTag().getFloat(NomadBooks.MODID + ":deployed") == 0.0f) {
+            int height = itemStack.getOrCreateTagElement(NomadBooks.MODID).getInt("Height");
+            itemStack.getOrCreateTagElement(NomadBooks.MODID).putInt("Height", height + list.size());
             return itemStack;
         } else {
             return ItemStack.EMPTY;
@@ -82,10 +81,12 @@ public class NomadBookHeightUpgradeRecipe extends SpecialCraftingRecipe {
     }
 
     @Environment(EnvType.CLIENT)
-    public boolean fits(int width, int height) {
+    @Override
+    public boolean canCraftInDimensions(int width, int height) {
         return width * height >= 2;
     }
 
+    @Override
     public RecipeSerializer<?> getSerializer() {
         return NomadBooks.UPGRADE_HEIGHT_NOMAD_BOOK;
     }

@@ -1,12 +1,12 @@
-package ladysnake.nomadbooks.common.item;
+package net.zestyblaze.nomadbooks.item;
 
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public class BookUpgradeItem extends Item {
     private String upgrade;
 
-    public BookUpgradeItem(Settings settings, String upgrade) {
-        super(settings);
+    public BookUpgradeItem(Properties properties, String upgrade) {
+        super(properties);
         this.upgrade = upgrade;
     }
 

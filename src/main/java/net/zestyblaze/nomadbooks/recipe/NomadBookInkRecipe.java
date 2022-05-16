@@ -1,33 +1,33 @@
-package ladysnake.nomadbooks.common.recipe;
+package net.zestyblaze.nomadbooks.recipe;
 
 import com.google.common.collect.Lists;
-import ladysnake.nomadbooks.NomadBooks;
-import ladysnake.nomadbooks.common.item.NomadBookItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
+import net.zestyblaze.nomadbooks.NomadBooks;
+import net.zestyblaze.nomadbooks.item.NomadBookItem;
 
 import java.util.List;
 
-public class NomadBookInkRecipe extends SpecialCraftingRecipe {
-    public NomadBookInkRecipe(Identifier identifier) {
-        super(identifier);
+public class NomadBookInkRecipe extends CustomRecipe {
+    public NomadBookInkRecipe(ResourceLocation resourceLocation) {
+        super(resourceLocation);
     }
 
     @Override
-    public boolean matches(CraftingInventory craftingInventory, World world) {
+    public boolean matches(CraftingContainer container, Level level) {
         List<Item> ingredients = Lists.newArrayList();
         ItemStack book = null;
 
-        for(int i = 0; i < craftingInventory.size(); ++i) {
-            ItemStack itemStack = craftingInventory.getStack(i);
+        for(int i = 0; i < container.getContainerSize(); ++i) {
+            ItemStack itemStack = container.getItem(i);
             Item item = itemStack.getItem();
             if (item instanceof NomadBookItem) {
                 book = itemStack;
@@ -40,12 +40,12 @@ public class NomadBookInkRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory craftingInventory) {
+    public ItemStack assemble(CraftingContainer container) {
         List<Item> ingredients = Lists.newArrayList();
         ItemStack book = null;
 
-        for(int i = 0; i < craftingInventory.size(); ++i) {
-            ItemStack itemStack = craftingInventory.getStack(i);
+        for(int i = 0; i < container.getContainerSize(); ++i) {
+            ItemStack itemStack = container.getItem(i);
             Item item = itemStack.getItem();
             if (item instanceof NomadBookItem) {
                 book = itemStack;
@@ -56,10 +56,10 @@ public class NomadBookInkRecipe extends SpecialCraftingRecipe {
 
         if (book != null && ingredients.size() == 3 && ingredients.contains(Items.GHAST_TEAR) && ingredients.contains(Items.CHARCOAL) && ingredients.contains(Items.BLUE_DYE)) {
             ItemStack ret = book.copy();
-            int width = ret.getOrCreateSubTag(NomadBooks.MODID).getInt("Width");
-            ret.getOrCreateSubTag(NomadBooks.MODID).putBoolean("Inked", true);
-            ret.getOrCreateSubTag(NomadBooks.MODID).putInt("InkGoal", ((width+2)*(width+2) - width*width)/2);
-            ret.getOrCreateSubTag(NomadBooks.MODID).putInt("InkProgress", 0);
+            int width = ret.getOrCreateTagElement(NomadBooks.MODID).getInt("Width");
+            ret.getOrCreateTagElement(NomadBooks.MODID).putBoolean("Inked", true);
+            ret.getOrCreateTagElement(NomadBooks.MODID).putInt("InkGoal", ((width+2)*(width+2) - width*width)/2);
+            ret.getOrCreateTagElement(NomadBooks.MODID).putInt("InkProgress", 0);
 
             return ret;
         }
@@ -68,10 +68,12 @@ public class NomadBookInkRecipe extends SpecialCraftingRecipe {
     }
 
     @Environment(EnvType.CLIENT)
-    public boolean fits(int width, int height) {
+    @Override
+    public boolean canCraftInDimensions(int width, int height) {
         return width * height >= 2;
     }
 
+    @Override
     public RecipeSerializer<?> getSerializer() {
         return NomadBooks.UPGRADE_NOMAD_BOOK;
     }

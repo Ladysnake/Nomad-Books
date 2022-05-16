@@ -3,31 +3,38 @@
   "id": "nomadbooks",
   "version": "${version}",
 
+  "name": "Nomad Books",
+  "description": "Nomad encampments deployed from books",
+  "authors": [
+    "ZestyBlaze",
+    "doctor4t"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/nomad-books",
+    "sources": "https://github.com/Ladysnake/Nomad-Books",
+    "issues": "https://github.com/Ladysnake/Nomad-Books/issues"
+  },
+
+  "license": "MIT License",
+  "icon": "icon.png",
+
   "environment": "*",
   "entrypoints": {
     "main": [
-      "ladysnake.nomadbooks.NomadBooks"
+      "net.zestyblaze.nomadbooks.NomadBooks"
     ],
     "client": [
-      "ladysnake.nomadbooks.client.NomadBooksClient"
+      "net.zestyblaze.nomadbooks.client.NomadBooksClient"
     ]
   },
   "mixins": [
     "nomadbooks.mixins.json"
   ],
-  "name": "Nomad Books",
-  "icon": "assets/nomadbooks/icon.png",
-  "description": "Nomad encampments deployment from books",
-  "authors": [
-    "doctor4t"
-  ],
-  "contact": {
-    "sources": "https://github.com/Ladysnake/Nomad-Books",
-    "issues": "https://github.com/Ladysnake/Nomad-Books/issues",
-    "discord": "ladysnake.glitch.me/discord"
-  },
-  "license": "CC-BY-NC-SA 4.0",
+
   "depends": {
-    "fabric": "*"
+    "fabricloader": ">=0.12.12",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
   }
 }
