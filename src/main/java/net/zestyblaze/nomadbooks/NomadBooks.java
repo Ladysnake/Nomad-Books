@@ -2,8 +2,7 @@ package net.zestyblaze.nomadbooks;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
-import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
@@ -17,6 +16,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootPool.Builder;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -71,67 +72,67 @@ public class NomadBooks implements ModInitializer {
 		CREATIVE_NOMAD_BOOK = registerItem(new NomadBookItem(new FabricItemSettings().maxCount(1).group(CreativeModeTab.TAB_MISC).rarity(Rarity.RARE).fireproof()), "creative_nomad_book");
 
 		UniformGenerator lootTableRange = UniformGenerator.between(0, 1);
-		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
+		LootTableEvents.MODIFY.register((resourceManager, lootManager, id, supplier, setter) -> {
 			if (DUNGEON_CHEST_LOOT_TABLE_ID.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(lootTableRange)
-						.withEntry(LootItem.lootTableItem(GRASS_PAGE).build());
+				LootPool.Builder poolBuilder = LootPool.lootPool()
+						.setRolls(lootTableRange)
+						.add(LootItem.lootTableItem(GRASS_PAGE));
 
-				supplier.withPool(poolBuilder.build());
+				supplier.withPool(poolBuilder);
 			}
 			if (MINESHAFT_CHEST_LOOT_TABLE_ID.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(lootTableRange)
-						.withEntry(LootItem.lootTableItem(GRASS_PAGE).build());
+				LootPool.Builder poolBuilder = LootPool.lootPool()
+						.setRolls(lootTableRange)
+						.add(LootItem.lootTableItem(GRASS_PAGE));
 
-				supplier.withPool(poolBuilder.build());
+				supplier.withPool(poolBuilder);
 			}
 			if (TEMPLE_CHEST_LOOT_TABLE_ID.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(lootTableRange)
-						.withEntry(LootItem.lootTableItem(GRASS_PAGE).build());
+				LootPool.Builder poolBuilder = LootPool.lootPool()
+						.setRolls(lootTableRange)
+						.add(LootItem.lootTableItem(GRASS_PAGE));
 
-				supplier.withPool(poolBuilder.build());
+				supplier.withPool(poolBuilder);
 			}
 			if (TREASURE_CHEST_LOOT_TABLE_ID.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(lootTableRange)
-						.withEntry(LootItem.lootTableItem(GRASS_PAGE).build());
+				LootPool.Builder poolBuilder = LootPool.lootPool()
+						.setRolls(lootTableRange)
+						.add(LootItem.lootTableItem(GRASS_PAGE));
 
-				supplier.withPool(poolBuilder.build());
+				supplier.withPool(poolBuilder);
 			}
 			if (OUTPOST_CHEST_LOOT_TABLE_ID.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(lootTableRange)
-						.withEntry(LootItem.lootTableItem(GRASS_PAGE).build());
+				LootPool.Builder poolBuilder = LootPool.lootPool()
+						.setRolls(lootTableRange)
+						.add(LootItem.lootTableItem(GRASS_PAGE));
 
-				supplier.withPool(poolBuilder.build());
+				supplier.withPool(poolBuilder);
 			}
 			if (CARTOGRAPHER_CHEST_LOOT_TABLE_ID.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(lootTableRange)
-						.withEntry(LootItem.lootTableItem(GRASS_PAGE).build());
+				LootPool.Builder poolBuilder = LootPool.lootPool()
+						.setRolls(lootTableRange)
+						.add(LootItem.lootTableItem(GRASS_PAGE));
 
-				supplier.withPool(poolBuilder.build());
+				supplier.withPool(poolBuilder);
 			}
 			if (STRONGHOLD_LIBRARY_CHEST_LOOT_TABLE_ID.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(UniformGenerator.between(0, 3))
-						.withEntry(LootItem.lootTableItem(GRASS_PAGE).build());
+				LootPool.Builder poolBuilder = LootPool.lootPool()
+						.setRolls(UniformGenerator.between(0, 3))
+						.add(LootItem.lootTableItem(GRASS_PAGE));
 
-				supplier.withPool(poolBuilder.build());
+				supplier.withPool(poolBuilder);
 			}
 			if (BONUS_CHEST_LOOT_TABLE_ID.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(ConstantValue.exactly(1))
-						.withEntry(LootItem.lootTableItem(NOMAD_BOOK).build())
-						.withFunction(SetNbtFunction.setTag(Util.make(new CompoundTag(), (compoundTag) -> compoundTag.put(MODID, Util.make(new CompoundTag(), child -> {
+				LootPool.Builder poolBuilder = LootPool.lootPool()
+						.setRolls(ConstantValue.exactly(1))
+						.add(LootItem.lootTableItem(NOMAD_BOOK))
+						.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (compoundTag) -> compoundTag.put(MODID, Util.make(new CompoundTag(), child -> {
 							child.putInt("Height", 1);
 							child.putInt("Width", 3);
 							child.putString("Structure", NomadBookItem.defaultStructurePath);
 						})))).build());
 
-				supplier.withPool(poolBuilder.build());
+				supplier.withPool(poolBuilder);
 			}
 		});
 
