@@ -10,12 +10,12 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.zestyblaze.nomadbooks.NomadBooks;
@@ -33,11 +33,11 @@ public abstract class ServerPlayerMixin extends Player {
 
     @Shadow public abstract void displayClientMessage(@NotNull Component chatComponent, boolean actionBar);
 
-    public ServerPlayerMixin(Level level, BlockPos blockPos, float f, GameProfile gameProfile) {
-        super(level, blockPos, f, gameProfile);
+    public ServerPlayerMixin(Level level, BlockPos blockPos, float f, GameProfile gameProfile, ProfilePublicKey profilePublicKey) {
+        super(level, blockPos, f, gameProfile, profilePublicKey);
     }
 
-    @Inject(method = "doTick", at = @At(value = "FIELD", target = "Lnet/minecraft/advancements/CriteriaTriggers;LOCATION:Lnet/minecraft/advancements/critereon/LocationTrigger;"))
+    @Inject(method = "doTick", at = @At(value = "FIELD", target = "Lnet/minecraft/advancements/CriteriaTriggers;LOCATION:Lnet/minecraft/advancements/critereon/PlayerTrigger;"))
     private void enterBiome(CallbackInfo info) {
         for(int i = 0; i < this.getInventory().getContainerSize(); ++i) {
             ItemStack itemStack = this.getInventory().getItem(i);
@@ -69,7 +69,7 @@ public abstract class ServerPlayerMixin extends Player {
                                 tags.put("CampPos", NbtUtils.writeBlockPos(pos));
                                 // show a chat message to the player
                                 this.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.1f, 0.75f);
-                                this.displayClientMessage(new TranslatableComponent("info.nomadbooks.itinerant_ink_done", tags.getInt("Width")).setStyle(Style.EMPTY.withColor(ChatFormatting.BLUE)), false);
+                                this.displayClientMessage(Component.translatable("info.nomadbooks.itinerant_ink_done", tags.getInt("Width")).setStyle(Style.EMPTY.withColor(ChatFormatting.BLUE)), false);
                             } else {
                                 visitedBiomes.add(biome);
                                 tags.put("VisitedBiomes", visitedBiomes);

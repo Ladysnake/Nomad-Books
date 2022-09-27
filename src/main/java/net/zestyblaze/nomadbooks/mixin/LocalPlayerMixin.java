@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.zestyblaze.nomadbooks.NomadBooks;
 import net.zestyblaze.nomadbooks.client.NomadBooksClient;
 import net.zestyblaze.nomadbooks.item.NomadBookItem;
@@ -20,8 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin extends AbstractClientPlayer {
-    public LocalPlayerMixin(ClientLevel clientLevel, GameProfile gameProfile) {
-        super(clientLevel, gameProfile);
+    public LocalPlayerMixin(ClientLevel clientLevel, GameProfile gameProfile, ProfilePublicKey profilePublicKey) {
+        super(clientLevel, gameProfile, profilePublicKey);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
